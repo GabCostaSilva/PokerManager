@@ -4,10 +4,10 @@
     "slug": "PokerManagerProto",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/poker-chip.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.mp4",
+      "image": "./assets/poker-chip.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -15,16 +15,26 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.gabcozta.PokerManagerProto"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/poker-chip.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "@react-native-google-signin/google-signin",
+      "expo-build-properties"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "b9e07a3a-213f-4b1e-85ea-9d13bbf4f509"
+      }
     }
   }
 }
