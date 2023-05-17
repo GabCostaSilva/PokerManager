@@ -1,6 +1,7 @@
 import React from 'react';
 import {Box, Center} from "native-base";
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import {View} from "react-native";
 
 interface SignUpFormProps {
     setLogged: (value: (((prevState: boolean) => boolean) | boolean)) => void
@@ -12,13 +13,11 @@ const SignUpForm = ({setLogged}: SignUpFormProps): JSX.Element => {
     };
 
     return (
-        <Box safeAreaTop>
-            <Center>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <FontAwesome.Button name="google" backgroundColor="#3b5998" onPress={loginWithFacebook}>
                     Acesse com o Google
                 </FontAwesome.Button>
-            </Center>
-        </Box>
+        </View>
     );
 };
 

@@ -1,9 +1,9 @@
 import {Button, Center, Heading, HStack, Text} from "native-base";
 import React from "react";
-import {Chips} from "./Chips";
 import {FormField} from "../../components/Form/FormField";
 import {Formiz, FormizStep, useForm,} from '@formiz/core'
 import {View} from "react-native";
+import {Chips} from "./Chips/Chips";
 
 export function NewTournament({navigation}) {
     let formValues = useForm();
@@ -50,6 +50,7 @@ export function NewTournament({navigation}) {
                                placeholder={"Torneio 1"}
                                setData={setData}
                                name="name"
+                               value={formData.name}
                                formData={formData}
                                errors={errors}/>
                 </Center>
@@ -60,13 +61,17 @@ export function NewTournament({navigation}) {
                                placeholder={"0"}
                                name="initialStack"
                                setData={setData}
+                               value={formData.initialStack}
                                formData={formData}
                                errors={errors}/>
                 </Center>
             </FormizStep>
             <FormizStep name='step3' as={View}>
                 <Center mb='5'>
-                    <Chips errors={errors} setData={setData} formData={formData}/>
+                    <Chips errors={errors}
+                           setData={setData}
+                           formData={formData}
+                    />
                 </Center>
             </FormizStep>
             <HStack justifyContent='center' space='md'>

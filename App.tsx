@@ -1,16 +1,16 @@
 import 'react-native-gesture-handler';
 import React, {useState} from 'react';
-import {Center, extendTheme, Heading, Icon, NativeBaseProvider, ScrollView, Text} from 'native-base';
-import {createDrawerNavigator} from '@react-navigation/drawer';
+import {Box, extendTheme, NativeBaseProvider} from 'native-base';
 import {NavigationContainer, useNavigationContainerRef} from "@react-navigation/native";
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {Home} from "./src/screens/Home";
-import {AppBar} from './src/components/AppBar';
-import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
-import {AntDesign} from "@expo/vector-icons";
-import {getHeaderTitle} from '@react-navigation/elements';
-import {NewTournament} from "./src/screens/NewTournament";
 import Login from "./src/screens/Login";
+import {Home} from "./src/screens/Home";
+import {NewTournament} from "./src/screens/NewTournament";
+import {createDrawerNavigator} from "@react-navigation/drawer";
+
+const routeNames = {
+    home: "Início",
+    new_tournament: "Novo Torneio"
+}
 
 const newColorTheme = {
     primary: {
@@ -31,9 +31,7 @@ const theme = extendTheme({
     colors: newColorTheme,
 });
 
-const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
-
+const Drawer = createDrawerNavigator();
 
 const App = () => {
         const [logged, setLogged] = useState(false);
@@ -41,60 +39,13 @@ const App = () => {
         return (
             <NavigationContainer ref={navigationRef}>
                 <NativeBaseProvider theme={theme}>
+                    {/*<Box safeAreaTop bg="primary.700"/>*/}
                     {!logged ? <Login setLogged={setLogged}/> :
                         <>
-                            <AppBar navigation={navigationRef}/>
-
-                            <Tab.Navigator
-                                screenOptions={({route}) => ({
-                                    header: ({navigation, route, options}) => {
-                                        return <Heading size='md'
-                                                        alignItems='center'
-                                                        p='2'
-                                                        bg={theme.colors.gray["100"]}>
-                                        </Heading>
-                                    },
-                                    tabBarIcon: ({focused, color, size}) => {
-                                        function getIcon(iconName, opacity) {
-                                            return <Icon mb="1"
-                                                         as={<AntDesign name={iconName}/>}
-                                                         color="white"
-                                                         size="sm"
-                                                         opacity={opacity}/>;
-                                        }
-
-                                        if (route.name === 'Torneios') {
-                                            return focused
-                                                ? getIcon("Trophy", 1)
-                                                : getIcon("Trophy", .5);
-                                        } else if (route.name === 'Novo Torneio') {
-                                            return focused
-                                                ? getIcon("plus", 1)
-                                                : getIcon("plus", .5);
-                                        } else if (route.name === 'Clonar Torneio') {
-                                            return focused
-                                                ? getIcon("copy1", 1)
-                                                : getIcon("copy1", .5);
-                                        }
-                                    },
-                                    tabBarLabelStyle: {
-                                        marginBottom: "5%"
-                                    },
-                                    tabBarActiveTintColor: 'white',
-                                    tabBarInactiveTintColor: theme.colors.gray["400"],
-                                    tabBarStyle: {
-                                        position: 'absolute',
-                                        padding: 10,
-                                        alignSelf: "center",
-                                        alignItems: "center",
-                                        textColor: theme.colors.primary["50"],
-                                        backgroundColor: theme.colors.primary["600"]
-                                    }
-                                })}>
-                                <Tab.Screen name="Torneios" component={Home}/>
-                                <Tab.Screen name="Novo Torneio" component={NewTournament}/>
-                                <Tab.Screen name="Clonar Torneio" component={Home}/>
-                            </Tab.Navigator>
+                                <Drawer.Navigator initialRouteName={routeNames.home}>
+                                    <Drawer.Screen name={routeNames.home} component={Home}/>
+                                    <Drawer.Screen name={routeNames.new_tournament} component={NewTournament}/>
+                                </Drawer.Navigator>
                         </>}
                 </NativeBaseProvider>
             </NavigationContainer>
