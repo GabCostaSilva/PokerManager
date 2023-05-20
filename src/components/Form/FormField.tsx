@@ -10,7 +10,7 @@ export function FormField({
                               value,
                               errors
                           }) {
-    return (<VStack width="100%" mx="3" maxW="300px" justifyContent='center'>
+    return (<VStack width="100%" justifyContent='center'>
             <FormControl>
                 <FormControl.Label _text={{bold: true}}>{label}</FormControl.Label>
                 <Input value={value} placeholder={placeholder}

@@ -4,6 +4,7 @@ import {FormField} from "../../components/Form/FormField";
 import {Formiz, FormizStep, useForm,} from '@formiz/core'
 import {View} from "react-native";
 import {Chips} from "./Chips/Chips";
+import MyCenter from "../../components/MyCenter";
 
 export function NewTournament({navigation}) {
     let formValues = useForm();
@@ -45,7 +46,7 @@ export function NewTournament({navigation}) {
             onValidSubmit={onSubmit}
         >
             <FormizStep name={"step1"} as={View}>
-                <Center mb='5'>
+                <CenterForm>
                     <FormField label={'Nome do torneio'}
                                placeholder={"Torneio 1"}
                                setData={setData}
@@ -53,10 +54,11 @@ export function NewTournament({navigation}) {
                                value={formData.name}
                                formData={formData}
                                errors={errors}/>
-                </Center>
+                </CenterForm>
             </FormizStep>
             <FormizStep name={"step2"} as={View}>
-                <Center mb='5'>
+                <CenterForm>
+
                     <FormField label={"Stack Inicial"}
                                placeholder={"0"}
                                name="initialStack"
@@ -64,15 +66,15 @@ export function NewTournament({navigation}) {
                                value={formData.initialStack}
                                formData={formData}
                                errors={errors}/>
-                </Center>
+                </CenterForm>
             </FormizStep>
             <FormizStep name='step3' as={View}>
-                <Center mb='5'>
+                <CenterForm>
                     <Chips errors={errors}
                            setData={setData}
                            formData={formData}
                     />
-                </Center>
+                </CenterForm>
             </FormizStep>
             <HStack justifyContent='center' space='md'>
                 {!formValues.isFirstStep && (
@@ -97,4 +99,10 @@ export function NewTournament({navigation}) {
                 )}
             </HStack>
         </Formiz>);
+}
+
+const CenterForm = ({children}) => {
+    return (<View style={{alignItems: "center", paddingTop: "5%", marginBottom: "5%"}}>
+        {children}
+    </View>)
 }

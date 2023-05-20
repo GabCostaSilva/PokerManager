@@ -31,19 +31,17 @@ export function Chips({setData, formData, errors}) {
 
     return (
         <ScrollView>
-            <VStack space="2.5" px="8" minW="300px" justifyContent='center' alignContent='center'>
+            <VStack space="2.5" px="8" minW="400px" justifyContent='center' alignContent='center'>
                 <Heading size="md">Fichas</Heading>
-                <Center>
-                    <FormField label='Valor'
-                               formData={chipValue}
-                               setData={setChipValue}
-                               name="chipValue"
-                               placeholder=''
-                               value={chipValue}
-                               errors={errors}/>
-                </Center>
+                <FormField label='Valor'
+                           formData={chipValue}
+                           setData={setChipValue}
+                           name="chipValue"
+                           placeholder=''
+                           value={chipValue}
+                           errors={errors}/>
+
                 <View>
-                    {/*<ColorPicker setData={setData} formData={formData}/>*/}
                     <Select selectedValue={chipColor} minWidth="200" accessibilityLabel="Escolha a cor."
                             placeholder="Escolha a cor."
                             _selectedItem={{
@@ -63,6 +61,7 @@ export function Chips({setData, formData, errors}) {
                 <Stack
                     flexWrap={"wrap"}
                     direction="row"
+                    justifyContent={"center"}
                     space={3}>
                     {chips.map((chip, i) => {
                         return (<CloseableCircle size="40px"
