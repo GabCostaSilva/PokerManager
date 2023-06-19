@@ -1,108 +1,128 @@
-import {Button, Center, Heading, HStack, Text} from "native-base";
-import React from "react";
-import {FormField} from "../../components/Form/FormField";
-import {Formiz, FormizStep, useForm,} from '@formiz/core'
+import {Box, Button, Heading, HStack, Input, KeyboardAvoidingView, Text, VStack} from "native-base";
+import React, {useState} from "react";
 import {View} from "react-native";
 import {Chips} from "./Chips/Chips";
-import MyCenter from "../../components/MyCenter";
+import {Blind} from "./Blinds/Blind";
+import NewBlind from "./Blinds/NewBlind";
+import BlindLevel from "./Blinds/BlindLevel";
+import Pause from "./Blinds/Pause";
+import StepsButtonGroup from "../../components/StepsButtonGroup";
+
+interface Chip {
+    value: number,
+    color: string
+}
+
+interface Blind {
+    title: number,
+    small: number,
+    big: number,
+    ante: number,
+    time: string,
+    pause: number
+}
+
+interface BuyIn {
+    value: number,
+    currency: string
+}
+
+interface Player {
+    name: string,
+    phoneNumber: string,
+    email: string,
+    docNumber: string,
+    pix: string,
+    bank: string,
+    bankAgency: string,
+    bankAccountNumber: string,
+    picPay: boolean
+}
+
+interface TournamentState {
+    name: string,
+    initialStack: number,
+    chips: Chip[],
+    blinds: Blind[],
+    buyIn: BuyIn[],
+    shareCosts: boolean,
+    players: Player[]
+}
 
 export function NewTournament({navigation}) {
-    let formValues = useForm();
 
-    const [formData, setData] = React.useState({
+    const [page, setPage] = useState(0);
+    const [formState, setFormState] = useState<TournamentState>({
         name: '',
         initialStack: 0,
-        chips: []
+        chips: [],
+        blinds: [],
+        buyIn: [],
+        shareCosts: false,
+        players: []
     });
-    const [errors, setErrors] = React.useState({});
 
-    const validate = () => {
-        if (formData.name === undefined) {
-            setErrors({
-                ...errors,
-                name: 'Name is required'
-            });
-            return false;
-        } else if (formData.name.length < 3) {
-            setErrors({
-                ...errors,
-                name: 'Name is too short'
-            });
-            return false;
+    const FormTitles = ["Nome do Torneio",
+        "Stack Inicial",
+        "Fichas",
+        "Blinds",
+        "Novo Blind",
+    ]
+
+    function handleChange(initialStack: string, number: any) {
+
+    }
+
+    function getNumber(value: string) {
+        return parseInt(value.replace(/[^0-9]/g, ''));
+    }
+
+    const PageDisplay = () => {
+        switch (page) {
+            case 0:
+                return <VStack justifyContent={"center"}>
+                    <Input size={"lg"}/>
+                    <StepsButtonGroup setPage={setPage} currentPage={page} pages={FormTitles}/>
+                </VStack>
+            case 1:
+                return <VStack justifyContent={"center"}>
+                    <Input
+                        size="lg"
+                        placeholder={"0"}
+                        onChangeText={value => handleChange("initialStack", getNumber(value))}
+                    />
+                    <StepsButtonGroup setPage={setPage} currentPage={page} pages={FormTitles}/>
+                </VStack>
+            case 2:
+                return <Chips errors={null}
+                              setData={setFormState}
+                              formData={formState}
+                              setPage={setPage} currentPage={page} pages={FormTitles}
+                />
+            case 3:
+                return <Blind setPage={setPage} data={formState.blinds} currentPage={page}
+                              pages={FormTitles}/>
+            case 4:
+                return <NewBlind setPage={setPage} formState={formState} setFormState={setFormState}/>
         }
+    }
 
-        return true;
-    };
-
-    const onSubmit = () => {
-        validate()
-            ? console.log('Submitted. Data: ' + JSON.stringify(formData))
-            : alert('Validation Failed. Data: ' + formData);
-    };
+    const FormContainer = ({children}) => {
+        return <Box safeArea maxW="290" justifyContent={"center"}>{children}</Box>
+    }
 
     return (
-        <Formiz
-            connect={formValues}
-            onValidSubmit={onSubmit}
-        >
-            <FormizStep name={"step1"} as={View}>
-                <CenterForm>
-                    <FormField label={'Nome do torneio'}
-                               placeholder={"Torneio 1"}
-                               setData={setData}
-                               name="name"
-                               value={formData.name}
-                               formData={formData}
-                               errors={errors}/>
-                </CenterForm>
-            </FormizStep>
-            <FormizStep name={"step2"} as={View}>
-                <CenterForm>
+        <KeyboardAvoidingView>
+            <View>
+                <Heading fontSize="xl" p="4" pb="3">
+                    {FormTitles[page]}
+                </Heading>
+            </View>
 
-                    <FormField label={"Stack Inicial"}
-                               placeholder={"0"}
-                               name="initialStack"
-                               setData={setData}
-                               value={formData.initialStack}
-                               formData={formData}
-                               errors={errors}/>
-                </CenterForm>
-            </FormizStep>
-            <FormizStep name='step3' as={View}>
-                <CenterForm>
-                    <Chips errors={errors}
-                           setData={setData}
-                           formData={formData}
-                    />
-                </CenterForm>
-            </FormizStep>
-            <HStack justifyContent='center' space='md'>
-                {!formValues.isFirstStep && (
-                    <Button onPress={formValues.prevStep} variant="outline">
-                        <Text>
-                            Voltar
-                        </Text>
-                    </Button>
-                )}
-                {formValues.isLastStep ? (
-                    <Button disabled={!formValues.isValid} onPress={onSubmit}>
-                        <Text color="white">
-                            Enviar
-                        </Text>
-                    </Button>
-                ) : (
-                    <Button disabled={!formValues.isStepValid} onPress={formValues.nextStep}>
-                        <Text color="white">
-                            Próximo
-                        </Text>
-                    </Button>
-                )}
-            </HStack>
-        </Formiz>);
+            {/* body */}
+            <FormContainer>
+                {PageDisplay()}
+            </FormContainer>
+        </KeyboardAvoidingView>);
 }
 
-const CenterForm = ({children}) => {
-    return (<View style={{alignItems: "center", paddingTop: "5%", marginBottom: "5%"}}>
-        {children}
-    </View>)
-}
