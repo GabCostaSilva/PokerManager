@@ -12,15 +12,21 @@ import {
 } from "native-base";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {Ionicons} from "@expo/vector-icons";
-import React from "react";
+import React, {useEffect} from "react";
 
 const data = [{
     id: "",
     total: 1239.67
 }]
 
-export function Home({navigation}) {
+export function Home({route, navigation}) {
     const insets = useSafeAreaInsets();
+
+    useEffect(() => {
+        const params = route ? route.params : null
+        if (params)
+            alert(params.message)
+    }, []);
 
     return <VStack space={3} divider={<Divider/>} w="100%" p="4">
         <HStack justifyContent="space-between">

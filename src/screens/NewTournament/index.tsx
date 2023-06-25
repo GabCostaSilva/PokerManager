@@ -1,12 +1,14 @@
 import {Box, Button, Heading, HStack, Input, KeyboardAvoidingView, Text, VStack} from "native-base";
 import React, {useState} from "react";
 import {View} from "react-native";
-import {Chips} from "./Chips/Chips";
 import {Blind} from "./Blinds/Blind";
 import NewBlind from "./Blinds/NewBlind";
-import BlindLevel from "./Blinds/BlindLevel";
-import Pause from "./Blinds/Pause";
+import Chips from "./Chips/Chips";
+import * as FileSystem from 'expo-file-system';
+import saveTournament from "../../actions/saveTournament";
 import StepsButtonGroup from "../../components/StepsButtonGroup";
+import {NumericInput} from "../../components/NumericInput";
+import {onlyNumbers} from "../../utils";
 
 interface Chip {
     value: number,
@@ -39,7 +41,7 @@ interface Player {
     picPay: boolean
 }
 
-interface TournamentState {
+export interface TournamentState {
     name: string,
     initialStack: number,
     chips: Chip[],
@@ -49,9 +51,10 @@ interface TournamentState {
     players: Player[]
 }
 
-export function NewTournament({navigation}) {
 
+export function NewTournament({navigation}) {
     const [page, setPage] = useState(0);
+    const [state, setState] = useState({stuff: null});
     const [formState, setFormState] = useState<TournamentState>({
         name: '',
         initialStack: 0,
@@ -67,40 +70,77 @@ export function NewTournament({navigation}) {
         "Fichas",
         "Blinds",
         "Novo Blind",
+        "Buy In",
+        "Resenha",
+        "Jogadores"
     ]
 
-    function handleChange(initialStack: string, number: any) {
+    const Steps = [{
+        1: "Nome do Torneio",
+        2: "Stack Inicial",
+        3: "Fichas",
+        4: "Blinds",
+        5: "Novo Blind",
+        6: "Buy In",
+        7: "Resenha",
+        8: "Jogadores"
+    }]
 
+    function handleChange(prop: string, value: any) {
+        setFormState((prevState) => {
+            return {...prevState, [prop]: value}
+        })
     }
 
-    function getNumber(value: string) {
-        return parseInt(value.replace(/[^0-9]/g, ''));
+    async function onSubmit(props) {
+        await saveTournament(JSON.stringify(formState), `${formState.name}.json`);
+        navigation.navigate("Início", {
+            message: "Torneio criado com sucesso!"
+        })
     }
 
     const PageDisplay = () => {
         switch (page) {
             case 0:
                 return <VStack justifyContent={"center"}>
-                    <Input size={"lg"}/>
+                    <NumericInput size={"2xl"}
+                                  mb={5}
+                                  keyboardType='numeric'
+                                  onChangeText={text => {
+                                      handleChange("name", text)
+                                  }}
+                                  value={formState.name}
+                    />
                     <StepsButtonGroup setPage={setPage} currentPage={page} pages={FormTitles}/>
+                    <Input onChangeText={(text) => {
+                        setState(prevState => ({...prevState, name: text}))
+                    }}
+                           value={state.stuff}
+                    />
                 </VStack>
             case 1:
                 return <VStack justifyContent={"center"}>
-                    <Input
-                        size="lg"
-                        placeholder={"0"}
-                        onChangeText={value => handleChange("initialStack", getNumber(value))}
+                    <Input size={"2xl"}
+                           mb={5}
+                           placeholder={"0"}
+                           keyboardType='numeric'
+                           value={formState.initialStack.toString()}
+                           onChangeText={text => handleChange("initialStack", onlyNumbers(text))}
                     />
                     <StepsButtonGroup setPage={setPage} currentPage={page} pages={FormTitles}/>
                 </VStack>
             case 2:
-                return <Chips errors={null}
-                              setData={setFormState}
-                              formData={formState}
-                              setPage={setPage} currentPage={page} pages={FormTitles}
+                return <Chips formState={formState}
+                              setFormState={setFormState}
+                              setPage={setPage}
+                              currentPage={page}
+                              pages={FormTitles}
                 />
             case 3:
-                return <Blind setPage={setPage} data={formState.blinds} currentPage={page}
+                return <Blind setPage={(page) => setPage}
+                              formState={formState}
+                              setFormState={handleChange}
+                              currentPage={page}
                               pages={FormTitles}/>
             case 4:
                 return <NewBlind setPage={setPage} formState={formState} setFormState={setFormState}/>
@@ -108,7 +148,7 @@ export function NewTournament({navigation}) {
     }
 
     const FormContainer = ({children}) => {
-        return <Box safeArea maxW="290" justifyContent={"center"}>{children}</Box>
+        return <Box safeArea maxW="290" justifyContent={"center"} ml={50}>{children}</Box>
     }
 
     return (
@@ -123,6 +163,22 @@ export function NewTournament({navigation}) {
             <FormContainer>
                 {PageDisplay()}
             </FormContainer>
+            {page >= FormTitles.length - 1 ?
+                <HStack justifyContent='center' space='md'>
+                    <Button
+                        variant="outline"
+                        onPress={() => onSubmit()}>
+                        <Text>
+                            Iniciar
+                        </Text>
+                    </Button>
+                    <Button
+                        onPress={() => setPage(currentPage => currentPage === 3 ? currentPage + 2 : currentPage + 1)}>
+                        <Text color="white">
+                            Cancelar
+                        </Text>
+                    </Button>
+                </HStack>
+                : <></>}
         </KeyboardAvoidingView>);
 }
-

@@ -1,85 +1,107 @@
-import {Button, CheckIcon, Heading, Select, Stack, Text, VStack} from "native-base";
-import React, {useState} from "react";
-import {View} from "react-native";
-import {FormField} from "../../../components/Form/FormField";
+import React, {useEffect, useState} from 'react';
 import CloseableCircle from "../../../components/CloseableCircle";
+import {CheckIcon, FormControl, Input, Select, Stack, Text, VStack} from "native-base";
 import colors from "./colors";
 import StepsButtonGroup from "../../../components/StepsButtonGroup";
 
-interface ChipsProps {
-    pages: any
+interface Chip {
+    color: string,
+    value: string
 }
 
-interface ChipsProps {
-    currentPage: any
-}
+function Chips({setPage, pages, currentPage, setFormState, formState}) {
+    const [_chips, set_chips] = useState<Chip[]>([]);
 
-export function Chips({ setData, setPage, formData, errors, pages, currentPage }) {
-    const baseChips = []
+    const [chipColor, setChipColor] = useState("");
+    const [chipValue, setChipValue] = useState("");
 
-    const [chips, setChips] = useState(baseChips);
-    const [chipColor, setChipColor] = useState(null);
-    const [chipValue, setChipValue] = useState(0);
+    function findChip(chip) {
+        return _chips.find(_chip => chip.color === _chip.color || chip.value === _chip.value)
+    }
 
-    function addChip() {
-        if (chips.length >= 10) {
+    function handleClose(e, chipToClose) {
+        let filteredChips = _chips.filter(chip => chip.value !== chipToClose.value &&
+            chip.color !== chipToClose.color);
+        set_chips(filteredChips)
+    }
+
+    function resetChip() {
+        setChipColor("")
+        setChipValue("")
+    }
+
+    function handleSelect(colorValue) {
+        if (_chips.length >= 10) {
             alert("É permitido no máximo 10 fichas.")
             return;
         }
-        setChips([...chips, {color: chipColor, value: chipValue}])
-        setData({...formData, chips: [...chips, {color: chipColor, value: chipValue}]})
-        setChipValue(null)
+
+        const chip = {color: colorValue, value: chipValue};
+        if (findChip(chip)) {
+            resetChip()
+            return
+        }
+        set_chips(prevState => ([...prevState, chip]))
+        resetChip();
     }
 
-    function handleClose(e, id) {
-        setChips(chips.filter(chip => chip.value !== id))
+    function onlyNumbers(text: string) {
+        return text?.replace(/[^0-9]/g, '');
     }
 
-    return (
-        <VStack space="2.5" minW={"250"} justifyContent='center' alignContent='center'>
-            <Heading size="md">Fichas</Heading>
-            <FormField label='Valor'
-                       formData={chipValue.toString()}
-                       setData={setChipValue}
-                       name="chipValue"
-                       placeholder=''
-                       value={chipValue.toString()}
-                       errors={errors}/>
-
-            <View>
-                <Select selectedValue={chipColor} minWidth="200" accessibilityLabel="Escolha a cor."
-                        placeholder="Escolha a cor."
-                        size={"lg"}
-                        _selectedItem={{
-                            bg: chipColor,
-                            endIcon: <CheckIcon size="5"/>
-                        }}
-                        mt={1}
-                        onValueChange={itemValue => setChipColor(itemValue)}>
-                    {colors.map((color, i) => {
-                        return <Select.Item key={i} label={color.name} value={color.value}/>
-                    })}
-                </Select>
-            </View>
-            <VStack>
-                <Button onPress={addChip}>Adicionar</Button>
-            </VStack>
-            <Stack
-                flexWrap={"wrap"}
-                direction="row"
-                justifyContent={"center"}
-                space={3}>
-                {chips.map((chip, i) => {
-                    return (<CloseableCircle size="40px"
-                                             bg={chip.color}
-                                             shadow="9"
-                                             handleClose={(e) => handleClose(e, chip.value)}
-                                             key={i}>
-                        <Text color={"white"} bold borderColor={"black"}>{chip.value}</Text>
-                    </CloseableCircle>)
+    return <VStack space="5" minW={"250"} justifyContent='center' alignContent='center'>
+        <FormControl>
+            <FormControl.Label _text={{bold: true}}>Valor</FormControl.Label>
+            <Input
+                size={"2xl"}
+                keyboardType='numeric'
+                value={chipValue}
+                onChangeText={text => {
+                    setChipValue(onlyNumbers(text))
+                }}
+                maxLength={4}
+            />
+        </FormControl>
+        <FormControl>
+            <FormControl.Label _text={{bold: true}}>Cor</FormControl.Label>
+            <Select selectedValue={chipColor} minWidth="200" accessibilityLabel="Escolha a cor"
+                    isDisabled={chipValue === "" || chipValue === null || chipValue === undefined}
+                    placeholder="Escolha a cor"
+                    size={"2xl"}
+                    _selectedItem={{
+                        bg: chipColor,
+                        endIcon: <CheckIcon size="5"/>
+                    }}
+                    onValueChange={handleSelect}>
+                {colors.map((color, i) => {
+                    return <Select.Item key={i} label={color.name} value={color.value}/>
                 })}
-            </Stack>
-            <StepsButtonGroup setPage={setPage} pages={pages} currentPage={currentPage}/>
-        </VStack>
-    );
+            </Select>
+        </FormControl>
+        <Stack
+            flexWrap={"wrap"}
+            direction="row"
+            justifyContent={"center"}
+            space={3}>
+            {_chips.map((chip, i) => {
+                return (<CloseableCircle size="40px"
+                                         bg={chip.color}
+                                         shadow="9"
+                                         handleClose={(e) => handleClose(e, chip)}
+                                         key={i}>
+                    <Text color={"white"} bold borderColor={"black"}>{chip.value}</Text>
+                </CloseableCircle>)
+            })}
+        </Stack>
+        <StepsButtonGroup setPage={setPage}
+                          pages={pages}
+                          currentPage={currentPage}
+                          functions={[
+                              () => {
+                                    setFormState(_formState => ({..._formState, chips: [..._chips]}))
+                              },
+                          ]}/>
+    </VStack>;
 }
+
+export default Chips;

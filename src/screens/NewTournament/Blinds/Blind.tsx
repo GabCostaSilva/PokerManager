@@ -1,7 +1,8 @@
 import {Box, Button, FlatList, HStack, Text, Spacer, VStack, Flex, IconButton, Icon, Divider} from "native-base";
-import React from "react";
+import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {AntDesign} from "@expo/vector-icons";
 import StepsButtonGroup from "../../../components/StepsButtonGroup";
+import {TournamentState} from "../index";
 
 interface Blind {
     title: number,
@@ -12,15 +13,22 @@ interface Blind {
     pause: number
 }
 
-interface BlindProps {
-    page: any
+interface Props {
+    setPage: Dispatch<SetStateAction<number>>,
+    setFormState: (prop: string, value) => void,
+    formState: TournamentState,
+    currentPage: number,
+    pages: string[]
 }
 
-interface BlindProps {
-    pages: any
-}
+export function Blind({formState, currentPage, pages, setPage}: Props) {
+    const [blinds, setBlinds] = useState<Blind[]>([]);
 
-export function Blind({setPage, data, currentPage, pages}) {
+    useEffect(() => {
+        setBlinds(formState.blinds)
+    }, []);
+
+    // @ts-ignore
     return <Box>
         <Flex direction={"row-reverse"} justify={"end"}>
             <Button style={{
@@ -43,7 +51,7 @@ export function Blind({setPage, data, currentPage, pages}) {
                 <Text>Tempo</Text>
                 <Text>Editar</Text>
             </HStack>
-            <FlatList data={data}
+            <FlatList data={blinds}
                       renderItem={({item}) => <Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}}
                                                    borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
                           <VStack space={[2, 3]} justifyContent="space-between">
@@ -74,7 +82,7 @@ export function Blind({setPage, data, currentPage, pages}) {
                               <Spacer/>
                           </VStack>
                       </Box>}
-                      keyExtractor={item => item.title.toString()}
+                      keyExtractor={item => ((Math.random() + 1) * 100).toString() }
             />
             <StepsButtonGroup setPage={setPage}
                               currentPage={currentPage}

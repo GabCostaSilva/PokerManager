@@ -1,5 +1,8 @@
-import {Button, VStack, Text, FormControl, Input, HStack} from "native-base";
+import {Button, VStack, Text, FormControl, Input, HStack, Stack} from "native-base";
 import React, {useState} from "react";
+import CloseableCircle from "../../../components/CloseableCircle";
+import {onlyNumbers} from "../../../utils";
+import {NumericInput} from "../../../components/NumericInput";
 
 interface Blind {
     title: number,
@@ -23,45 +26,50 @@ const NewBlind = ({setPage, setFormState, formState}) => {
     return (<VStack space="md">
         <FormControl>
             <FormControl.Label _text={{bold: true}}>{"Número"}</FormControl.Label>
-            <Input
+            <NumericInput
                 onChangeText={(value) => {
-                    setBlind({...blind, title: Number.parseInt(value)})
+                    setBlind({...blind, title: onlyNumbers(value)})
                 }}
+                value={onlyNumbers(blind.title.toString()).toString()}
             />
         </FormControl>
         <FormControl>
             <FormControl.Label _text={{bold: true}}>{"Small"}</FormControl.Label>
-            <Input onChangeText={(value) => {
-                setBlind({...blind, small: Number.parseInt(value)})
-            }}
+            <NumericInput
+                onChangeText={(value) => {
+                    setBlind({...blind, small: onlyNumbers(value)})
+                }}
+                value={onlyNumbers(blind.small.toString()).toString()}
             />
         </FormControl>
         <FormControl>
             <FormControl.Label _text={{bold: true}}>{"Big"}</FormControl.Label>
-            <Input onChangeText={(value) => {
-                setBlind({...blind, big: Number.parseInt(value)})
-            }}
+            <NumericInput
+                onChangeText={(value) => {
+                    setBlind({...blind, big: onlyNumbers(value)})
+                }}
+                value={onlyNumbers(blind.big.toString()).toString()}
             />
         </FormControl>
         <FormControl>
             <FormControl.Label _text={{bold: true}}>{"Ante"}</FormControl.Label>
-            <Input onChangeText={(value) => {
-                setBlind({...blind, ante: Number.parseInt(value)})
-            }}
+            <NumericInput onChangeText={(value) => {
+                setBlind({...blind, ante: onlyNumbers(value)})
+            }} value={onlyNumbers(blind.ante.toString()).toString()}
             />
         </FormControl>
         <FormControl>
             <FormControl.Label _text={{bold: true}}>{"Tempo (em segundos)"}</FormControl.Label>
             <Input onChangeText={(value) => {
-                setBlind({...blind, time: Number.parseInt(value)})
-            }}
+                setBlind({...blind, time: onlyNumbers(value)})
+            }} value={onlyNumbers(blind.time.toString()).toString()}
             />
         </FormControl>
         <FormControl>
             <FormControl.Label _text={{bold: true}}>{"Tempo de Pausa (em minutos)"}</FormControl.Label>
             <Input onChangeText={(value) => {
-                setBlind({...blind, time: Number.parseInt(value)})
-            }}
+                setBlind({...blind, pause: onlyNumbers(value)})
+            }} value={onlyNumbers(blind.pause.toString()).toString()}
             />
         </FormControl>
 
