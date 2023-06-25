@@ -92,7 +92,7 @@ export function NewTournament({navigation}) {
         })
     }
 
-    async function onSubmit(props) {
+    async function onSubmit() {
         await saveTournament(JSON.stringify(formState), `${formState.name}.json`);
         navigation.navigate("Início", {
             message: "Torneio criado com sucesso!"

@@ -2,7 +2,7 @@ import {Button, HStack, Text} from "native-base";
 import React, {useEffect} from "react";
 
 interface StepsButtonGroupProps {
-    functions: (() => void)[],
+    functions?: (() => void)[],
     setPage: ((page) => void),
     currentPage: number,
     pages: String[]
