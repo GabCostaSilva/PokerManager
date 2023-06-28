@@ -39,7 +39,7 @@ const App = () => {
         return (
             <NavigationContainer ref={navigationRef}>
                 <NativeBaseProvider theme={theme}>
-                    {/*<Box safeAreaTop bg="primary.700"/>*/}
+                    <Box safeAreaTop bg="primary.400"/>
                     {!logged ? <Login setLogged={setLogged}/> :
                         <>
                                 <Drawer.Navigator initialRouteName={routeNames.home}>

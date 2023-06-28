@@ -1,6 +1,5 @@
-import {Button, VStack, Text, FormControl, Input, HStack, Stack} from "native-base";
+import {Button, FormControl, HStack, Text} from "native-base";
 import React, {useState} from "react";
-import CloseableCircle from "../../../components/CloseableCircle";
 import {onlyNumbers} from "../../../utils";
 import {NumericInput} from "../../../components/NumericInput";
 
@@ -23,7 +22,7 @@ const NewBlind = ({setPage, setFormState, formState}) => {
         pause: 0
     });
 
-    return (<VStack space="md">
+    return (<>
         <FormControl>
             <FormControl.Label _text={{bold: true}}>{"Número"}</FormControl.Label>
             <NumericInput
@@ -60,14 +59,14 @@ const NewBlind = ({setPage, setFormState, formState}) => {
         </FormControl>
         <FormControl>
             <FormControl.Label _text={{bold: true}}>{"Tempo (em segundos)"}</FormControl.Label>
-            <Input onChangeText={(value) => {
+            <NumericInput onChangeText={(value) => {
                 setBlind({...blind, time: onlyNumbers(value)})
             }} value={onlyNumbers(blind.time.toString()).toString()}
             />
         </FormControl>
         <FormControl>
             <FormControl.Label _text={{bold: true}}>{"Tempo de Pausa (em minutos)"}</FormControl.Label>
-            <Input onChangeText={(value) => {
+            <NumericInput onChangeText={(value) => {
                 setBlind({...blind, pause: onlyNumbers(value)})
             }} value={onlyNumbers(blind.pause.toString()).toString()}
             />
@@ -94,7 +93,7 @@ const NewBlind = ({setPage, setFormState, formState}) => {
                 </Text>
             </Button>
         </HStack>
-    </VStack>)
+    </>)
 }
 
 export default NewBlind

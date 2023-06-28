@@ -8,7 +8,7 @@ import {
     HStack,
     StatusBar,
     Text,
-    Box, Divider, Icon, VStack
+    Box, Divider, Icon, VStack, Button
 } from "native-base";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {Ionicons} from "@expo/vector-icons";
@@ -29,6 +29,19 @@ export function Home({route, navigation}) {
     }, []);
 
     return <VStack space={3} divider={<Divider/>} w="100%" p="4">
+        <HStack justifyContent="flex-end">
+            <Button
+                minW={100}
+                backgroundColor={"green.500"}
+                onPress={() => {
+                    navigation.navigate("Novo Torneio")
+                }}
+            >
+               <Text color={"white"} bold>
+                   Novo Torneio
+               </Text>
+            </Button>
+        </HStack>
         <HStack justifyContent="space-between">
             <Text bold>Nome</Text>
             <Text bold>Stack Inicial</Text>

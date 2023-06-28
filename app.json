@@ -16,7 +16,12 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.gabcozta.PokerManagerProto"
+      "bundleIdentifier": "com.gabcozta.PokerManagerProto",
+      "infoPlist": {
+        "UISupportsDocumentBrowser": true,
+        "UIFileSharingEnabled": true,
+        "LSSupportsOpeningDocumentsInPlace": true
+      }
     },
     "android": {
       "adaptiveIcon": {

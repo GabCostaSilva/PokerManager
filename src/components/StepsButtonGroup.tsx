@@ -19,23 +19,29 @@ const StepsButtonGroup = ({setPage, currentPage, pages, functions = []}: StepsBu
     }
 
     return (
-        <HStack justifyContent='center' space='md'>
+        <HStack justifyContent='center' space='2xl' mt={50}>
             <Button
                 variant="outline"
-                disabled={currentPage === 0}
-                onPress={() => setPage(currentPage => currentPage - 1)}>
+                isDisabled={currentPage === 0}
+                onPress={() => setPage(currentPage => currentPage - 1)}
+                minW={100}
+            >
+
                 <Text>
                     Voltar
                 </Text>
             </Button>
             {/* CURRENT PAGE === 3 IS A TEMP WORKAROUND*/}
             <Button
-                disabled={currentPage === pages.length - 1 || currentPage === 3}
-                onPress={() => nextPage()}>
+                isDisabled={currentPage === pages.length - 1}
+                onPress={() => nextPage()}
+                minW={100}
+            >
                 <Text color="white">
                     Próximo
                 </Text>
             </Button>
+
         </HStack>
     )
 }

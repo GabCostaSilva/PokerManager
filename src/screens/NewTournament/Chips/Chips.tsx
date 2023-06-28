@@ -49,7 +49,7 @@ function Chips({setPage, pages, currentPage, setFormState, formState}) {
         return text?.replace(/[^0-9]/g, '');
     }
 
-    return <VStack space="5" minW={"250"} justifyContent='center' alignContent='center'>
+    return <>
         <FormControl>
             <FormControl.Label _text={{bold: true}}>Valor</FormControl.Label>
             <Input
@@ -101,7 +101,7 @@ function Chips({setPage, pages, currentPage, setFormState, formState}) {
                                     setFormState(_formState => ({..._formState, chips: [..._chips]}))
                               },
                           ]}/>
-    </VStack>;
+    </>;
 }
 
 export default Chips;

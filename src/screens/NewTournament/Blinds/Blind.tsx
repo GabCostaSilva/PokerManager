@@ -29,14 +29,14 @@ export function Blind({formState, currentPage, pages, setPage}: Props) {
     }, []);
 
     // @ts-ignore
-    return <Box>
-        <Flex direction={"row-reverse"} justify={"end"}>
-            <Button style={{
-                backgroundColor: "green"
-            }}
-                    onPress={() => {
-                        setPage(4)
-                    }}>
+    return <>
+        <Flex direction={"row-reverse"} justify={"end"} w={"100%"}>
+            <Button
+                minW={100}
+                backgroundColor={"green.500"}
+                onPress={() => {
+                    setPage(4)
+                }}>
                 <Text color={"white"}>
                     Novo Blind
                 </Text>
@@ -82,11 +82,11 @@ export function Blind({formState, currentPage, pages, setPage}: Props) {
                               <Spacer/>
                           </VStack>
                       </Box>}
-                      keyExtractor={item => ((Math.random() + 1) * 100).toString() }
+                      keyExtractor={item => ((Math.random() + 1) * 100).toString()}
             />
             <StepsButtonGroup setPage={setPage}
                               currentPage={currentPage}
                               pages={pages}/>
         </VStack>
-    </Box>;
+    </>;
 }

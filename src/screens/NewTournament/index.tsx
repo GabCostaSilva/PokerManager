@@ -1,14 +1,25 @@
-import {Box, Button, Heading, HStack, Input, KeyboardAvoidingView, Text, VStack} from "native-base";
+import {
+    Box,
+    Button,
+    Center,
+    Container,
+    Flex,
+    Heading,
+    HStack,
+    Input,
+    KeyboardAvoidingView,
+    Text,
+    View,
+    VStack
+} from "native-base";
 import React, {useState} from "react";
-import {View} from "react-native";
 import {Blind} from "./Blinds/Blind";
 import NewBlind from "./Blinds/NewBlind";
 import Chips from "./Chips/Chips";
-import * as FileSystem from 'expo-file-system';
-import saveTournament from "../../actions/saveTournament";
 import StepsButtonGroup from "../../components/StepsButtonGroup";
-import {NumericInput} from "../../components/NumericInput";
 import {onlyNumbers} from "../../utils";
+import {BuyIn} from "./BuyIn";
+import {ShareCosts} from "./ShareCosts";
 
 interface Chip {
     value: number,
@@ -51,6 +62,16 @@ export interface TournamentState {
     players: Player[]
 }
 
+const MyTextInput = ({onChange, value, key, children}) => (
+    <VStack justifyContent={"center"} key={key}>
+        <Input size={"2xl"}
+               mb={5}
+               onChangeText={onChange}
+               value={value}
+        />
+        {children}
+    </VStack>
+)
 
 export function NewTournament({navigation}) {
     const [page, setPage] = useState(0);
@@ -75,17 +96,6 @@ export function NewTournament({navigation}) {
         "Jogadores"
     ]
 
-    const Steps = [{
-        1: "Nome do Torneio",
-        2: "Stack Inicial",
-        3: "Fichas",
-        4: "Blinds",
-        5: "Novo Blind",
-        6: "Buy In",
-        7: "Resenha",
-        8: "Jogadores"
-    }]
-
     function handleChange(prop: string, value: any) {
         setFormState((prevState) => {
             return {...prevState, [prop]: value}
@@ -93,7 +103,8 @@ export function NewTournament({navigation}) {
     }
 
     async function onSubmit() {
-        await saveTournament(JSON.stringify(formState), `${formState.name}.json`);
+        // await saveTournament(JSON.stringify(formState), `${formState.name}.json`);
+        setPage(0)
         navigation.navigate("Início", {
             message: "Torneio criado com sucesso!"
         })
@@ -102,22 +113,9 @@ export function NewTournament({navigation}) {
     const PageDisplay = () => {
         switch (page) {
             case 0:
-                return <VStack justifyContent={"center"}>
-                    <NumericInput size={"2xl"}
-                                  mb={5}
-                                  keyboardType='numeric'
-                                  onChangeText={text => {
-                                      handleChange("name", text)
-                                  }}
-                                  value={formState.name}
-                    />
+                return <MyTextInput key={"dfsf"} onChange={text => handleChange("name", text)} value={formState.name}>
                     <StepsButtonGroup setPage={setPage} currentPage={page} pages={FormTitles}/>
-                    <Input onChangeText={(text) => {
-                        setState(prevState => ({...prevState, name: text}))
-                    }}
-                           value={state.stuff}
-                    />
-                </VStack>
+                </MyTextInput>
             case 1:
                 return <VStack justifyContent={"center"}>
                     <Input size={"2xl"}
@@ -137,48 +135,82 @@ export function NewTournament({navigation}) {
                               pages={FormTitles}
                 />
             case 3:
-                return <Blind setPage={(page) => setPage}
+                return <Blind setPage={setPage}
                               formState={formState}
                               setFormState={handleChange}
                               currentPage={page}
                               pages={FormTitles}/>
             case 4:
                 return <NewBlind setPage={setPage} formState={formState} setFormState={setFormState}/>
+            case 5:
+                return <BuyIn>
+                    <StepsButtonGroup setPage={setPage} currentPage={page} pages={FormTitles}/>
+                </BuyIn>
+            case 6:
+                return <ShareCosts setFormState={setFormState}>
+                    <StepsButtonGroup setPage={setPage} currentPage={page} pages={FormTitles}/>
+                </ShareCosts>
+            case 7:
+                return <StepsButtonGroup setPage={setPage} currentPage={page} pages={FormTitles}/>
+            default:
+                navigation.navigate("Início")
         }
     }
 
     const FormContainer = ({children}) => {
-        return <Box safeArea maxW="290" justifyContent={"center"} ml={50}>{children}</Box>
+        return <Box safeArea maxW="290" justifyContent={"center"} ml={70}>{children}</Box>
     }
 
     return (
-        <KeyboardAvoidingView>
-            <View>
+        <View>
+            <View w={"100%"}>
                 <Heading fontSize="xl" p="4" pb="3">
                     {FormTitles[page]}
                 </Heading>
             </View>
 
             {/* body */}
-            <FormContainer>
+            {/*<FormContainer>*/}
+            {/*<VStack space="5" minW={"250"} maxW={"290"} justifyContent='center' alignContent='center' ml={60}>*/}
+            <Flex flexGrow={1} alignItems={"center"} justifyContent={"center"} pl={10} pr={10}>
                 {PageDisplay()}
-            </FormContainer>
-            {page >= FormTitles.length - 1 ?
-                <HStack justifyContent='center' space='md'>
+            </Flex>
+            {/*</VStack>*/}
+            {/*</FormContainer>*/}
+
+            {page === FormTitles.length - 1 ?
+                <HStack justifyContent='center' space='2xl'>
                     <Button
                         variant="outline"
-                        onPress={() => onSubmit()}>
-                        <Text>
-                            Iniciar
+                        minW={100}
+                        bgColor={"red.500"}
+                        onPress={() => {
+                            let initialState = new class implements TournamentState {
+                                blinds: Blind[];
+                                buyIn: BuyIn[];
+                                chips: Chip[];
+                                initialStack: number;
+                                name: string;
+                                players: Player[];
+                                shareCosts: boolean;
+                            };
+                            setFormState((prevState) => initialState)
+                        }}
+                    >
+                        <Text color={"white"}>
+                            Cancelar
                         </Text>
                     </Button>
                     <Button
-                        onPress={() => setPage(currentPage => currentPage === 3 ? currentPage + 2 : currentPage + 1)}>
-                        <Text color="white">
-                            Cancelar
+                        onPress={() => onSubmit()}
+                        minW={100}
+                        backgroundColor={"green.500"}
+                    >
+                        <Text color="white" bold>
+                            Iniciar
                         </Text>
                     </Button>
                 </HStack>
                 : <></>}
-        </KeyboardAvoidingView>);
+        </View>);
 }
