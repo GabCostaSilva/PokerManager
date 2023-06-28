@@ -4,7 +4,7 @@ import {AntDesign} from "@expo/vector-icons";
 import StepsButtonGroup from "../../../components/StepsButtonGroup";
 import {TournamentState} from "../index";
 
-interface Blind {
+interface BlindsList {
     title: number,
     small: number,
     big: number,
@@ -22,7 +22,7 @@ interface Props {
 }
 
 export function Blind({formState, currentPage, pages, setPage}: Props) {
-    const [blinds, setBlinds] = useState<Blind[]>([]);
+    const [blinds, setBlinds] = useState<BlindsList[]>([]);
 
     useEffect(() => {
         setBlinds(formState.blinds)

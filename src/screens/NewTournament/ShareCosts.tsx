@@ -10,13 +10,13 @@ export const ShareCosts = ({setFormState, children}) => {
     };
 
     return <>
-        <Flex direction={"row"} justifyContent={"space-around"} alignItems={"center"} w={"100%"}>
+        <Flex direction={"row"}  alignItems={"center"} justifyContent={"center"} w={"100%"}>
             <Checkbox value="Dividir custos de resenha?"
                       accessibilityLabel="Dividir custos de resenha?"
                       onChange={onChange}
                       size={"lg"}
             />
-            <Text fontSize={20}>Dividir custos de resenha?</Text>
+            <Text fontSize={20} ml={5}>Dividir custos de resenha?</Text>
         </Flex>
         {children}
     </>;

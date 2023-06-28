@@ -13,13 +13,14 @@ import {
     VStack
 } from "native-base";
 import React, {useState} from "react";
-import {Blind} from "./Blinds/Blind";
+import {Blind} from "./Blinds/BlindsList";
 import NewBlind from "./Blinds/NewBlind";
 import Chips from "./Chips/Chips";
 import StepsButtonGroup from "../../components/StepsButtonGroup";
 import {onlyNumbers} from "../../utils";
 import {BuyIn} from "./BuyIn";
 import {ShareCosts} from "./ShareCosts";
+import {PlayersList} from "./Players/PlayersList";
 
 interface Chip {
     value: number,
@@ -40,7 +41,7 @@ interface BuyIn {
     currency: string
 }
 
-interface Player {
+export interface Player {
     name: string,
     phoneNumber: string,
     email: string,
@@ -62,15 +63,15 @@ export interface TournamentState {
     players: Player[]
 }
 
-const MyTextInput = ({onChange, value, key, children}) => (
-    <VStack justifyContent={"center"} key={key}>
+const MyTextInput = ({onChange, value, children}) => (
+    <>
         <Input size={"2xl"}
                mb={5}
                onChangeText={onChange}
                value={value}
         />
         {children}
-    </VStack>
+    </>
 )
 
 export function NewTournament({navigation}) {
@@ -113,11 +114,11 @@ export function NewTournament({navigation}) {
     const PageDisplay = () => {
         switch (page) {
             case 0:
-                return <MyTextInput key={"dfsf"} onChange={text => handleChange("name", text)} value={formState.name}>
+                return <MyTextInput onChange={text => handleChange("name", text)} value={formState.name}>
                     <StepsButtonGroup setPage={setPage} currentPage={page} pages={FormTitles}/>
                 </MyTextInput>
             case 1:
-                return <VStack justifyContent={"center"}>
+                return <>
                     <Input size={"2xl"}
                            mb={5}
                            placeholder={"0"}
@@ -126,7 +127,7 @@ export function NewTournament({navigation}) {
                            onChangeText={text => handleChange("initialStack", onlyNumbers(text))}
                     />
                     <StepsButtonGroup setPage={setPage} currentPage={page} pages={FormTitles}/>
-                </VStack>
+                </  >
             case 2:
                 return <Chips formState={formState}
                               setFormState={setFormState}
@@ -151,32 +152,25 @@ export function NewTournament({navigation}) {
                     <StepsButtonGroup setPage={setPage} currentPage={page} pages={FormTitles}/>
                 </ShareCosts>
             case 7:
-                return <StepsButtonGroup setPage={setPage} currentPage={page} pages={FormTitles}/>
+                return <PlayersList setFormState={setFormState} formState={formState}>
+                    <StepsButtonGroup setPage={setPage} currentPage={page} pages={FormTitles}/>
+                </PlayersList>
             default:
                 navigation.navigate("Início")
         }
     }
 
-    const FormContainer = ({children}) => {
-        return <Box safeArea maxW="290" justifyContent={"center"} ml={70}>{children}</Box>
-    }
-
     return (
         <View>
-            <View w={"100%"}>
-                <Heading fontSize="xl" p="4" pb="3">
-                    {FormTitles[page]}
-                </Heading>
-            </View>
 
-            {/* body */}
-            {/*<FormContainer>*/}
-            {/*<VStack space="5" minW={"250"} maxW={"290"} justifyContent='center' alignContent='center' ml={60}>*/}
             <Flex flexGrow={1} alignItems={"center"} justifyContent={"center"} pl={10} pr={10}>
+                <View w={"100%"}  alignItems={"center"} justifyContent={"center"}>
+                    <Heading fontSize="xl" p="8" pb="6">
+                        {FormTitles[page]}
+                    </Heading>
+                </View>
                 {PageDisplay()}
             </Flex>
-            {/*</VStack>*/}
-            {/*</FormContainer>*/}
 
             {page === FormTitles.length - 1 ?
                 <HStack justifyContent='center' space='2xl'>
