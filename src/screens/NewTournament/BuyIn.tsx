@@ -4,6 +4,7 @@ import {onlyNumbers} from "../../utils";
 import React, {ReactElement, useState} from "react";
 import StepsButtonGroup from "../../components/StepsButtonGroup";
 import colors from "./Chips/colors";
+import {TournamentState} from "./index";
 
 
 const CURRENCIES = [
@@ -12,10 +13,11 @@ const CURRENCIES = [
 ]
 
 interface BuyInProps {
-    children: ReactElement
+    children: ReactElement,
+    setFormState: (value: (((prevState: TournamentState) => TournamentState) | TournamentState)) => void
 }
 
-export const BuyIn = ({children}: BuyInProps) => {
+export const BuyIn = ({setFormState, children}: BuyInProps) => {
     const [state, setState] = useState({
         value: 0,
         currency: "R$"
@@ -23,6 +25,7 @@ export const BuyIn = ({children}: BuyInProps) => {
 
     function onChange(prop, value) {
         setState(prevState => ({...prevState, [prop]: value}))
+        setFormState(prevState => ({...prevState, buyIn: state}))
     }
 
     return (<>

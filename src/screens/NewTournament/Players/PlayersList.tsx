@@ -60,6 +60,7 @@ export const PlayersList = ({formState, setFormState, children}) => {
             </Flex>
             <FlatList data={data}
                       w={"100%"}
+                      mb={5}
                       renderItem={({item}) => (
                           <Box borderBottomWidth="1"
                                _dark={{borderColor: "muted.50"}}

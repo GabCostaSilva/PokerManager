@@ -1,31 +1,27 @@
-import {
-    Center,
-    List,
-    Container,
-    FlatList,
-    Flex,
-    Heading,
-    HStack,
-    StatusBar,
-    Text,
-    Box, Divider, Icon, VStack, Button
-} from "native-base";
-import {useSafeAreaInsets} from "react-native-safe-area-context";
-import {Ionicons} from "@expo/vector-icons";
-import React, {useEffect} from "react";
+import {Button, Divider, Heading, HStack, Text, VStack} from "native-base";
+import React, {useEffect, useState} from "react";
+import listTourneys from "../../actions/listTourneys";
 
-const data = [{
-    id: "",
-    total: 1239.67
-}]
+
+interface TourneyForListing {
+    initialStack: number;
+    name: string
+}
 
 export function Home({route, navigation}) {
-    const insets = useSafeAreaInsets();
+
+    const [tourneys, setTourneys] = useState<TourneyForListing[]>([]);
 
     useEffect(() => {
         const params = route ? route.params : null
-        if (params)
+        if (params) {
             alert(params.message)
+        }
+
+        (async () => {
+            const response = await listTourneys();
+            setTourneys(response)
+        })()
     }, []);
 
     return <VStack space={3} divider={<Divider/>} w="100%" p="4">
@@ -37,9 +33,9 @@ export function Home({route, navigation}) {
                     navigation.navigate("Novo Torneio")
                 }}
             >
-               <Text color={"white"} bold>
-                   Novo Torneio
-               </Text>
+                <Text color={"white"} bold>
+                    Novo Torneio
+                </Text>
             </Button>
         </HStack>
         <HStack justifyContent="space-between">
@@ -48,24 +44,14 @@ export function Home({route, navigation}) {
             <Text bold>Jogadores</Text>
             <Text bold>Data</Text>
         </HStack>
-        <HStack justifyContent="space-between">
-            <Text>Torneio 1</Text>
-            <Text>500</Text>
-            <Text>7</Text>
-            <Text>22/04/23</Text>
-        </HStack>
-        <HStack justifyContent="space-between">
-            <Text>Torneio 2</Text>
-            <Text>600</Text>
-            <Text>10</Text>
-            <Text>22/04/23</Text>
-        </HStack>
-        <HStack justifyContent="space-between">
-            <Text>Torneio 3</Text>
-            <Text>900</Text>
-            <Text>15</Text>
-            <Text>22/04/23</Text>
-        </HStack>
+        {tourneys && tourneys.length > 0 ? tourneys.map((tourney) => (
+            <HStack justifyContent="space-between" key={Math.floor(Math.random() * 10000)}>
+                <Text>{tourney.name}</Text>
+                <Text>{tourney.initialStack}</Text>
+                <Text>12</Text>
+                <Text>22/04/23</Text>
+            </HStack>)) : <Heading>Carregando...</Heading>}
+
     </VStack>
 
 }

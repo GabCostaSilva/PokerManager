@@ -17,7 +17,7 @@ export const NewPlayer = ({formState, setFormState, setIsNewPlayer}) => {
         bank: "",
         bankAgency: "",
         bankAccountNumber: "",
-        picPay: false
+        picPay: ""
     };
     const [player, setPlayer] = useState<Player>(initialState);
 
@@ -98,7 +98,7 @@ export const NewPlayer = ({formState, setFormState, setIsNewPlayer}) => {
             />
         </FormControl>
 
-        <FormControl>
+        <FormControl mb={5}>
             <FormControl.Label _text={{bold: true}}>{"PicPay"}</FormControl.Label>
             <NumericInput onChangeText={(value) => {
                 setPlayer({...player, picPay: value})
@@ -106,7 +106,7 @@ export const NewPlayer = ({formState, setFormState, setIsNewPlayer}) => {
             />
         </FormControl>
 
-        <HStack justifyContent='center' space='md'>
+        <HStack justifyContent='center' space='md' mb={5}>
             <Button
                 variant="outline"
                 onPress={() => {

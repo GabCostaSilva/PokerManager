@@ -21,6 +21,7 @@ import {onlyNumbers} from "../../utils";
 import {BuyIn} from "./BuyIn";
 import {ShareCosts} from "./ShareCosts";
 import {PlayersList} from "./Players/PlayersList";
+import saveTournament from "../../actions/saveTournament";
 
 interface Chip {
     value: number,
@@ -50,7 +51,7 @@ export interface Player {
     bank: string,
     bankAgency: string,
     bankAccountNumber: string,
-    picPay: boolean
+    picPay: string
 }
 
 export interface TournamentState {
@@ -58,7 +59,7 @@ export interface TournamentState {
     initialStack: number,
     chips: Chip[],
     blinds: Blind[],
-    buyIn: BuyIn[],
+    buyIn: BuyIn,
     shareCosts: boolean,
     players: Player[]
 }
@@ -82,7 +83,10 @@ export function NewTournament({navigation}) {
         initialStack: 0,
         chips: [],
         blinds: [],
-        buyIn: [],
+        buyIn: {
+            value: 0,
+            currency: "R$"
+        },
         shareCosts: false,
         players: []
     });
@@ -104,7 +108,8 @@ export function NewTournament({navigation}) {
     }
 
     async function onSubmit() {
-        // await saveTournament(JSON.stringify(formState), `${formState.name}.json`);
+        await saveTournament(formState);
+
         setPage(0)
         navigation.navigate("Início", {
             message: "Torneio criado com sucesso!"
@@ -129,8 +134,7 @@ export function NewTournament({navigation}) {
                     <StepsButtonGroup setPage={setPage} currentPage={page} pages={FormTitles}/>
                 </  >
             case 2:
-                return <Chips formState={formState}
-                              setFormState={setFormState}
+                return <Chips setFormState={setFormState}
                               setPage={setPage}
                               currentPage={page}
                               pages={FormTitles}
@@ -144,7 +148,7 @@ export function NewTournament({navigation}) {
             case 4:
                 return <NewBlind setPage={setPage} formState={formState} setFormState={setFormState}/>
             case 5:
-                return <BuyIn>
+                return <BuyIn setFormState={setFormState}>
                     <StepsButtonGroup setPage={setPage} currentPage={page} pages={FormTitles}/>
                 </BuyIn>
             case 6:
@@ -164,7 +168,7 @@ export function NewTournament({navigation}) {
         <View>
 
             <Flex flexGrow={1} alignItems={"center"} justifyContent={"center"} pl={10} pr={10}>
-                <View w={"100%"}  alignItems={"center"} justifyContent={"center"}>
+                <View w={"100%"} alignItems={"center"} justifyContent={"center"}>
                     <Heading fontSize="xl" p="8" pb="6">
                         {FormTitles[page]}
                     </Heading>
@@ -181,7 +185,7 @@ export function NewTournament({navigation}) {
                         onPress={() => {
                             let initialState = new class implements TournamentState {
                                 blinds: Blind[];
-                                buyIn: BuyIn[];
+                                buyIn: BuyIn;
                                 chips: Chip[];
                                 initialStack: number;
                                 name: string;

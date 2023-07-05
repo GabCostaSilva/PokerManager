@@ -9,7 +9,7 @@ interface Chip {
     value: string
 }
 
-function Chips({setPage, pages, currentPage, setFormState, formState}) {
+function Chips({setPage, pages, currentPage, setFormState}) {
     const [_chips, set_chips] = useState<Chip[]>([]);
 
     const [chipColor, setChipColor] = useState("");

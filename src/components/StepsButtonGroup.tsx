@@ -19,7 +19,7 @@ const StepsButtonGroup = ({setPage, currentPage, pages, functions = []}: StepsBu
     }
 
     return (
-        <HStack justifyContent='center' space='2xl' mt={50}>
+        <HStack justifyContent='center' space='2xl' mb={5}>
             <Button
                 variant="outline"
                 isDisabled={currentPage === 0}
