@@ -4,7 +4,7 @@ export default async () => {
         if (response.ok) {
             return response.json();
         } else {
-            console.error("Response", response)
+            console.error("Response", response.status)
             throw new Error("Algo deu errado ao carregar torneios. Tente daqui alguns instantes.")
         }
     } catch (error) {

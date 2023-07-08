@@ -30,7 +30,7 @@ export function Blind({formState, currentPage, pages, setPage}: Props) {
 
     // @ts-ignore
     return <>
-        <Flex direction={"row-reverse"} justify={"end"} w={"100%"}>
+        <Flex direction={"row-reverse"} justify={"flex-end"} w={"100%"}>
             <Button
                 minW={100}
                 backgroundColor={"green.500"}

@@ -46,7 +46,7 @@ export const PlayersList = ({formState, setFormState, children}) => {
         return <NewPlayer formState={formState} setFormState={setFormState} setIsNewPlayer={setIsNewPlayer}/>
     else
         return <>
-            <Flex direction={"row-reverse"} justify={"end"} w={"100%"}>
+            <Flex direction={"row-reverse"} justify={"flex-end"} w={"100%"}>
                 <Button
                     minW={100}
                     backgroundColor={"green.500"}
