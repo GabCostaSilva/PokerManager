@@ -6,10 +6,12 @@ import Login from "./src/screens/Login";
 import {Home} from "./src/screens/Home";
 import {NewTournament} from "./src/screens/NewTournament";
 import {createDrawerNavigator} from "@react-navigation/drawer";
+import {EditTourney} from "./src/screens/EditTourney";
 
 const routeNames = {
     home: "Início",
-    new_tournament: "Novo Torneio"
+    new_tournament: "Novo Torneio",
+    edit_tourney: "Editar Torneio"
 }
 
 const newColorTheme = {
@@ -45,6 +47,7 @@ const App = () => {
                                 <Drawer.Navigator initialRouteName={routeNames.home}>
                                     <Drawer.Screen name={routeNames.home} component={Home}/>
                                     <Drawer.Screen name={routeNames.new_tournament} component={NewTournament}/>
+                                    <Drawer.Screen name={routeNames.edit_tourney} component={EditTourney}/>
                                 </Drawer.Navigator>
                         </>}
                 </NativeBaseProvider>

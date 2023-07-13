@@ -28,6 +28,7 @@ interface TourneyForListing {
 export function Home({route, navigation}) {
     const [tourneys, setTourneys] = useState<TourneyForListing[]>([]);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [selectedTourney, setSelectedTourney] = useState<TourneyForListing>(null);
     const initialRef = React.useRef(null);
     const finalRef = React.useRef(null);
 
@@ -102,7 +103,15 @@ export function Home({route, navigation}) {
                             >
                                 Clonar
                             </Button>
-                            <Button rightIcon={<Icon as={<AntDesign name="edit"/>} name="editTourney"/>}>
+                            <Button rightIcon={<Icon as={<AntDesign name="edit"/>} name="editTourney"/>}
+                                    onPress={() => {
+                                        navigation.navigate("Editar Torneio", {
+                                            tourney: {
+                                                uuid: selectedTourney.uuid
+                                            }
+                                        })
+                                    }}
+                            >
                                 Editar
                             </Button>
                         </Button.Group>
@@ -112,6 +121,7 @@ export function Home({route, navigation}) {
         </Modal>
         {tourneys && tourneys.length > 0 ? tourneys.map((tourney) => (
                 <Pressable key={tourney.uuid} onLongPress={() => {
+                    setSelectedTourney(tourney)
                     setModalVisible(true)
                 }}>
                     {({isPressed, isFocused, isHovered}) => (
