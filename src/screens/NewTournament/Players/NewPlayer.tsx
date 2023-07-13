@@ -1,4 +1,4 @@
-import {Button, FormControl, Heading, HStack, Text} from "native-base";
+import {Button, FormControl, Heading, HStack, ScrollView, Text} from "native-base";
 import {NumericInput} from "../../../components/NumericInput";
 import React, {useState} from "react";
 import {Player} from "../index";
@@ -26,7 +26,7 @@ export const NewPlayer = ({formState, setFormState, setIsNewPlayer}) => {
         setPlayer(initialState)
     }
 
-    return (<>
+    return (<ScrollView>
         <Heading>Novo Jogador</Heading>
         <FormControl>
             <FormControl.Label _text={{bold: true}}>{"Nome"}</FormControl.Label>
@@ -127,5 +127,5 @@ export const NewPlayer = ({formState, setFormState, setIsNewPlayer}) => {
                 </Text>
             </Button>
         </HStack>
-    </>);
+    </ScrollView>);
 };

@@ -14,7 +14,7 @@ const SignUpForm = ({setLogged}: SignUpFormProps): JSX.Element => {
 
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <FontAwesome.Button name="google" backgroundColor="#3b5998" onPress={loginWithFacebook}>
+                <FontAwesome.Button name="google" backgroundColor="#3b5998" onPress={loginWithFacebook} size={32}>
                     Acesse com o Google
                 </FontAwesome.Button>
         </View>
