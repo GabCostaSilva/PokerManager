@@ -5,7 +5,7 @@ import {routes} from "../routes";
 
 export const EditTourney = ({route, navigation}) => {
     const [_tourney, setTourney] = useState(null);
-    const {tourney} = route.params
+    const tourney = route.params?.tourney || {uuid: ""}
 
     useEffect(() => {
         return () => {

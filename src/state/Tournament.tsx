@@ -1,4 +1,6 @@
 import {create} from 'zustand'
+import omit from 'lodash-es/omit'
+import getTourney from "../actions/getTourney";
 
 interface Chip {
     value: number,
@@ -32,21 +34,34 @@ interface Player {
 }
 
 interface TournamentState {
-    name: string,
-    initialStack: number,
-    chips: Chip[],
-    blinds: Blind[],
-    buyIn: BuyIn[],
-    shareCosts: boolean,
-    players: Player[]
+    patchTourney: (prop: string, value: any) => void,
+    tourney: {
+        name: string,
+        initialStack: number,
+        chips: Chip[],
+        blinds: Blind[],
+        buyIn: BuyIn[],
+        shareCosts: boolean,
+        players: Player[]
+    }
 }
 
-const tournamentStore = create<TournamentState>()(set => ({
-    name: '',
-    initialStack: 0,
-    chips: [],
-    blinds: [],
-    buyIn: [],
-    shareCosts: false,
-    players: []
+export const useTourneyStore = create<TournamentState>()(set => ({
+    tourney: {
+        name: '',
+        initialStack: 0,
+        chips: [],
+        blinds: [],
+        buyIn: [],
+        shareCosts: false,
+        players: []
+    },
+    loadTourney: async (uuid) => {
+        let tourney = await getTourney(uuid);
+        set({tourney})
+    },
+    patchTourney: (prop, value) =>
+        set((state) => ({tourney: {...state.tourney, [prop]: value}})),
+    clearTourney: () => set((state) => omit(state, ['tourney'], true))
 }))
+

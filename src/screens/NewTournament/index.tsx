@@ -23,7 +23,9 @@ import {ShareCosts} from "./ShareCosts";
 import {PlayersList} from "./Players/PlayersList";
 import saveTournament from "../../actions/saveTournament";
 import {routes} from "../../routes";
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {EditTourney} from "../EditTourney";
+import {useTourneyStore} from "../../state/Tournament";
 
 interface Chip {
     value: number,
@@ -78,9 +80,93 @@ const MyTextInput = ({onChange, value, children}) => (
 )
 
 const Stack = createNativeStackNavigator();
+const FormsContainer = ({onPressNextPage, children}) => {
+    return <Center mt={12}>
+        <Container alignItems={'center'}>
+            {children}
+        </Container>
+        <Button
+            onPress={onPressNextPage}
+            minW={100}>
+            <Text color="white">
+                Próximo
+            </Text>
+        </Button>
+    </Center>
+}
+
+function TourneyName({navigation, route}) {
+    let {name} = useTourneyStore(state => state.tourney);
+    let patchTourney = useTourneyStore(state => state.patchTourney);
+
+    function onPress() {
+        navigation.navigate(routes.tournament, {screen: "Stack Inicial"});
+    }
+
+    return <FormsContainer onPressNextPage={onPress}>
+        <MyTextInput onChange={(text) => {
+            patchTourney("name", text)
+        }}
+                     value={name}>
+        </MyTextInput>
+    </FormsContainer>
+}
+
+function InitialStack(props: {
+    formState: TournamentState,
+    onChangeText: (text) => void,
+    page: (value: unknown) => void,
+    currentPage: number,
+    pages: string[]
+}) {
+    return <>
+        <Input size={"2xl"}
+               mb={5}
+               placeholder={"0"}
+               keyboardType="numeric"
+               value={props.formState.initialStack.toString()}
+               onChangeText={props.onChangeText}
+        />
+        <StepsButtonGroup setPage={props.page} currentPage={props.currentPage} pages={props.pages}/>
+    </  >;
+}
+
+function BuyInWithButtons(props: {
+    formState: (value: (((prevState: TournamentState) => TournamentState) | TournamentState)) => void,
+    page: (value: unknown) => void,
+    currentPage: number,
+    pages: string[]
+}) {
+    return <BuyIn setFormState={props.formState}>
+        <StepsButtonGroup setPage={props.page} currentPage={props.currentPage} pages={props.pages}/>
+    </BuyIn>;
+}
+
+function ShareCostsWithButtons(props: {
+    formState: (value: (((prevState: TournamentState) => TournamentState) | TournamentState)) => void,
+    page: (value: unknown) => void,
+    currentPage: number,
+    pages: string[]
+}) {
+    return <ShareCosts setFormState={props.formState}>
+        <StepsButtonGroup setPage={props.page} currentPage={props.currentPage} pages={props.pages}/>
+    </ShareCosts>;
+}
+
+function Players(props: {
+    formState: (value: (((prevState: TournamentState) => TournamentState) | TournamentState)) => void,
+    formState1: TournamentState,
+    page: (value: unknown) => void,
+    currentPage: number,
+    pages: string[]
+}) {
+    return <PlayersList setFormState={props.formState} formState={props.formState1}>
+        <StepsButtonGroup setPage={props.page} currentPage={props.currentPage} pages={props.pages}/>
+    </PlayersList>;
+}
 
 export function NewTournament({navigation, route}) {
-    const {currentPage} = route.params
+    const currentPage = route.params?.currentPage || 0
     const [page, setPage] = useState(currentPage || 0);
 
 
@@ -124,21 +210,12 @@ export function NewTournament({navigation, route}) {
 
     const PageDisplay = () => {
         switch (page) {
-            case 0:
-                return <MyTextInput onChange={text => handleChange("name", text)} value={formState.name}>
-                    <StepsButtonGroup setPage={setPage} currentPage={page} pages={FormTitles}/>
-                </MyTextInput>
             case 1:
-                return <>
-                    <Input size={"2xl"}
-                           mb={5}
-                           placeholder={"0"}
-                           keyboardType='numeric'
-                           value={formState.initialStack.toString()}
-                           onChangeText={text => handleChange("initialStack", onlyNumbers(text))}
-                    />
-                    <StepsButtonGroup setPage={setPage} currentPage={page} pages={FormTitles}/>
-                </  >
+                return <InitialStack formState={formState}
+                                     onChangeText={text => handleChange("initialStack", onlyNumbers(text))}
+                                     page={setPage}
+                                     currentPage={page}
+                                     pages={FormTitles}/>
             case 2:
                 return <Chips setFormState={setFormState}
                               setPage={setPage}
@@ -154,23 +231,29 @@ export function NewTournament({navigation, route}) {
             case 4:
                 return <NewBlind setPage={setPage} formState={formState} setFormState={setFormState}/>
             case 5:
-                return <BuyIn setFormState={setFormState}>
-                    <StepsButtonGroup setPage={setPage} currentPage={page} pages={FormTitles}/>
-                </BuyIn>
+                return <BuyInWithButtons formState={setFormState} page={setPage} currentPage={page} pages={FormTitles}/>
             case 6:
-                return <ShareCosts setFormState={setFormState}>
-                    <StepsButtonGroup setPage={setPage} currentPage={page} pages={FormTitles}/>
-                </ShareCosts>
+                return <ShareCostsWithButtons formState={setFormState} page={setPage} currentPage={page}
+                                              pages={FormTitles}/>
             case 7:
-                return <PlayersList setFormState={setFormState} formState={formState}>
-                    <StepsButtonGroup setPage={setPage} currentPage={page} pages={FormTitles}/>
-                </PlayersList>
+                return <Players formState={setFormState} formState1={formState} page={setPage} currentPage={page}
+                                pages={FormTitles}/>
             default:
                 navigation.navigate(routes.home)
         }
     }
 
     return (<Stack.Navigator>
+
+            <Stack.Screen name={"Nome do Torneio"}
+                          component={TourneyName}
+            />
+            <Stack.Screen name={"Stack Inicial"}
+                          component={TourneyName}
+            />
+
+            {/*<Stack.Screen name={'Fichas'}*/}
+            {/*              component={EditTourney}/>*/}
 
         </Stack.Navigator>
     );
