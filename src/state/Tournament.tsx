@@ -34,6 +34,8 @@ interface Player {
 }
 
 interface TournamentState {
+    clearTourney: () => void,
+    loadTourney: (uuid: string) => any,
     patchTourney: (prop: string, value: any) => void,
     tourney: {
         name: string,

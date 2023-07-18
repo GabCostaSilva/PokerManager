@@ -1,29 +1,12 @@
-import {
-    Box,
-    Button,
-    Center,
-    Container,
-    Flex,
-    Heading,
-    HStack,
-    Input,
-    KeyboardAvoidingView,
-    Text,
-    View,
-    VStack
-} from "native-base";
+import {Button, Center, Container, Input, Text} from "native-base";
 import React, {useState} from "react";
 import {Blind} from "./Blinds/BlindsList";
-import NewBlind from "./Blinds/NewBlind";
-import Chips from "./Chips/Chips";
 import StepsButtonGroup from "../../components/StepsButtonGroup";
-import {onlyNumbers} from "../../utils";
 import {BuyIn} from "./BuyIn";
 import {ShareCosts} from "./ShareCosts";
 import {PlayersList} from "./Players/PlayersList";
 import saveTournament from "../../actions/saveTournament";
 import {routes} from "../../routes";
-import {EditTourney} from "../EditTourney";
 import {useTourneyStore} from "../../state/Tournament";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 
@@ -183,15 +166,7 @@ export function NewTournament({navigation, route}) {
         players: []
     });
 
-    const FormTitles = ["Nome do Torneio",
-        "Stack Inicial",
-        "Fichas",
-        "Blinds",
-        "Novo Blind",
-        "Buy In",
-        "Resenha",
-        "Jogadores"
-    ]
+
 
     function handleChange(prop: string, value: any) {
         setFormState((prevState) => {
@@ -208,43 +183,42 @@ export function NewTournament({navigation, route}) {
         })
     }
 
-    const PageDisplay = () => {
-        switch (page) {
-            case 1:
-                return <InitialStack formState={formState}
-                                     onChangeText={text => handleChange("initialStack", onlyNumbers(text))}
-                                     page={setPage}
-                                     currentPage={page}
-                                     pages={FormTitles}/>
-            case 2:
-                return <Chips setFormState={setFormState}
-                              setPage={setPage}
-                              currentPage={page}
-                              pages={FormTitles}
-                />
-            case 3:
-                return <Blind setPage={setPage}
-                              formState={formState}
-                              setFormState={handleChange}
-                              currentPage={page}
-                              pages={FormTitles}/>
-            case 4:
-                return <NewBlind setPage={setPage} formState={formState} setFormState={setFormState}/>
-            case 5:
-                return <BuyInWithButtons formState={setFormState} page={setPage} currentPage={page} pages={FormTitles}/>
-            case 6:
-                return <ShareCostsWithButtons formState={setFormState} page={setPage} currentPage={page}
-                                              pages={FormTitles}/>
-            case 7:
-                return <Players formState={setFormState} formState1={formState} page={setPage} currentPage={page}
-                                pages={FormTitles}/>
-            default:
-                navigation.navigate(routes.home)
-        }
-    }
+    // const PageDisplay = () => {
+    //     switch (page) {
+    //         case 1:
+    //             return <InitialStack formState={formState}
+    //                                  onChangeText={text => handleChange("initialStack", onlyNumbers(text))}
+    //                                  page={setPage}
+    //                                  currentPage={page}
+    //                                  pages={TournamentScreens}/>
+    //         case 2:
+    //             return <Chips setFormState={setFormState}
+    //                           setPage={setPage}
+    //                           currentPage={page}
+    //                           pages={TournamentScreens}
+    //             />
+    //         case 3:
+    //             return <Blind setPage={setPage}
+    //                           formState={formState}
+    //                           setFormState={handleChange}
+    //                           currentPage={page}
+    //                           pages={TournamentScreens}/>
+    //         case 4:
+    //             return <NewBlind setPage={setPage} formState={formState} setFormState={setFormState}/>
+    //         case 5:
+    //             return <BuyInWithButtons formState={setFormState} page={setPage} currentPage={page} pages={TournamentScreens}/>
+    //         case 6:
+    //             return <ShareCostsWithButtons formState={setFormState} page={setPage} currentPage={page}
+    //                                           pages={TournamentScreens}/>
+    //         case 7:
+    //             return <Players formState={setFormState} formState1={formState} page={setPage} currentPage={page}
+    //                             pages={TournamentScreens}/>
+    //         default:
+    //             navigation.navigate(routes.home)
+    //     }
+    // }
 
     return (<Stack.Navigator>
-
             <Stack.Screen name={"Nome do Torneio"}
                           component={TourneyName}
                           options={{headerShown: true, headerBackTitleVisible: false}}

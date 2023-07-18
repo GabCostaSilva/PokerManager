@@ -33,16 +33,17 @@ const Drawer = createDrawerNavigator();
 const App = () => {
         const [logged, setLogged] = useState(false);
         const navigationRef = useNavigationContainerRef(); // You can also use a regular ref with `React.useRef()`
-        return (
-            <NavigationContainer ref={navigationRef}>
+        return (<NavigationContainer ref={navigationRef}>
                 <NativeBaseProvider theme={theme}>
                     <Box safeAreaTop bg="primary.400"/>
                     {!logged ? <Login setLogged={setLogged}/> :
-                        <Drawer.Navigator initialRouteName={routes.home}>
-                            <Drawer.Screen name={routes.home} component={Home}/>
-                            <Drawer.Screen name={routes.tournament} component={NewTournament}/>
-                            <Drawer.Screen name={routes.edit_tourney} component={EditTourney}/>
-                        </Drawer.Navigator>
+                        <>
+                            <Drawer.Navigator initialRouteName={routes.home}>
+                                <Drawer.Screen name={routes.home} component={Home}/>
+                                <Drawer.Screen name={routes.tournament} component={NewTournament}/>
+                                <Drawer.Screen name={routes.edit_tourney} component={EditTourney}/>
+                            </Drawer.Navigator>
+                        </>
                     }
                 </NativeBaseProvider>
             </NavigationContainer>

@@ -1,23 +1,11 @@
-import {
-    Button,
-    Center,
-    Divider,
-    Flex,
-    Heading,
-    HStack,
-    Icon,
-    IconButton,
-    Modal,
-    Pressable,
-    Text,
-    VStack
-} from "native-base";
+import {Button, Center, Divider, Flex, Heading, HStack, Icon, Modal, Pressable, Text, VStack} from "native-base";
 import React, {useState} from "react";
 import listTourneys from "../../actions/listTourneys";
 import {useFocusEffect} from '@react-navigation/native';
-import {Alert, GestureResponderEvent} from "react-native";
+import {GestureResponderEvent} from "react-native";
 import {AntDesign} from "@expo/vector-icons";
 import {routes} from "../../routes";
+import {useTourneyStore} from "../../state/Tournament";
 
 interface TourneyForListing {
     uuid: string,
@@ -32,6 +20,7 @@ export function Home({route, navigation}) {
     const [selectedTourney, setSelectedTourney] = useState<TourneyForListing>(null);
     const initialRef = React.useRef(null);
     const finalRef = React.useRef(null);
+    const clearTourney = useTourneyStore(state => state.clearTourney);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -58,18 +47,14 @@ export function Home({route, navigation}) {
         }, [tourneys])
     );
 
-    function openEditionMenu(e: GestureResponderEvent, tourneyId: TourneyForListing) {
-
-        setModalVisible(true)
-    }
-
     return <VStack space={3} divider={<Divider/>} w="100%" p="4">
         <HStack justifyContent="flex-end">
             <Button
                 minW={100}
                 backgroundColor={"green.500"}
                 onPress={() => {
-                    navigation.navigate(routes.tournament)
+                    clearTourney();
+                    navigation.navigate(routes.tournament);
                 }}
             >
                 <Text color={"white"} bold>

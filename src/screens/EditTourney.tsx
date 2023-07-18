@@ -1,52 +1,53 @@
-import React, {useEffect, useState} from "react";
-import {Button, Flex, Spacer, VStack} from "native-base";
-import getTourney from "../actions/getTourney";
+import React, {useEffect} from "react";
+import {Button, Flex} from "native-base";
 import {routes} from "../routes";
+import screens from "./NewTournament/screens";
+import {useTourneyStore} from "../state/Tournament";
 
 export const EditTourney = ({route, navigation}) => {
-    const [_tourney, setTourney] = useState(null);
+    let loadTourney = useTourneyStore(state => state.loadTourney);
     const tourney = route.params?.tourney || {uuid: ""}
 
     useEffect(() => {
         return () => {
             (async () => {
-                setTourney(await getTourney(tourney.uuid))
+                await loadTourney(tourney.uuid)
             })()
         }
     }, []);
 
-    function navigateToTourneyOnField(field: number) {
+    function navigateToTourneyOnScreen(screen: string) {
         navigation.navigate(routes.tournament, {
-            currentPage: field
+            screen: screen
         })
     }
 
     return <Flex alignItems="left" justifyContent={'space-between'} p="4">
-        <FullWOutlineMdButton key={0} onPress={() => navigateToTourneyOnField(0)}>
+        <FullWOutlineMdButton key={0} onPress={() => navigateToTourneyOnScreen(screens.tourney_name)}>
             Nome do Torneio
         </FullWOutlineMdButton>
 
-        <FullWOutlineMdButton key={1} onPress={() => navigateToTourneyOnField(1)}>
+        <FullWOutlineMdButton key={1} onPress={() => navigateToTourneyOnScreen(screens.initial_stack)}>
             Stack Inicial
         </FullWOutlineMdButton>
 
-        <FullWOutlineMdButton key={2} onPress={() => navigateToTourneyOnField(2)}>
+        <FullWOutlineMdButton key={2} onPress={() => navigateToTourneyOnScreen(screens.chips)}>
             Fichas
         </FullWOutlineMdButton>
 
-        <FullWOutlineMdButton key={3} onPress={() => navigateToTourneyOnField(3)}>
+        <FullWOutlineMdButton key={3} onPress={() => navigateToTourneyOnScreen(screens.blinds)}>
             Blinds
         </FullWOutlineMdButton>
 
-        <FullWOutlineMdButton key={4} onPress={() => navigateToTourneyOnField(5)}>
+        <FullWOutlineMdButton key={4} onPress={() => navigateToTourneyOnScreen(screens.buy_in)}>
             Buy In
         </FullWOutlineMdButton>
 
-        <FullWOutlineMdButton key={5} onPress={() => navigateToTourneyOnField(6)}>
+        <FullWOutlineMdButton key={5} onPress={() => navigateToTourneyOnScreen(screens.share_costs)}>
             Resenha
         </FullWOutlineMdButton>
 
-        <FullWOutlineMdButton key={6} onPress={() => navigateToTourneyOnField(7)}>
+        <FullWOutlineMdButton key={6} onPress={() => navigateToTourneyOnScreen(screens.players)}>
             Jogadores
         </FullWOutlineMdButton>
     </Flex>
