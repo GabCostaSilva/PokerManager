@@ -17,6 +17,7 @@ import listTourneys from "../../actions/listTourneys";
 import {useFocusEffect} from '@react-navigation/native';
 import {Alert, GestureResponderEvent} from "react-native";
 import {AntDesign} from "@expo/vector-icons";
+import {routes} from "../../routes";
 
 interface TourneyForListing {
     uuid: string,
@@ -68,7 +69,7 @@ export function Home({route, navigation}) {
                 minW={100}
                 backgroundColor={"green.500"}
                 onPress={() => {
-                    navigation.navigate("Novo Torneio")
+                    navigation.navigate(routes.tournament)
                 }}
             >
                 <Text color={"white"} bold>
@@ -105,7 +106,7 @@ export function Home({route, navigation}) {
                             </Button>
                             <Button rightIcon={<Icon as={<AntDesign name="edit"/>} name="editTourney"/>}
                                     onPress={() => {
-                                        navigation.navigate("Editar Torneio", {
+                                        navigation.navigate(routes.edit_tourney, {
                                             tourney: {
                                                 uuid: selectedTourney.uuid
                                             }

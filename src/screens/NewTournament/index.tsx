@@ -22,6 +22,7 @@ import {BuyIn} from "./BuyIn";
 import {ShareCosts} from "./ShareCosts";
 import {PlayersList} from "./Players/PlayersList";
 import saveTournament from "../../actions/saveTournament";
+import {routes} from "../../routes";
 
 interface Chip {
     value: number,
@@ -75,9 +76,10 @@ const MyTextInput = ({onChange, value, children}) => (
     </>
 )
 
-export function NewTournament({navigation}) {
-    const [page, setPage] = useState(0);
-    const [state, setState] = useState({stuff: null});
+export function NewTournament({navigation, route}) {
+    const {currentPage} = route.params
+    const [page, setPage] = useState(currentPage || 0);
+
     const [formState, setFormState] = useState<TournamentState>({
         name: '',
         initialStack: 0,
@@ -111,7 +113,7 @@ export function NewTournament({navigation}) {
         await saveTournament(formState);
 
         setPage(0)
-        navigation.navigate("Início", {
+        navigation.navigate(routes.home, {
             message: "Torneio criado com sucesso!"
         })
     }
@@ -160,13 +162,12 @@ export function NewTournament({navigation}) {
                     <StepsButtonGroup setPage={setPage} currentPage={page} pages={FormTitles}/>
                 </PlayersList>
             default:
-                navigation.navigate("Início")
+                navigation.navigate(routes.home)
         }
     }
 
     return (
         <View>
-
             <Flex flexGrow={1} alignItems={"center"} justifyContent={"center"} pl={10} pr={10}>
                 <View w={"100%"} alignItems={"center"} justifyContent={"center"}>
                     <Heading fontSize="xl" p="8" pb="6">

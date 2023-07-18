@@ -7,12 +7,7 @@ import {Home} from "./src/screens/Home";
 import {NewTournament} from "./src/screens/NewTournament";
 import {createDrawerNavigator} from "@react-navigation/drawer";
 import {EditTourney} from "./src/screens/EditTourney";
-
-const routeNames = {
-    home: "Início",
-    new_tournament: "Novo Torneio",
-    edit_tourney: "Editar Torneio"
-}
+import {routes} from "./src/routes";
 
 const newColorTheme = {
     primary: {
@@ -44,10 +39,10 @@ const App = () => {
                     <Box safeAreaTop bg="primary.400"/>
                     {!logged ? <Login setLogged={setLogged}/> :
                         <>
-                                <Drawer.Navigator initialRouteName={routeNames.home}>
-                                    <Drawer.Screen name={routeNames.home} component={Home}/>
-                                    <Drawer.Screen name={routeNames.new_tournament} component={NewTournament}/>
-                                    <Drawer.Screen name={routeNames.edit_tourney} component={EditTourney}/>
+                                <Drawer.Navigator initialRouteName={routes.home}>
+                                    <Drawer.Screen name={routes.home} component={Home}/>
+                                    <Drawer.Screen name={routes.tournament} component={NewTournament}/>
+                                    <Drawer.Screen name={routes.edit_tourney} component={EditTourney}/>
                                 </Drawer.Navigator>
                         </>}
                 </NativeBaseProvider>
