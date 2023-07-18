@@ -23,6 +23,7 @@ import {ShareCosts} from "./ShareCosts";
 import {PlayersList} from "./Players/PlayersList";
 import saveTournament from "../../actions/saveTournament";
 import {routes} from "../../routes";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 interface Chip {
     value: number,
@@ -76,9 +77,12 @@ const MyTextInput = ({onChange, value, children}) => (
     </>
 )
 
+const Stack = createNativeStackNavigator();
+
 export function NewTournament({navigation, route}) {
     const {currentPage} = route.params
     const [page, setPage] = useState(currentPage || 0);
+
 
     const [formState, setFormState] = useState<TournamentState>({
         name: '',
@@ -166,50 +170,8 @@ export function NewTournament({navigation, route}) {
         }
     }
 
-    return (
-        <View>
-            <Flex flexGrow={1} alignItems={"center"} justifyContent={"center"} pl={10} pr={10}>
-                <View w={"100%"} alignItems={"center"} justifyContent={"center"}>
-                    <Heading fontSize="xl" p="8" pb="6">
-                        {FormTitles[page]}
-                    </Heading>
-                </View>
-                {PageDisplay()}
-            </Flex>
+    return (<Stack.Navigator>
 
-            {page === FormTitles.length - 1 ?
-                <HStack justifyContent='center' space='2xl'>
-                    <Button
-                        variant="outline"
-                        minW={100}
-                        bgColor={"red.500"}
-                        onPress={() => {
-                            let initialState = new class implements TournamentState {
-                                blinds: Blind[];
-                                buyIn: BuyIn;
-                                chips: Chip[];
-                                initialStack: number;
-                                name: string;
-                                players: Player[];
-                                shareCosts: boolean;
-                            };
-                            setFormState((prevState) => initialState)
-                        }}
-                    >
-                        <Text color={"white"}>
-                            Cancelar
-                        </Text>
-                    </Button>
-                    <Button
-                        onPress={() => onSubmit()}
-                        minW={100}
-                        backgroundColor={"green.500"}
-                    >
-                        <Text color="white" bold>
-                            Iniciar
-                        </Text>
-                    </Button>
-                </HStack>
-                : <></>}
-        </View>);
+        </Stack.Navigator>
+    );
 }
