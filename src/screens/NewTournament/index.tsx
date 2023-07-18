@@ -23,9 +23,9 @@ import {ShareCosts} from "./ShareCosts";
 import {PlayersList} from "./Players/PlayersList";
 import saveTournament from "../../actions/saveTournament";
 import {routes} from "../../routes";
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {EditTourney} from "../EditTourney";
 import {useTourneyStore} from "../../state/Tournament";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
 
 interface Chip {
     value: number,
@@ -247,6 +247,7 @@ export function NewTournament({navigation, route}) {
 
             <Stack.Screen name={"Nome do Torneio"}
                           component={TourneyName}
+                          options={{headerShown: true, headerBackTitleVisible: false}}
             />
             <Stack.Screen name={"Stack Inicial"}
                           component={TourneyName}
