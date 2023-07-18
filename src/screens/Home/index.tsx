@@ -44,7 +44,7 @@ export function Home({route, navigation}) {
 
             }
 
-        }, [tourneys])
+        }, [route])
     );
 
     return <VStack space={3} divider={<Divider/>} w="100%" p="4">
