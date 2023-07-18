@@ -1,4 +1,18 @@
-import {Button, Center, Divider, Flex, Heading, HStack, Icon, Modal, Pressable, Text, VStack} from "native-base";
+import {
+    Alert, Box,
+    Button,
+    Center, CloseIcon, Container,
+    Divider,
+    Flex,
+    Heading,
+    HStack,
+    Icon,
+    IconButton,
+    Modal,
+    Pressable,
+    Text,
+    VStack
+} from "native-base";
 import React, {useState} from "react";
 import listTourneys from "../../actions/listTourneys";
 import {useFocusEffect} from '@react-navigation/native';
@@ -6,6 +20,7 @@ import {GestureResponderEvent} from "react-native";
 import {AntDesign} from "@expo/vector-icons";
 import {routes} from "../../routes";
 import {useTourneyStore} from "../../state/Tournament";
+import SystemNotification from "../../components/SystemNotification";
 
 interface TourneyForListing {
     uuid: string,
@@ -18,35 +33,38 @@ export function Home({route, navigation}) {
     const [tourneys, setTourneys] = useState<TourneyForListing[]>([]);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const [selectedTourney, setSelectedTourney] = useState<TourneyForListing>(null);
+    const [error, setError] = useState(null);
     const initialRef = React.useRef(null);
     const finalRef = React.useRef(null);
     const clearTourney = useTourneyStore(state => state.clearTourney);
 
     useFocusEffect(
         React.useCallback(() => {
-
-            // if (params) {
-            //
-            // }
-
             let isActive = true;
 
             (async () => {
-                const response = await listTourneys();
+                let response;
+                try {
+                    response = await listTourneys();
+                } catch (err) {
+                    console.error(err)
+                    setError("Erro ao carregar torneios. Tente novamente mais tarde.")
+                }
                 if (isActive) {
                     const params = route ? route.params : null
                     if (params) alert(params.message)
                     setTourneys(response)
                 }
             })()
+
             return () => {
                 isActive = false;
 
             }
-
         }, [route])
     );
 
+    //TODO Adicionar gesture para atualizar lista
     return <VStack space={3} divider={<Divider/>} w="100%" p="4">
         <HStack justifyContent="flex-end">
             <Button
@@ -130,7 +148,14 @@ export function Home({route, navigation}) {
                     )}
                 </Pressable>
             )
-        ) : <Heading>Torneios não encontrados</Heading>}
+        ) : error ? <SystemNotification
+            closeFn={() => {
+                setError(null)
+            }}
+            message={error}
+            title={'Erro de sistema'}
+            status={'error'}
+        /> : <Heading>Torneios não encontrados</Heading>}
     </VStack>
 
 }

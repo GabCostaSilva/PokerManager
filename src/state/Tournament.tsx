@@ -64,6 +64,6 @@ export const useTourneyStore = create<TournamentState>()(set => ({
     },
     patchTourney: (prop, value) =>
         set((state) => ({tourney: {...state.tourney, [prop]: value}})),
-    clearTourney: () => set((state) => omit(state, ['tourney'], true))
+    clearTourney: () => set((state) => omit(state, ['tourney']), true)
 }))
 
