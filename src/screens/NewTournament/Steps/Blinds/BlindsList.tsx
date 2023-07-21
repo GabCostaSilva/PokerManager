@@ -1,8 +1,7 @@
 import {Box, Button, FlatList, HStack, Text, Spacer, VStack, Flex, IconButton, Icon, Divider} from "native-base";
 import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {AntDesign} from "@expo/vector-icons";
-import StepsButtonGroup from "../../../components/StepsButtonGroup";
-import {TournamentState} from "../index";
+import { TournamentState } from "../../index";
 
 interface BlindsList {
     title: number,
@@ -21,7 +20,7 @@ interface Props {
     pages: string[]
 }
 
-export function Blind({formState, currentPage, pages, setPage}: Props) {
+export default function BlindsList({formState, currentPage, pages, setPage}: Props) {
     const [blinds, setBlinds] = useState<BlindsList[]>([]);
 
     useEffect(() => {
@@ -84,9 +83,6 @@ export function Blind({formState, currentPage, pages, setPage}: Props) {
                       </Box>}
                       keyExtractor={item => ((Math.random() + 1) * 100).toString()}
             />
-            <StepsButtonGroup setPage={setPage}
-                              currentPage={currentPage}
-                              pages={pages}/>
         </VStack>
     </>;
 }

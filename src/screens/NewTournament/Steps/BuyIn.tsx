@@ -1,10 +1,8 @@
 import {CheckIcon, FormControl, Input, Select, Text, VStack} from "native-base";
-import {NumericInput} from "../../components/NumericInput";
-import {onlyNumbers} from "../../utils";
-import React, {ReactElement, useState} from "react";
-import StepsButtonGroup from "../../components/StepsButtonGroup";
 import colors from "./Chips/colors";
-import {TournamentState} from "./index";
+import React, {ReactElement, useState} from "react";
+import { TournamentState } from "../index";
+import { NumericInput } from "../../../components/NumericInput";
 
 
 const CURRENCIES = [
