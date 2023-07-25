@@ -3,13 +3,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import StepsButtonGroup from "../../components/StepsButtonGroup";
 import { ShareCosts } from "./Steps/ShareCosts";
 import { BuyIn } from "./Steps/BuyIn";
-import saveTournament from "../../actions/saveTournament";
 import { routes } from "../../routes";
 import TourneyName from "./Steps/TourneyName";
 import InitialStack from "./Steps/InitialStack";
 import Chips from "./Steps/Chips/Chips";
-import BlindsList from "./Steps/Blinds/BlindsList";
+import Blinds from "./Steps/Blinds/Blinds";
 import PlayersList from "./Steps/Players/PlayersList";
+import { saveTournament } from "../../state/actions/saveTournament";
 
 interface Chip {
   value: number,
@@ -54,44 +54,9 @@ export interface TournamentState {
 
 const Stack = createNativeStackNavigator();
 
-function BuyInWithButtons(props: {
-  formState: (value: (((prevState: TournamentState) => TournamentState) | TournamentState)) => void,
-  page: (value: unknown) => void,
-  currentPage: number,
-  pages: string[]
-}) {
-  return <BuyIn setFormState={props.formState}>
-    <StepsButtonGroup setPage={props.page} currentPage={props.currentPage} pages={props.pages} />
-  </BuyIn>;
-}
-
-function ShareCostsWithButtons(props: {
-  formState: (value: (((prevState: TournamentState) => TournamentState) | TournamentState)) => void,
-  page: (value: unknown) => void,
-  currentPage: number,
-  pages: string[]
-}) {
-  return <ShareCosts setFormState={props.formState}>
-    <StepsButtonGroup setPage={props.page} currentPage={props.currentPage} pages={props.pages} />
-  </ShareCosts>;
-}
-
-function Players(props: {
-  formState: (value: (((prevState: TournamentState) => TournamentState) | TournamentState)) => void,
-  formState1: TournamentState,
-  page: (value: unknown) => void,
-  currentPage: number,
-  pages: string[]
-}) {
-  return <PlayersList setFormState={props.formState} formState={props.formState1}>
-    <StepsButtonGroup setPage={props.page} currentPage={props.currentPage} pages={props.pages} />
-  </PlayersList>;
-}
-
 export function NewTournament({ navigation, route }) {
   const currentPage = route.params?.currentPage || 0;
   const [page, setPage] = useState(currentPage || 0);
-
 
   const [formState, setFormState] = useState<TournamentState>({
     name: "",
@@ -105,13 +70,7 @@ export function NewTournament({ navigation, route }) {
     shareCosts: false,
     players: []
   });
-
-
-  function handleChange(prop: string, value: any) {
-    setFormState((prevState) => {
-      return { ...prevState, [prop]: value };
-    });
-  }
+  
 
   async function onSubmit() {
     await saveTournament(formState);
@@ -122,7 +81,8 @@ export function NewTournament({ navigation, route }) {
     });
   }
 
-  return (<Stack.Navigator>
+  return (
+    <Stack.Navigator>
       <Stack.Screen name={"Nome do Torneio"}
                     component={TourneyName}
                     options={{ headerShown: true, headerBackTitleVisible: false }}
@@ -131,9 +91,9 @@ export function NewTournament({ navigation, route }) {
       <Stack.Screen name={"Stack Inicial"} component={InitialStack} />
       <Stack.Screen name={"Fichas"} component={Chips} />
       <Stack.Screen name={"Buy In"} component={BuyIn} />
-      <Stack.Screen name={"Blinds"} component={BlindsList} />
+      <Stack.Screen name={"Blinds"} component={Blinds} />
       <Stack.Screen name={"Resenha"} component={ShareCosts} />
-      <Stack.Screen name={"Jogadores"} component={Players} />
+      <Stack.Screen name={"Jogadores"} component={PlayersList} />
     </Stack.Navigator>
   );
 }

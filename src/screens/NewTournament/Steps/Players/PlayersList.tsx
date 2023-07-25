@@ -1,4 +1,4 @@
-import { Box, Button, FlatList, Flex, HStack, Spacer, Text, VStack } from "native-base";
+import { Box, Button, Center, Container, FlatList, Flex, HStack, Spacer, Text, VStack } from "native-base";
 import UserAvatar from "react-native-user-avatar";
 
 import React, { useState } from "react";
@@ -45,15 +45,15 @@ export default ({ formState, setFormState, children }) => {
   if (isNewPlayer)
     return <NewPlayer formState={formState} setFormState={setFormState} setIsNewPlayer={setIsNewPlayer} />;
   else
-    return <>
-      <Flex direction={"row-reverse"} justify={"flex-end"} w={"100%"}>
+    return <Center>
+      <Flex direction={"row"} justify={"flex-end"} w={"100%"} mt={8} mb={8}  pr={["3", "5"]}>
         <Button
           minW={100}
           backgroundColor={"green.500"}
           onPress={() => {
             renderNewPlayer();
           }}>
-          <Text color={"white"}>
+          <Text color={"white"} bold>
             Novo Jogador
           </Text>
         </Button>
@@ -65,12 +65,12 @@ export default ({ formState, setFormState, children }) => {
                   <Box borderBottomWidth="1"
                        _dark={{ borderColor: "muted.50" }}
                        borderColor="muted.800"
-                       pl={["0", "4"]}
-                       pr={["0", "5"]}
+                       pl={["2", "4"]}
+                       pr={["3", "5"]}
                        py="2"
                   >
                     <HStack space={[2, 3]} justifyContent="space-between">
-                      <UserAvatar size={100} name={item.fullName} />
+                      <UserAvatar size={70} name={item.fullName} />
                       <VStack>
                         <Text _dark={{
                           color: "warmGray.50"
@@ -92,5 +92,5 @@ export default ({ formState, setFormState, children }) => {
                     </HStack>
                   </Box>)} keyExtractor={item => item.id} />
       {children}
-    </>;
+    </Center>;
 };

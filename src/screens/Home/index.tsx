@@ -1,12 +1,11 @@
 import { Button, Center, Divider, Flex, Heading, HStack, Icon, Modal, Pressable, Text, VStack } from "native-base";
 import React, { useState } from "react";
-import listTourneys from "../../actions/listTourneys";
 import { useFocusEffect } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
 import { routes } from "../../routes";
 import { useTourneyStore } from "../../state/Tournament";
 import SystemNotification from "../../components/SystemNotification";
-
+import { listTourneys } from "../../state/actions/listTourneys";
 interface TourneyForListing {
   uuid: string,
   players: [];

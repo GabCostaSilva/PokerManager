@@ -1,9 +1,25 @@
-import {Box, Button, FlatList, HStack, Text, Spacer, VStack, Flex, IconButton, Icon, Divider} from "native-base";
-import React, {Dispatch, SetStateAction, useEffect, useState} from "react";
-import {AntDesign} from "@expo/vector-icons";
+import {
+    Box,
+    Button,
+    Center,
+    FlatList,
+    Flex,
+    HStack,
+    Icon,
+    IconButton,
+    Modal,
+    Spacer,
+    Text,
+    VStack
+} from "native-base";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { AntDesign } from "@expo/vector-icons";
 import { TournamentState } from "../../index";
+import FormContainer from "../../FormContainer";
+import { routes } from "../../../../routes";
+import NewBlind from "./NewBlind";
 
-interface BlindsList {
+interface Blind {
     title: number,
     small: number,
     big: number,
@@ -12,36 +28,37 @@ interface BlindsList {
     pause: number
 }
 
-interface Props {
-    setPage: Dispatch<SetStateAction<number>>,
-    setFormState: (prop: string, value) => void,
-    formState: TournamentState,
-    currentPage: number,
-    pages: string[]
-}
+export default function Blinds({navigation, route, setPage}) {
+    const [blinds, setBlinds] = useState<Blind[]>([]);
+    const [modalVisible, setModalVisible] = useState(false);
 
-export default function BlindsList({formState, currentPage, pages, setPage}: Props) {
-    const [blinds, setBlinds] = useState<BlindsList[]>([]);
+    const initialRef = React.useRef(null);
+    const finalRef = React.useRef(null);
 
     useEffect(() => {
-        setBlinds(formState.blinds)
+        setBlinds([])
     }, []);
 
+    function onPress() {
+        navigation.navigate(routes.tournament, { screen: "Resenha" });
+    }
+
+
     // @ts-ignore
-    return <>
-        <Flex direction={"row-reverse"} justify={"flex-end"} w={"100%"}>
+    return <FormContainer onPressNextPage={onPress}>
+        <Flex direction={"row"} justify={"flex-end"} w={"100%"} mb={5}>
             <Button
                 minW={100}
                 backgroundColor={"green.500"}
                 onPress={() => {
-                    setPage(4)
+                   setModalVisible(true)
                 }}>
                 <Text color={"white"}>
                     Novo Blind
                 </Text>
             </Button>
         </Flex>
-        <VStack space={3} w="100%" p="4">
+        <VStack space={3} w="sm" mb={5}>
             <HStack justifyContent="space-between" p={2}>
                 <Text>No</Text>
                 <Text>Small</Text>
@@ -84,5 +101,20 @@ export default function BlindsList({formState, currentPage, pages, setPage}: Pro
                       keyExtractor={item => ((Math.random() + 1) * 100).toString()}
             />
         </VStack>
-    </>;
+
+        <Modal
+          onClose={() => setModalVisible(false)}
+          initialFocusRef={initialRef} finalFocusRef={finalRef}
+          isOpen={modalVisible}
+          safeAreaTop={true}
+        >
+            <Modal.Content>
+                <Modal.Header>Novo Blind</Modal.Header>
+                <Modal.CloseButton />
+                <Modal.Body>
+                    <NewBlind/>
+                </Modal.Body>
+            </Modal.Content>
+        </Modal>
+    </FormContainer>;
 }

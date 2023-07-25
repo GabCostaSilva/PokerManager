@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { CheckIcon, FormControl, Input, Select, Stack, Text } from "native-base";
 import CloseableCircle from "../../../../components/CloseableCircle";
 import { colors } from "./colors";
+import FormContainer from "../../FormContainer";
+import { routes } from "../../../../routes";
 
 interface Chip {
   color: string,
   value: string
 }
 
-function Chips({ setPage, pages, currentPage, setFormState }) {
+function Chips({ navigation, route }) {
   const [_chips, set_chips] = useState<Chip[]>([]);
 
   const [chipColor, setChipColor] = useState("");
@@ -48,8 +50,12 @@ function Chips({ setPage, pages, currentPage, setFormState }) {
     return text?.replace(/[^0-9]/g, "");
   }
 
-  return <>
-    <FormControl>
+  function onPress() {
+    navigation.navigate(routes.tournament, { screen: "Buy In" });
+  }
+
+  return <FormContainer onPressNextPage={onPress}>
+    <FormControl minWidth="300" mb={2}>
       <FormControl.Label _text={{ bold: true }}>Valor</FormControl.Label>
       <Input
         size={"2xl"}
@@ -61,9 +67,9 @@ function Chips({ setPage, pages, currentPage, setFormState }) {
         maxLength={4}
       />
     </FormControl>
-    <FormControl>
+    <FormControl mb={5}>
       <FormControl.Label _text={{ bold: true }}>Cor</FormControl.Label>
-      <Select selectedValue={chipColor} minWidth="200" accessibilityLabel="Escolha a cor"
+      <Select selectedValue={chipColor} minWidth="300" accessibilityLabel="Escolha a cor"
               isDisabled={chipValue === "" || chipValue === null || chipValue === undefined}
               placeholder="Escolha a cor"
               size={"2xl"}
@@ -81,6 +87,7 @@ function Chips({ setPage, pages, currentPage, setFormState }) {
       flexWrap={"wrap"}
       direction="row"
       justifyContent={"center"}
+      mb={5}
       space={3}>
       {_chips.map((chip, i) => {
         return (<CloseableCircle size="40px"
@@ -92,7 +99,7 @@ function Chips({ setPage, pages, currentPage, setFormState }) {
         </CloseableCircle>);
       })}
     </Stack>
-  </>;
+  </FormContainer>;
 }
 
 export default Chips;

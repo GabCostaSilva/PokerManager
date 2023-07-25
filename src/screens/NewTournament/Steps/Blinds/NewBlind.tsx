@@ -1,7 +1,7 @@
-import {Button, FormControl, HStack, Text} from "native-base";
-import React, {useState} from "react";
-import {onlyNumbers} from "../../../utils";
-import {NumericInput} from "../../../components/NumericInput";
+import { Button, FormControl, HStack, Text } from "native-base";
+import React, { useState } from "react";
+import { NumericInput } from "../../../../components/NumericInput";
+import { onlyNumbers } from "../../../../utils";
 
 interface Blind {
     title: number,
@@ -12,7 +12,7 @@ interface Blind {
     pause: number
 }
 
-const NewBlind = ({setPage, setFormState, formState}) => {
+const NewBlind = () => {
     const [blind, setBlind] = useState<Blind>({
         title: 0,
         small: 0,
@@ -64,7 +64,7 @@ const NewBlind = ({setPage, setFormState, formState}) => {
             }} value={onlyNumbers(blind.time.toString()).toString()}
             />
         </FormControl>
-        <FormControl>
+        <FormControl mb={8}>
             <FormControl.Label _text={{bold: true}}>{"Tempo de Pausa (em minutos)"}</FormControl.Label>
             <NumericInput onChangeText={(value) => {
                 setBlind({...blind, pause: onlyNumbers(value)})
@@ -76,7 +76,7 @@ const NewBlind = ({setPage, setFormState, formState}) => {
             <Button
                 variant="outline"
                 onPress={() => {
-                    setPage(currPage => currPage - 1)
+
                 }}>
                 <Text>
                     Cancelar
@@ -85,8 +85,7 @@ const NewBlind = ({setPage, setFormState, formState}) => {
 
             <Button
                 onPress={() => {
-                    setFormState({...formState, blinds: [...formState.blinds, blind]})
-                    setPage(currPage => currPage - 1)
+
                 }}>
                 <Text color="white">
                     Adicionar
