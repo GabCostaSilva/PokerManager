@@ -1,4 +1,4 @@
-import { Button, FormControl, Heading, HStack, ScrollView, Text } from "native-base";
+import { Button, FormControl, Heading, HStack, Input, ScrollView, Text } from "native-base";
 import React, { useState } from "react";
 import { NumericInput } from "../../../../components/NumericInput";
 import { Player } from "../../index";
@@ -7,7 +7,7 @@ interface NewPlayerProps {
   setIsNewPlayer: (value: (((prevState: boolean) => boolean) | boolean)) => void;
 }
 
-export const NewPlayer = ({ formState, setFormState, setIsNewPlayer }) => {
+export const NewPlayer = ({ formState, setIsNewPlayer }) => {
   let initialState = {
     name: "",
     phoneNumber: "",
@@ -30,7 +30,7 @@ export const NewPlayer = ({ formState, setFormState, setIsNewPlayer }) => {
     <Heading>Novo Jogador</Heading>
     <FormControl>
       <FormControl.Label _text={{ bold: true }}>{"Nome"}</FormControl.Label>
-      <NumericInput
+      <Input
         onChangeText={(value) => {
           setPlayer({ ...player, name: value });
         }}
@@ -40,7 +40,7 @@ export const NewPlayer = ({ formState, setFormState, setIsNewPlayer }) => {
 
     <FormControl>
       <FormControl.Label _text={{ bold: true }}>{"Telefone"}</FormControl.Label>
-      <NumericInput
+      <Input
         onChangeText={(value) => {
           setPlayer({ ...player, phoneNumber: value });
         }}
@@ -50,7 +50,7 @@ export const NewPlayer = ({ formState, setFormState, setIsNewPlayer }) => {
 
     <FormControl>
       <FormControl.Label _text={{ bold: true }}>{"Email"}</FormControl.Label>
-      <NumericInput
+      <Input
         onChangeText={(value) => {
           setPlayer({ ...player, email: value });
         }}
@@ -60,7 +60,7 @@ export const NewPlayer = ({ formState, setFormState, setIsNewPlayer }) => {
 
     <FormControl>
       <FormControl.Label _text={{ bold: true }}>{"CPF"}</FormControl.Label>
-      <NumericInput onChangeText={(value) => {
+      <Input onChangeText={(value) => {
         setPlayer({ ...player, docNumber: value });
       }} value={player.docNumber}
       />
@@ -68,7 +68,7 @@ export const NewPlayer = ({ formState, setFormState, setIsNewPlayer }) => {
 
     <FormControl>
       <FormControl.Label _text={{ bold: true }}>{"Pix"}</FormControl.Label>
-      <NumericInput onChangeText={(value) => {
+      <Input onChangeText={(value) => {
         setPlayer({ ...player, pix: value });
       }} value={player.pix}
       />
@@ -76,7 +76,7 @@ export const NewPlayer = ({ formState, setFormState, setIsNewPlayer }) => {
 
     <FormControl>
       <FormControl.Label _text={{ bold: true }}>{"Banco"}</FormControl.Label>
-      <NumericInput onChangeText={(value) => {
+      <Input onChangeText={(value) => {
         setPlayer({ ...player, bank: value });
       }} value={player.bank}
       />
@@ -84,7 +84,7 @@ export const NewPlayer = ({ formState, setFormState, setIsNewPlayer }) => {
 
     <FormControl>
       <FormControl.Label _text={{ bold: true }}>{"Agência"}</FormControl.Label>
-      <NumericInput onChangeText={(value) => {
+      <Input onChangeText={(value) => {
         setPlayer({ ...player, bankAgency: value });
       }} value={player.bankAgency}
       />
@@ -92,7 +92,7 @@ export const NewPlayer = ({ formState, setFormState, setIsNewPlayer }) => {
 
     <FormControl>
       <FormControl.Label _text={{ bold: true }}>{"Número da conta"}</FormControl.Label>
-      <NumericInput onChangeText={(value) => {
+      <Input onChangeText={(value) => {
         setPlayer({ ...player, bankAccountNumber: value });
       }} value={player.bankAccountNumber}
       />
@@ -100,7 +100,7 @@ export const NewPlayer = ({ formState, setFormState, setIsNewPlayer }) => {
 
     <FormControl mb={5}>
       <FormControl.Label _text={{ bold: true }}>{"PicPay"}</FormControl.Label>
-      <NumericInput onChangeText={(value) => {
+      <Input onChangeText={(value) => {
         setPlayer({ ...player, picPay: value });
       }} value={player.picPay}
       />
@@ -119,10 +119,11 @@ export const NewPlayer = ({ formState, setFormState, setIsNewPlayer }) => {
 
       <Button
         onPress={() => {
-          setFormState({ ...formState, players: [...formState.players, player] });
+          // setFormState({ ...formState, players: [...formState.players, player] });
           resetState();
         }}>
         <Text color="white">
+          Adicionar
           Adicionar
         </Text>
       </Button>

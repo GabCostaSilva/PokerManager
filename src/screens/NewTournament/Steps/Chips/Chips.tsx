@@ -55,7 +55,7 @@ function Chips({ navigation, route }) {
   }
 
   return <FormContainer onPressNextPage={onPress}>
-    <FormControl minWidth="300" mb={2}>
+    <FormControl minWidth="300" mb={5}>
       <FormControl.Label _text={{ bold: true }}>Valor</FormControl.Label>
       <Input
         size={"2xl"}

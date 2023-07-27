@@ -1,8 +1,9 @@
-import { FormControl, Select } from "native-base";
+import { FormControl, Input, Select } from "native-base";
 import React, { useState } from "react";
 import { NumericInput } from "../../../components/NumericInput";
 import FormContainer from "../FormContainer";
 import { routes } from "../../../routes";
+import { onlyNumbers } from "../../../utils";
 
 
 const CURRENCIES = [
@@ -10,7 +11,7 @@ const CURRENCIES = [
   "$"
 ];
 
-export const BuyIn = ({ setFormState, children, navigation, route }) => {
+export const BuyIn = ({ children, navigation, route }) => {
   const [state, setState] = useState({
     value: 0,
     currency: "R$"
@@ -18,7 +19,6 @@ export const BuyIn = ({ setFormState, children, navigation, route }) => {
 
   function onChange(prop, value) {
     setState(prevState => ({ ...prevState, [prop]: value }));
-    setFormState(prevState => ({ ...prevState, buyIn: state }));
   }
 
   function onPress() {
@@ -31,6 +31,15 @@ export const BuyIn = ({ setFormState, children, navigation, route }) => {
         <NumericInput
           onChangeText={value => {
             onChange("value", value);
+          }}
+        />
+        <Input
+          size={"2xl"}
+          mb={5}
+          keyboardType={"numeric"}
+          value={onlyNumbers(state.value.toString()).toString()}
+          onChangeText={text => {
+            setState(prevState => ({ ...prevState, value: onlyNumbers(text) }));
           }}
         />
       </FormControl>

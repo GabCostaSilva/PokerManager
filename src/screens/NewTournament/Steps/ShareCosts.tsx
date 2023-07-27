@@ -3,12 +3,12 @@ import { Checkbox, HStack, VStack, Text, Flex } from "native-base";
 import FormContainer from "../FormContainer";
 import { routes } from "../../../routes";
 
-export const ShareCosts = ({ navigation, route, setFormState, children }) => {
+export const ShareCosts = ({ navigation, route, children }) => {
   const [isChecked, setIsChecked] = useState(false);
 
   const onChange = (isSelected) => {
     setIsChecked(isSelected);
-    setFormState(prevState => ({ ...prevState, shareCosts: isSelected }));
+    // setFormState(prevState => ({ ...prevState, shareCosts: isSelected }));
   };
 
   let onPress = () => {
