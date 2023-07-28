@@ -1,22 +1,8 @@
-import {
-    Box,
-    Button,
-    Center,
-    FlatList,
-    Flex,
-    HStack,
-    Icon,
-    IconButton,
-    Modal,
-    Spacer,
-    Text,
-    VStack
-} from "native-base";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { AntDesign } from "@expo/vector-icons";
-import { TournamentState } from "../../index";
+import {Box, Button, FlatList, Flex, HStack, Icon, IconButton, Modal, Spacer, Text, VStack} from "native-base";
+import React, {useEffect, useState} from "react";
+import {AntDesign} from "@expo/vector-icons";
 import FormContainer from "../../FormContainer";
-import { routes } from "../../../../routes";
+import {routes} from "../../../../routes";
 import NewBlind from "./NewBlind";
 
 interface Blind {

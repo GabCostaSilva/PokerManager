@@ -28,11 +28,6 @@ export const BuyIn = ({ children, navigation, route }) => {
   return (<FormContainer onPressNextPage={onPress}>
       <FormControl minW={300} mb={5}>
         <FormControl.Label _text={{ bold: true }}>{"Valor"}</FormControl.Label>
-        <NumericInput
-          onChangeText={value => {
-            onChange("value", value);
-          }}
-        />
         <Input
           size={"2xl"}
           mb={5}
