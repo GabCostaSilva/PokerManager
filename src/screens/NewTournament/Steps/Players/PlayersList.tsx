@@ -71,17 +71,17 @@ export default ({formState, setFormState, children}) => {
 
     return <Center>
 
-        <Flex direction={"row"} justify={"flex-end"} w={"100%"} mb={5} pr={["3", "5"]} pt={[5, 10]}>
-            <Button
-                w={[32, 64]}
-                onPress={() => {
-                    setModalVisible(true)
-                }}>
-                Novo Jogador
-            </Button>
-        </Flex>
-        <Container w={"100%"} h={[516, 1024]}>
-
+        <Container w={"100%"} h={[600, 1024]}>
+            <Flex direction={"row"} justify={"flex-end"} w={"100%"} mb={5} pt={[5, 10]}>
+                <Button
+                    // w={[32, 64]}
+                    colorScheme={"info"}
+                    onPress={() => {
+                        setModalVisible(true)
+                    }}>
+                    Novo Jogador
+                </Button>
+            </Flex>
             <FlatList data={data}
                       w={"100%"}
                       mb={5}
@@ -134,8 +134,14 @@ export default ({formState, setFormState, children}) => {
                 <Modal.Header>Novo Jogador</Modal.Header>
                 <Modal.CloseButton/>
                 <Modal.Body>
-                    <NewPlayer formState={{}} setIsNewPlayer={() => {
-                    }}/>
+                    <NewPlayer
+                        formState={{}}
+                        setIsNewPlayer={() => {
+                        }}
+                        closeModal={() => {
+                            setModalVisible(false)
+                        }}
+                    />
                 </Modal.Body>
             </Modal.Content>
         </Modal>

@@ -35,13 +35,12 @@ export default function Blinds({navigation, route, setPage}) {
         <Flex direction={"row"} justify={"flex-end"} w={"100%"} mb={5}>
             <Button
                 minW={100}
-                backgroundColor={"green.500"}
+                colorScheme={"info"}
                 onPress={() => {
                    setModalVisible(true)
                 }}>
-                <Text color={"white"}>
+
                     Novo Blind
-                </Text>
             </Button>
         </Flex>
         <VStack space={3} w="sm" mb={5}>

@@ -8,10 +8,11 @@ export default ({ onPressNextPage, children }) => {
     </Container>
     <Button
       onPress={onPressNextPage}
-      minW={100}>
-      <Text color="white">
+      minW={100}
+      variant="ghost"
+    >
+
         Próximo
-      </Text>
     </Button>
   </Center>;
 }

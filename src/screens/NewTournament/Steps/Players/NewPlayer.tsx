@@ -7,7 +7,7 @@ interface NewPlayerProps {
     setIsNewPlayer: (value: (((prevState: boolean) => boolean) | boolean)) => void;
 }
 
-export const NewPlayer = ({formState, setIsNewPlayer}) => {
+export const NewPlayer = ({formState, setIsNewPlayer, closeModal}) => {
     let initialState = {
         name: "",
         phoneNumber: "",
@@ -108,21 +108,21 @@ export const NewPlayer = ({formState, setIsNewPlayer}) => {
         <HStack justifyContent="center" space="md" mb={5}>
             <Button
                 variant="outline"
+                colorScheme={"warning"}
                 onPress={() => {
                     resetState();
+                    closeModal()
                 }}>
-                <Text>
-                    Cancelar
-                </Text>
+                Cancelar
             </Button>
 
             <Button
+                colorScheme={"info"}
                 onPress={() => {
                     resetState();
+                    closeModal()
                 }}>
-                <Text color="white">
-                    Adicionar
-                </Text>
+                Adicionar
             </Button>
         </HStack>
     </ScrollView>);
