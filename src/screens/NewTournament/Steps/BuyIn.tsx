@@ -4,6 +4,7 @@ import { NumericInput } from "../../../components/NumericInput";
 import FormContainer from "../FormContainer";
 import { routes } from "../../../routes";
 import { onlyNumbers } from "../../../utils";
+import { useTourneyStore } from "../../../state/Tournament";
 
 
 const CURRENCIES = [
@@ -12,16 +13,17 @@ const CURRENCIES = [
 ];
 
 export const BuyIn = ({ children, navigation, route }) => {
-  const [state, setState] = useState({
-    value: 0,
-    currency: "R$"
-  });
+  let { buyIn } = useTourneyStore(state => state.tourney);
+  let patchTourney = useTourneyStore(state => state.patchTourney);
 
-  function onChange(prop, value) {
+  const [state, setState] = useState(buyIn || {value: 0, currency: ""});
+
+  function onChange(prop: string, value: string) {
     setState(prevState => ({ ...prevState, [prop]: value }));
   }
 
   function onPress() {
+    patchTourney("buyIn", state);
     navigation.navigate(routes.tournament, { screen: "Blinds" });
   }
 

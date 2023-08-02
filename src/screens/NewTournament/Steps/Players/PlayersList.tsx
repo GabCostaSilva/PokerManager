@@ -7,6 +7,8 @@ import NewBlind from "../Blinds/NewBlind";
 import {ButtonGroup} from "native-base/lib/typescript/theme/components/button";
 import {View} from "react-native";
 
+// TODO: adicionar zustand state aqui
+
 export default ({formState, setFormState, children}) => {
     const data = [{
         id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",

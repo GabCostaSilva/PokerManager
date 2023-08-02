@@ -4,25 +4,25 @@ import CloseableCircle from "../../../../components/CloseableCircle";
 import { colors } from "./colors";
 import FormContainer from "../../FormContainer";
 import { routes } from "../../../../routes";
-
-interface Chip {
-  color: string,
-  value: string
-}
+import { Chip, useTourneyStore } from "../../../../state/Tournament";
 
 function Chips({ navigation, route }) {
-  const [_chips, set_chips] = useState<Chip[]>([]);
+  let { chips } = useTourneyStore(state => state.tourney);
+  let patchTourney = useTourneyStore(state => state.patchTourney);
 
+  console.log("CHIPOS:", chips);
+  const [_chips, set_chips] = useState<Chip[]>(chips || []);
   const [chipColor, setChipColor] = useState("");
   const [chipValue, setChipValue] = useState("");
 
-  function findChip(chip) {
-    return _chips.find(_chip => chip.color === _chip.color || chip.value === _chip.value);
+  function findChip(chip: { color: string; value: string; }) {
+    return _chips.find(_chip =>
+      chip.color === _chip.color || parseInt(chip.value) === _chip.value);
   }
 
-  function handleClose(e, chipToClose) {
-    let filteredChips = _chips.filter(chip => chip.value !== chipToClose.value &&
-      chip.color !== chipToClose.color);
+  function handleClose(e: any, chipToClose: Chip) {
+    let filteredChips = _chips.filter(chip =>
+      chip.value !== chipToClose.value && chip.color !== chipToClose.color);
     set_chips(filteredChips);
   }
 
@@ -31,7 +31,7 @@ function Chips({ navigation, route }) {
     setChipValue("");
   }
 
-  function handleSelect(colorValue) {
+  function handleSelect(colorValue: any) {
     if (_chips.length >= 10) {
       alert("É permitido no máximo 10 fichas.");
       return;
@@ -42,7 +42,7 @@ function Chips({ navigation, route }) {
       resetChip();
       return;
     }
-    set_chips(prevState => ([...prevState, chip]));
+    set_chips(prevState => ([...prevState, { ...chip, value: parseInt(chip.value) }]));
     resetChip();
   }
 
@@ -51,6 +51,7 @@ function Chips({ navigation, route }) {
   }
 
   function onPress() {
+    patchTourney("chips", _chips);
     navigation.navigate(routes.tournament, { screen: "Buy In" });
   }
 

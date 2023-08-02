@@ -2,12 +2,12 @@ import { create } from "zustand";
 import omit from "lodash-es/omit";
 import getTourney from "./actions/getTourney";
 
-interface Chip {
+export interface Chip {
   value: number,
   color: string
 }
 
-interface Blind {
+export interface Blind {
   title: number,
   small: number,
   big: number,
@@ -16,12 +16,12 @@ interface Blind {
   pause: number
 }
 
-interface BuyIn {
+export interface BuyIn {
   value: number,
   currency: string
 }
 
-interface Player {
+export interface Player {
   name: string,
   phoneNumber: string,
   email: string,
@@ -33,7 +33,7 @@ interface Player {
   picPay: boolean
 }
 
-interface TournamentState {
+export interface TournamentState {
   clearTourney: () => void,
   loadTourney: (uuid: string) => any,
   patchTourney: (prop: string, value: any) => void,
@@ -42,7 +42,7 @@ interface TournamentState {
     initialStack: number,
     chips: Chip[],
     blinds: Blind[],
-    buyIn: BuyIn[],
+    buyIn: BuyIn,
     shareCosts: boolean,
     players: Player[]
   }
@@ -54,7 +54,10 @@ export const useTourneyStore = create<TournamentState>()(set => ({
     initialStack: 0,
     chips: [],
     blinds: [],
-    buyIn: [],
+    buyIn: {
+      value: 0.00,
+      currency: "R$"
+    },
     shareCosts: false,
     players: []
   },
@@ -62,8 +65,13 @@ export const useTourneyStore = create<TournamentState>()(set => ({
     let tourney = await getTourney(uuid);
     set({ tourney });
   },
-  patchTourney: (prop, value) =>
-    set((state) => ({ tourney: { ...state.tourney, [prop]: value } })),
+  patchTourney: (prop, value) => set(
+    (state) => ({
+      tourney: {
+        ...state.tourney,
+        [prop]: value
+      }
+    })),
   clearTourney: () => set((state) => omit(state, ["tourney"]), true)
 }));
 
