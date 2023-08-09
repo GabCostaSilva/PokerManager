@@ -11,7 +11,6 @@ export default ({ onPressNextPage, children }) => {
       minW={100}
       variant="ghost"
     >
-
         Próximo
     </Button>
   </Center>;

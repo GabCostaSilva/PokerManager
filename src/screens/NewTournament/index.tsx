@@ -10,6 +10,7 @@ import Chips from "./Steps/Chips/Chips";
 import Blinds from "./Steps/Blinds/Blinds";
 import PlayersList from "./Steps/Players/PlayersList";
 import { saveTournament } from "../../state/actions/saveTournament";
+import {Game} from "./Game";
 
 interface Chip {
   value: number,
@@ -70,7 +71,6 @@ export function NewTournament({ navigation, route }) {
     shareCosts: false,
     players: []
   });
-  
 
   async function onSubmit() {
     await saveTournament(formState);
@@ -94,6 +94,7 @@ export function NewTournament({ navigation, route }) {
       <Stack.Screen name={"Blinds"} component={Blinds} />
       <Stack.Screen name={"Resenha"} component={ShareCosts} />
       <Stack.Screen name={"Jogadores"} component={PlayersList} />
+      <Stack.Screen name={"Partida"} component={Game} />
     </Stack.Navigator>
   );
 }

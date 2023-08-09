@@ -3,13 +3,10 @@ import UserAvatar from "react-native-user-avatar";
 
 import React, {useState} from "react";
 import {NewPlayer} from "./NewPlayer";
-import NewBlind from "../Blinds/NewBlind";
-import {ButtonGroup} from "native-base/lib/typescript/theme/components/button";
-import {View} from "react-native";
 
 // TODO: adicionar zustand state aqui
 
-export default ({formState, setFormState, children}) => {
+export default ({navigation, children}) => {
     const data = [{
         id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
         fullName: "Aafreen Khan",
@@ -70,9 +67,7 @@ export default ({formState, setFormState, children}) => {
     const initialRef = React.useRef(null);
     const finalRef = React.useRef(null);
 
-
     return <Center>
-
         <Container w={"100%"} h={[600, 1024]}>
             <Flex direction={"row"} justify={"flex-end"} w={"100%"} mb={5} pt={[5, 10]}>
                 <Button
@@ -123,7 +118,11 @@ export default ({formState, setFormState, children}) => {
         </Container>
         <Flex direction={"row"} justifyContent={"space-between"} minW={72} pl={[4, 6]}>
             <Button w={[32, 64]} variant={"outline"} colorScheme={"danger"}>Cancelar</Button>
-            <Button w={[32, 64]} colorScheme={"success"}><Text bold color={"white"}>Iniciar Partida</Text></Button>
+            <Button w={[32, 64]} colorScheme={"success"}><Text bold color={"white"}
+            onPress={() => {
+                navigation.navigate()
+            }}
+            >Iniciar Partida</Text></Button>
         </Flex>
         {children}
         <Modal
