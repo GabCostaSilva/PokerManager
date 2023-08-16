@@ -9,6 +9,8 @@ const SignUpForm = ({setLogged}: SignUpFormProps): JSX.Element => {
     const loginWithFacebook = () => {
         setLogged(true)
     };
+    
+    // Adicionar login social. FB ou Google?
     return <Center w="100%">
       <Box safeArea p="2" py="8" w="90%" maxW="290">
         <Heading size="lg" fontWeight="600" color="coolGray.800" _dark={{
