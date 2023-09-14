@@ -1,16 +1,13 @@
 import "react-native-gesture-handler";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, extendTheme, NativeBaseProvider } from "native-base";
-import { NavigationContainer, useNavigationContainerRef } from "@react-navigation/native";
-import Login from "./src/screens/Login";
-import { Home } from "./src/screens/Home";
-import { NewTournament } from "./src/screens/NewTournament";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
-import { EditTourney } from "./src/screens/EditTourney";
-import { routes } from "./src/routes";
-import { SignUp } from "./src/screens/SignUp";
+import { AuthContextProvider } from "./src/contexts/AuthContext";
+import { routes_names } from "./src/routes/routes_names";
+import { localStorageAdapter } from "./src/adapters/localStorageAdapter";
+import { Routes } from "./src/Routes";
+import { config, GluestackUIProvider, Text } from "@gluestack-ui/themed";
 
 const newColorTheme = {
   primary: {
@@ -31,38 +28,23 @@ const theme = extendTheme({
   colors: newColorTheme
 });
 
-const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-    const [logged, setLogged] = useState(false);
-    const navigationRef = useNavigationContainerRef(); // You can also use a regular ref with `React.useRef()`
-    return (<NavigationContainer ref={navigationRef}>
+  return (
+    <NavigationContainer>
+      <AuthContextProvider>
         <NativeBaseProvider theme={theme}>
-          <Box safeAreaTop bg="primary.400" />
-          {!logged ? <Stack.Navigator>
-              <Stack.Screen
-                name={"Login"}
-                component={Login}
-              />
-              <Stack.Screen
-                name={"Cadastro"}
-                component={SignUp}
-              />
+          <GluestackUIProvider config={config.theme}>
+            <Box safeAreaTop bg="primary.400" />
+            <Stack.Navigator initialRouteName={routes_names.home} screenOptions={{ headerShown: false }}>
+              <Stack.Screen component={Routes} name={"Root"} />
             </Stack.Navigator>
-            :
-            <>
-              <Drawer.Navigator initialRouteName={routes.home}>
-                <Drawer.Screen name={routes.home} component={Home} />
-                <Drawer.Screen name={routes.tournament} component={NewTournament} />
-                <Drawer.Screen name={routes.edit_tourney} component={EditTourney} />
-              </Drawer.Navigator>
-            </>
-          }
+          </GluestackUIProvider>
         </NativeBaseProvider>
-      </NavigationContainer>
-    );
-  }
-;
+      </AuthContextProvider>
+    </NavigationContainer>
+  );
+};
 
 export default App;

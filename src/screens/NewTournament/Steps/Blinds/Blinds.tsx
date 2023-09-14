@@ -2,7 +2,7 @@ import { Box, Button, FlatList, Flex, HStack, Icon, IconButton, Modal, Spacer, T
 import React, { useEffect, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import FormContainer from "../../FormContainer";
-import { routes } from "../../../../routes";
+import { routes_names } from "../../../../routes/routes_names";
 import NewBlind from "./NewBlind";
 import { useTourneyStore } from "../../../../state/Tournament";
 
@@ -29,7 +29,7 @@ export default function Blinds({ navigation, route, setPage }) {
   }, [_blinds]);
 
   function onPress() {
-    navigation.navigate(routes.tournament, { screen: "Resenha" });
+    navigation.navigate(routes_names.tournament, { screen: "Resenha" });
   }
 
   return <FormContainer onPressNextPage={onPress}>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTourneyStore } from "../../../state/Tournament";
-import { routes } from "../../../routes";
+import { routes_names } from "../../../routes/routes_names";
 import FormContainer from "../FormContainer";
 import { NumericInput } from "../../../components/NumericInput";
 import { onlyNumbers } from "../../../utils";
@@ -13,7 +13,7 @@ export default ({ navigation, route }) => {
   const [value, setValue] = useState(0);
 
   function onPress() {
-    navigation.navigate(routes.tournament, { screen: "Fichas" });
+    navigation.navigate(routes_names.tournament, { screen: "Fichas" });
     patchTourney("initialStack", value);
   }
 

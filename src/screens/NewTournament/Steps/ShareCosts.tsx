@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Checkbox, HStack, VStack, Text, Flex } from "native-base";
 import FormContainer from "../FormContainer";
-import { routes } from "../../../routes";
+import { routes_names } from "../../../routes/routes_names";
 import { useTourneyStore } from "../../../state/Tournament";
 
 export const ShareCosts = ({ navigation, route, children }) => {
@@ -16,7 +16,7 @@ export const ShareCosts = ({ navigation, route, children }) => {
 
   let onPress = () => {
     patchTourney("shareCosts", shareCosts);
-    navigation.navigate(routes.tournament, { screen: "Jogadores" });
+    navigation.navigate(routes_names.tournament, { screen: "Jogadores" });
   };
 
   return <FormContainer onPressNextPage={onPress}>

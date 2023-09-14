@@ -1,8 +1,7 @@
 import { FormControl, Input, Select } from "native-base";
 import React, { useState } from "react";
-import { NumericInput } from "../../../components/NumericInput";
 import FormContainer from "../FormContainer";
-import { routes } from "../../../routes";
+import { routes_names } from "../../../routes/routes_names";
 import { onlyNumbers } from "../../../utils";
 import { useTourneyStore } from "../../../state/Tournament";
 
@@ -24,7 +23,7 @@ export const BuyIn = ({ children, navigation, route }) => {
 
   function onPress() {
     patchTourney("buyIn", state);
-    navigation.navigate(routes.tournament, { screen: "Blinds" });
+    navigation.navigate(routes_names.tournament, { screen: "Blinds" });
   }
 
   return (<FormContainer onPressNextPage={onPress}>

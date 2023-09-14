@@ -1,15 +1,25 @@
-import { Box, Button, Center, FormControl, Heading, HStack, Input, Link, Text, VStack } from "native-base";
+import { Alert, Box, Button, Center, FormControl, Heading, HStack, Input, Link, Text, VStack } from "native-base";
 import React, { useState } from "react";
+import { useLogin } from "../hooks/useLogin";
+import { routes_names } from "../routes/routes_names";
+import { useAuthContext } from "../hooks/useAuthContext";
 
-const SignUpForm = ({ route, navigation }): JSX.Element => {
+const SignIn = ({ route, navigation }): JSX.Element => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  function handleLogin() {
-    console.log(email, password);
-  }
+  const authContext = useAuthContext();
+  const handleLogin = async () => {
+    try {
+      // @ts-ignore
+      await authContext.login(email, password);
+      navigation.navigate(routes_names.home);
+    } catch (e) {
+    }
+  };
 
+  // @ts-ignore
   return <Center w="100%">
     <Box safeArea p="2" py="8" w="90%" maxW="290">
       <Heading size="lg" fontWeight="600" color="coolGray.800" _dark={{
@@ -61,8 +71,18 @@ const SignUpForm = ({ route, navigation }): JSX.Element => {
           </Link>
         </HStack>
       </VStack>
+      {authContext.error && <Alert w="100%" status="error">
+        <Text fontSize="md" color="coolGray.800"
+              onPress={() => {
+                authContext.setError(null);
+              }}
+        >{authContext.error}</Text>
+      </Alert> || authContext.isLoading && <Alert w="100%" status="info">
+        <Text fontSize="md" color="coolGray.800">Carregando...</Text>
+      </Alert>}
     </Box>
   </Center>;
 };
 
-export default SignUpForm;
+export default SignIn;
+;

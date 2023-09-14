@@ -2,10 +2,12 @@ import { Button, Center, Divider, Flex, Heading, HStack, Icon, Modal, Pressable,
 import React, { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
-import { routes } from "../../routes";
 import { useTourneyStore } from "../../state/Tournament";
 import SystemNotification from "../../components/SystemNotification";
 import { listTourneys } from "../../state/actions/listTourneys";
+import { routes_names } from "../../routes/routes_names";
+import { useAuthContext } from "../../hooks/useAuthContext";
+
 interface TourneyForListing {
   uuid: string,
   players: [];
@@ -57,7 +59,7 @@ export function Home({ route, navigation }) {
         backgroundColor={"green.500"}
         onPress={() => {
           clearTourney();
-          navigation.navigate(routes.tournament);
+          navigation.navigate(routes_names.tournament);
         }}
       >
         <Text color={"white"} bold>
@@ -72,6 +74,7 @@ export function Home({ route, navigation }) {
       <Text flexGrow={1} bold>Jogadores</Text>
       <Text flexGrow={1} bold>Data</Text>
     </Flex>
+
     <Modal
       onClose={() => setModalVisible(false)}
       initialFocusRef={initialRef} finalFocusRef={finalRef}
@@ -94,7 +97,7 @@ export function Home({ route, navigation }) {
               </Button>
               <Button rightIcon={<Icon as={<AntDesign name="edit" />} name="editTourney" />}
                       onPress={() => {
-                        navigation.navigate(routes.edit_tourney, {
+                        navigation.navigate(routes_names.edit_tourney, {
                           tourney: {
                             uuid: selectedTourney.uuid
                           }

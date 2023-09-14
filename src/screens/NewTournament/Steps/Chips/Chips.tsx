@@ -3,8 +3,8 @@ import { CheckIcon, FormControl, Input, Select, Stack, Text } from "native-base"
 import CloseableCircle from "../../../../components/CloseableCircle";
 import { colors } from "./colors";
 import FormContainer from "../../FormContainer";
-import { routes } from "../../../../routes";
 import { Chip, useTourneyStore } from "../../../../state/Tournament";
+import { routes_names } from "../../../../routes/routes_names";
 
 function Chips({ navigation, route }) {
   let { chips } = useTourneyStore(state => state.tourney);
@@ -52,7 +52,7 @@ function Chips({ navigation, route }) {
 
   function onPress() {
     patchTourney("chips", _chips);
-    navigation.navigate(routes.tournament, { screen: "Buy In" });
+    navigation.navigate(routes_names.tournament, { screen: "Buy In" });
   }
 
   return <FormContainer onPressNextPage={onPress}>

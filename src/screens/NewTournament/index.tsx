@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import StepsButtonGroup from "../../components/StepsButtonGroup";
 import { ShareCosts } from "./Steps/ShareCosts";
 import { BuyIn } from "./Steps/BuyIn";
-import { routes } from "../../routes";
+import { routes_names } from "../../routes/routes_names";
 import TourneyName from "./Steps/TourneyName";
 import InitialStack from "./Steps/InitialStack";
 import Chips from "./Steps/Chips/Chips";
@@ -76,7 +76,7 @@ export function NewTournament({ navigation, route }) {
     await saveTournament(formState);
 
     setPage(0);
-    navigation.navigate(routes.home, {
+    navigation.navigate(routes_names.home, {
       message: "Torneio criado com sucesso!"
     });
   }
@@ -87,7 +87,6 @@ export function NewTournament({ navigation, route }) {
                     component={TourneyName}
                     options={{ headerShown: true, headerBackTitleVisible: false }}
       />
-
       <Stack.Screen name={"Stack Inicial"} component={InitialStack} />
       <Stack.Screen name={"Fichas"} component={Chips} />
       <Stack.Screen name={"Buy In"} component={BuyIn} />
