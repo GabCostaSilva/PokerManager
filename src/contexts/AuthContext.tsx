@@ -2,6 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import { AuthController } from "../adapters/controllers/auth-controller";
 import { localStorageAdapter } from "../adapters/localStorageAdapter";
+import jwtDecode from "jwt-decode";
 
 export const AuthContext = React.createContext({});
 
@@ -9,12 +10,13 @@ export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState({ access_token: null });
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const login = async (username: string, password: string) => {
+  const login = async (email: string, password: string) => {
     try {
-      const { access_token } = await AuthController.login(username, password);
-      console.log("loginResponse", access_token);
-      await localStorageAdapter.setAccessToken(access_token);
-      setUser({ access_token });
+      const response = await AuthController.login(email, password);
+      console.log("loginResponse", response);
+      await localStorageAdapter.setAccessToken(response.access_token);
+      // @ts-ignore
+      setUser(response.profile);
     } catch (e) {
       console.error(e.message);
       setError(e.message);
@@ -23,8 +25,8 @@ export const AuthContextProvider = ({ children }) => {
 
   const logout = async () => {
     await AuthController.logout();
-    setUser({ access_token: null });
-    await localStorageAdapter.setAccessToken(null);
+    setUser(null);
+    await localStorageAdapter.removeAccessToken();
   };
 
   // const resetPassword = async (email: string, password: string) => {
@@ -41,7 +43,7 @@ export const AuthContextProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{
-      isSignedIn: !!user.access_token,
+      isSignedIn: !!user,
       user: user,
       error,
       setError,

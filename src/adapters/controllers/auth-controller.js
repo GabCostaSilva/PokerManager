@@ -18,13 +18,11 @@ const POST = async (data, path) => {
 };
 
 export const AuthController = {
-  login: async (userName, password) => {
-    const response = await POST({ userName, password }, "login");
+  login: async (email, password) => {
+    const response = await POST({ email, password }, "login");
     const json = await response.json();
-    console.log("response", json);
 
     const statusCode = json.statusCode;
-    console.log("response.statusCode", statusCode);
     if (statusCode >= 500) {
       console.error(json.message);
       throw new Error("Login falhou. Tente novamente mais tarde");
