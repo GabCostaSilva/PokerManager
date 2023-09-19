@@ -1,8 +1,10 @@
+import { client } from "../../adapters/controllers/client";
+
 export const listTourneys = async () => {
-  let response = await fetch("http://localhost:3000/tourney");
-  if (response.ok) {
-    return response.json();
-  } else {
-    console.error("Response", response.status);
+  try {
+    return await client.get("/tourney");
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 };

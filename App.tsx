@@ -1,13 +1,11 @@
-import "react-native-gesture-handler";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Box, extendTheme, NativeBaseProvider } from "native-base";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AuthContextProvider } from "./src/contexts/AuthContext";
 import { routes_names } from "./src/routes/routes_names";
-import { localStorageAdapter } from "./src/adapters/localStorageAdapter";
 import { Routes } from "./src/Routes";
-import { config, GluestackUIProvider, Text } from "@gluestack-ui/themed";
+import { config, GluestackUIProvider } from "@gluestack-ui/themed";
 
 const newColorTheme = {
   primary: {
