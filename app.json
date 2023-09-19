@@ -2,6 +2,7 @@
   "expo": {
     "name": "PokerManagerProto",
     "slug": "PokerManagerProto",
+    "jsEngine": "hermes",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/poker-chip.png",
@@ -15,6 +16,7 @@
       "**/*"
     ],
     "ios": {
+      "jsEngine": "hermes",
       "supportsTablet": true,
       "bundleIdentifier": "com.gabcozta.PokerManagerProto",
       "infoPlist": {

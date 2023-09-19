@@ -1,8 +1,10 @@
+import { client } from "../../adapters/controllers/client";
+
 export default async (uuid: string) => {
-    let response = await fetch(`http://localhost:3000/tourney/${uuid}`);
-    if (response.ok) {
-        return response.json();
-    } else {
-        console.error("Response", response.status)
-    }
+  try {
+    return await client.get(`/tourney/${uuid}`);
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
 }
