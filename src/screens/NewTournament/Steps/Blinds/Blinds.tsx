@@ -17,7 +17,7 @@ interface Blind {
 
 export default function Blinds({ navigation, route, setPage }) {
   let { blinds } = useTourneyStore(state => state.tourney);
-
+  const tourneyStore = useTourneyStore(state => state.tourney);
   const [_blinds, set_blinds] = useState<Blind[]>(blinds);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -26,7 +26,7 @@ export default function Blinds({ navigation, route, setPage }) {
 
   useEffect(() => {
     set_blinds(blinds);
-  }, [_blinds]);
+  }, [blinds]);
 
   function onPress() {
     navigation.navigate(routes_names.tournament, { screen: "Resenha" });
@@ -54,7 +54,7 @@ export default function Blinds({ navigation, route, setPage }) {
       </HStack>
       <FlatList data={_blinds}
                 renderItem={({ item }) => <Box borderBottomWidth="1" _dark={{ borderColor: "muted.50" }}
-                                               borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]} py="2">
+                                               borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]}>
                   <VStack space={[2, 3]} justifyContent="space-between">
                     <HStack justifyContent="space-between" p={2}>
                       <Text>{item.title}</Text>
@@ -97,7 +97,7 @@ export default function Blinds({ navigation, route, setPage }) {
         <Modal.Header>Novo Blind</Modal.Header>
         <Modal.CloseButton />
         <Modal.Body>
-          <NewBlind setModalVisible={setModalVisible} />
+          <NewBlind setModalVisible={setModalVisible}/>
         </Modal.Body>
       </Modal.Content>
     </Modal>

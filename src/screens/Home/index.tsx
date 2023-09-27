@@ -7,6 +7,7 @@ import SystemNotification from "../../components/SystemNotification";
 import { listTourneys } from "../../state/actions/listTourneys";
 import { routes_names } from "../../routes/routes_names";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import { AxiosResponse } from "axios";
 
 interface TourneyForListing {
   uuid: string,
@@ -24,12 +25,13 @@ export function Home({ route, navigation }) {
   const finalRef = React.useRef(null);
   const clearTourney = useTourneyStore(state => state.clearTourney);
 
+  //TODO not being executed when returning from another screen
   useFocusEffect(
     React.useCallback(() => {
       let isActive = true;
 
       (async () => {
-        let response;
+        let response: React.SetStateAction<TourneyForListing[]> | AxiosResponse<any, any>;
         try {
           response = await listTourneys();
         } catch (err) {
@@ -39,7 +41,8 @@ export function Home({ route, navigation }) {
         if (isActive) {
           const params = route ? route.params : null;
           if (params) alert(params.message);
-          setTourneys(response);
+          // @ts-ignore
+          setTourneys(response.data);
         }
       })();
 
@@ -47,7 +50,7 @@ export function Home({ route, navigation }) {
         isActive = false;
 
       };
-    }, [route])
+    }, [])
   );
 
   /* TODO Adicionar gesture para atualizar lista */
@@ -131,8 +134,8 @@ export function Home({ route, navigation }) {
                 flexDir={"row"}
               >
                 <Text flexGrow={1} maxW={24} ellipsizeMode={"tail"}
-                      numberOfLines={1}>{tourney.name}hjhkljhkljh</Text>
-                <Text flexGrow={1} textAlign={"center"}>{tourney.initialStack}0</Text>
+                      numberOfLines={1}>{tourney.name}</Text>
+                <Text flexGrow={1} textAlign={"center"}>{tourney.initialStack}</Text>
                 <Text flexGrow={1} textAlign={"center"}>{tourney.players.length}</Text>
                 <Center flexGrow={1}>22/04/23</Center>
               </Flex>

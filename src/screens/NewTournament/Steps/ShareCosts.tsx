@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Checkbox, HStack, VStack, Text, Flex } from "native-base";
+import { Checkbox, Flex, Text } from "native-base";
 import FormContainer from "../FormContainer";
 import { routes_names } from "../../../routes/routes_names";
 import { useTourneyStore } from "../../../state/Tournament";
@@ -8,14 +8,14 @@ export const ShareCosts = ({ navigation, route, children }) => {
   let { shareCosts } = useTourneyStore(state => state.tourney);
   let patchTourney = useTourneyStore(state => state.patchTourney);
 
-  const [isChecked, setIsChecked] = useState(shareCosts);
+  const [isChecked, setIsChecked] = useState(shareCosts || false);
 
   const onChange = (isSelected: boolean) => {
     setIsChecked(isSelected);
   };
 
   let onPress = () => {
-    patchTourney("shareCosts", shareCosts);
+    patchTourney("shareCosts", isChecked);
     navigation.navigate(routes_names.tournament, { screen: "Jogadores" });
   };
 

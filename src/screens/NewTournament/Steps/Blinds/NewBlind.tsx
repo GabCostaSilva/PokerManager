@@ -2,31 +2,16 @@ import { Button, FormControl, HStack, Text } from "native-base";
 import React, { useState } from "react";
 import { NumericInput } from "../../../../components/NumericInput";
 import { onlyNumbers } from "../../../../utils";
-import { useTourneyStore } from "../../../../state/Tournament";
+import { Blind, useTourneyStore } from "../../../../state/Tournament";
 
-interface Blind {
-  title: number,
-  small: number,
-  big: number,
-  ante: number,
-  time: number,
-  pause: number
-}
-
-interface NewBlindProps {
-  setModalVisible: (value: (((prevState: boolean) => boolean) | boolean)) => void;
-}
-
-const NewBlind = ({ setModalVisible }: NewBlindProps) => {
-  let { blinds } = useTourneyStore(state => state.tourney);
-  let patchTourney = useTourneyStore(state => state.patchTourney);
-
+const NewBlind = ({ setModalVisible }) => {
+  let addBlind = useTourneyStore(state => state.addBlind);
   let initialState = {
     title: 0,
     small: 0,
     big: 0,
     ante: 0,
-    time: 0,
+    time: "",
     pause: 0
   };
   const [blind, setBlind] = useState<Blind>(initialState);
@@ -69,7 +54,7 @@ const NewBlind = ({ setModalVisible }: NewBlindProps) => {
     <FormControl>
       <FormControl.Label _text={{ bold: true }}>{"Tempo (em segundos)"}</FormControl.Label>
       <NumericInput onChangeText={(value) => {
-        setBlind({ ...blind, time: onlyNumbers(value) });
+        setBlind({ ...blind, time: value });
       }} value={onlyNumbers(blind.time.toString()).toString()}
       />
     </FormControl>
@@ -94,7 +79,7 @@ const NewBlind = ({ setModalVisible }: NewBlindProps) => {
 
       <Button
         onPress={() => {
-          patchTourney("blinds", [...blinds, blind]);
+          addBlind(blind);
           setBlind(prevState => (initialState));
           setModalVisible(false);
         }}>

@@ -14,6 +14,7 @@ const Tab = createBottomTabNavigator();
 
 export const Routes = () => {
   const auth = useAuthContext();
+
   // @ts-ignore
   return auth.isSignedIn
     ? <Tab.Navigator>

@@ -14,7 +14,6 @@ export const AuthContextProvider = ({ children }) => {
   const login = async (email: string, password: string) => {
     try {
       const response = await AuthController.login(email, password);
-      console.log("loginResponse", response);
       await localStorageAdapter.setAccessToken(response.access_token);
       // @ts-ignore
       setUser(response.profile);
@@ -44,7 +43,7 @@ export const AuthContextProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{
-      isSignedIn: !!user,
+      isSignedIn: user.access_token !== null,
       user: user,
       error,
       setError,

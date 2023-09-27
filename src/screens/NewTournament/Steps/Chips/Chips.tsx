@@ -10,7 +10,6 @@ function Chips({ navigation, route }) {
   let { chips } = useTourneyStore(state => state.tourney);
   let patchTourney = useTourneyStore(state => state.patchTourney);
 
-  console.log("CHIPOS:", chips);
   const [_chips, set_chips] = useState<Chip[]>(chips || []);
   const [chipColor, setChipColor] = useState("");
   const [chipValue, setChipValue] = useState("");

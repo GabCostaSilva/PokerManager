@@ -37,6 +37,7 @@ export interface TournamentState {
   clearTourney: () => void,
   loadTourney: (uuid: string) => any,
   patchTourney: (prop: string, value: any) => void,
+  addBlind: (blind: Blind) => void,
   tourney: {
     name: string,
     initialStack: number,
@@ -61,10 +62,13 @@ export const useTourneyStore = create<TournamentState>()(set => ({
     shareCosts: false,
     players: []
   },
+
   loadTourney: async (uuid) => {
     let tourney = await getTourney(uuid);
+    // @ts-ignore
     set({ tourney });
   },
+
   patchTourney: (prop, value) => set(
     (state) => ({
       tourney: {
@@ -72,6 +76,18 @@ export const useTourneyStore = create<TournamentState>()(set => ({
         [prop]: value
       }
     })),
+
+  addBlind: (blind: Blind) => set(
+    (state) => {
+      return {
+        ...state,
+        tourney: {
+          ...state.tourney,
+          blinds: [...state.tourney.blinds || [], blind]
+        }
+      };
+    }),
+
   clearTourney: () => set((state) => omit(state, ["tourney"]), true)
 }));
 

@@ -35,7 +35,7 @@ const App = () => {
         <NativeBaseProvider theme={theme}>
           <GluestackUIProvider config={config.theme}>
             <Box safeAreaTop bg="primary.400" />
-            <Stack.Navigator initialRouteName={routes_names.home} screenOptions={{ headerShown: false }}>
+            <Stack.Navigator initialRouteName={routes_names.login} screenOptions={{ headerShown: false }}>
               <Stack.Screen component={Routes} name={"Root"} />
             </Stack.Navigator>
           </GluestackUIProvider>
