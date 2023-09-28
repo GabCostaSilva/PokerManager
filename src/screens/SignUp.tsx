@@ -1,17 +1,27 @@
 import React, { useState } from "react";
-import { Alert, Text, Box, Button, Center, FormControl, Heading, Input, VStack } from "native-base";
-import { useSignUp } from "../hooks/useSignUp";
+import { Alert, Box, Button, Center, FormControl, Heading, Input, Text, VStack } from "native-base";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 export const SignUp = ({ route, navigation }) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userName, setUserName] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [docNumber, setDocNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
-  const { signUp, error, isLoading } = useSignUp();
+  // @ts-ignore
+  const { register, error, isLoading } = useAuthContext();
 
   async function handleSignUp() {
-    await signUp(userName, password);
+    await register(fullName,
+      userName,
+      email,
+      phoneNumber,
+      docNumber,
+      password);
+    navigation.navigate("Login");
   }
 
   return <Center w="100%">
@@ -35,10 +45,31 @@ export const SignUp = ({ route, navigation }) => {
           />
         </FormControl>
         <FormControl>
+          <FormControl.Label>Telefone</FormControl.Label>
+          <Input
+            value={phoneNumber}
+            onChangeText={text => setPhoneNumber(text)}
+          />
+        </FormControl>
+        <FormControl>
+          <FormControl.Label>Nome e sobrenome</FormControl.Label>
+          <Input
+            value={fullName}
+            onChangeText={text => setFullName(text)}
+          />
+        </FormControl>
+        <FormControl>
           <FormControl.Label>Nome de usuário</FormControl.Label>
           <Input
             value={userName}
             onChangeText={text => setUserName(text)}
+          />
+        </FormControl>
+        <FormControl>
+          <FormControl.Label>CPF</FormControl.Label>
+          <Input
+            value={docNumber}
+            onChangeText={text => setDocNumber(text)}
           />
         </FormControl>
         <FormControl>

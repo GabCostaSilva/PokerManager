@@ -35,10 +35,11 @@ export const AuthContextProvider = ({ children }) => {
 
   const register = async (name: string,
                           userName: string,
+                          phoneNumber: string,
                           email: string,
                           docNumber: string,
                           password: string) => {
-    return await AuthController.register({ name, userName, email, docNumber, password });
+    return await AuthController.register({ name, userName, phoneNumber, email, docNumber, password });
   };
 
   return (
