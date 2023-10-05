@@ -14,11 +14,10 @@ export const AuthContextProvider = ({children}) => {
     const login = async (email: string, password: string) => {
         try {
             const response = await AuthController.login(email, password);
-            await localStorageAdapter.setAccessToken(response.access_token);
+            await localStorageAdapter.setAccessToken(response.data.access_token);
             // @ts-ignore
-            setUser(response.profile);
+            setUser(response.data.profile);
         } catch (e) {
-            console.error(e.message);
             setError(e.message);
         }
     };

@@ -25,17 +25,17 @@ const POST = async (data, path) => {
 export const AuthController = {
     login: async (email, password) => {
         const response = await POST({email, password}, "login");
-        const json = await response.json();
 
-        const statusCode = json.statusCode;
+        const statusCode = response.statusCode;
+        let message = response?.message;
         if (statusCode >= 500) {
-            console.error(json.message);
+            console.error(message);
             throw new Error("Login falhou. Tente novamente mais tarde");
         } else if (statusCode?.toString().substring(0, 1) === "4") {
-            console.error(json.message);
+            console.error(message);
             throw new Error("Login não autorizado. Verifique seu usuário e senha");
         } else
-            return json;
+            return response;
     },
 
     logout: async () => {

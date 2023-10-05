@@ -6,6 +6,8 @@ import { AuthContextProvider } from "./src/contexts/AuthContext";
 import { routes_names } from "./src/routes/routes_names";
 import { Routes } from "./src/Routes";
 import { config, GluestackUIProvider } from "@gluestack-ui/themed";
+import Login from "./src/screens/Login";
+import {SignUp} from "./src/screens/SignUp";
 
 const newColorTheme = {
   primary: {
@@ -37,6 +39,8 @@ const App = () => {
             <Box safeAreaTop bg="primary.400" />
             <Stack.Navigator initialRouteName={routes_names.login} screenOptions={{ headerShown: false }}>
               <Stack.Screen component={Routes} name={"Root"} />
+              <Stack.Screen name={"Login"} component={Login}/>
+              <Stack.Screen name={"Cadastro"} component={SignUp}/>
             </Stack.Navigator>
           </GluestackUIProvider>
         </NativeBaseProvider>

@@ -8,8 +8,6 @@ import { routes_names } from "../../../../routes/routes_names";
 import { useTourneyStore } from "../../../../state/Tournament";
 import { saveTournament } from "../../../../state/actions/saveTournament";
 
-// TODO: adicionar zustand state aqui
-
 export default ({ navigation, children }) => {
   const playersController = new PlayersController();
   const tourneyStore = useTourneyStore(state => state.tourney);
