@@ -16,7 +16,7 @@ export const SignUp = ({route, navigation}) => {
 
     async function handleSignUp() {
         await register({
-            fullName,
+            name: fullName,
             userName,
             email,
             phoneNumber,

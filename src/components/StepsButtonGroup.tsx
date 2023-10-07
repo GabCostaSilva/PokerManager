@@ -1,5 +1,5 @@
 import {Button, HStack, Text} from "native-base";
-import React, {useEffect} from "react";
+import React from "react";
 
 interface StepsButtonGroupProps {
     functions?: (() => void)[],

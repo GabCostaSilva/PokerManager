@@ -13,14 +13,14 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export const Routes = () => {
-    const auth = useAuthContext();
+    const {isSignedIn} = useAuthContext();
 
     // @ts-ignore
-    return auth.isSignedIn
+    return isSignedIn
         ? <Tab.Navigator>
             <Tab.Screen name={routes_names.home} component={Home}/>
             <Tab.Screen name={routes_names.tournament} component={NewTournament}/>
-            <Tab.Screen name={routes_names.profile} component={Profile} />
+            <Tab.Screen name={routes_names.profile} component={Profile}/>
         </Tab.Navigator>
         : <Stack.Navigator screenOptions={{headerShown: false}}>
             <Stack.Screen name={"Login"} component={Login}/>

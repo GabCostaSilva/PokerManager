@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {AuthController} from "../adapters/controllers/auth-controller";
 import {localStorageAdapter} from "../adapters/localStorageAdapter";
 import jwtDecode from "jwt-decode";
@@ -7,16 +7,22 @@ import jwtDecode from "jwt-decode";
 export const AuthContext = React.createContext({});
 
 export const AuthContextProvider = ({children}) => {
-    const [user, setUser] = useState({access_token: null});
+    const [user, setUser] = useState(null);
+    const [token, setToken] = useState(null)
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        console.log('AuthContextProvider', user)
+    }, [user]);
 
     const login = async (email: string, password: string) => {
         try {
             const response = await AuthController.login(email, password);
-            await localStorageAdapter.setAccessToken(response.data.access_token);
+            await localStorageAdapter.setAccessToken(response?.data?.access_token);
+            setToken(response?.data?.access_token);
             // @ts-ignore
-            setUser(response.data.profile);
+            setUser(response?.data?.profile);
         } catch (e) {
             setError(e.message);
         }
@@ -25,6 +31,7 @@ export const AuthContextProvider = ({children}) => {
     const logout = async () => {
         await AuthController.logout();
         setUser(null);
+        setToken(null);
         await localStorageAdapter.removeAccessToken();
     };
 
@@ -55,17 +62,32 @@ export const AuthContextProvider = ({children}) => {
         }
     };
 
+    interface AuthContextProps {
+        isSignedIn: boolean;
+        user: unknown;
+        token: unknown;
+        setUser: (value: unknown) => void;
+        error: unknown;
+        setError: (value: unknown) => void;
+        isLoading: boolean;
+        login: (email: string, password: string) => Promise<void>;
+        logout: () => Promise<void>;
+        register: (userData: UserData) => Promise<void>;
+    }
+
     return (
         <AuthContext.Provider value={{
-            isSignedIn: user?.access_token !== null,
-            user: user,
+            isSignedIn: token !== null,
+            user,
+            token,
+            setUser,
             error,
             setError,
             isLoading,
             login,
             logout,
             register
-        }}>
+        } as AuthContextProps}>
             {children}
         </AuthContext.Provider>
     );

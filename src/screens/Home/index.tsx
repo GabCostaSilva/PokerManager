@@ -24,37 +24,38 @@ export function Home({route, navigation}) {
     const initialRef = React.useRef(null);
     const finalRef = React.useRef(null);
     const clearTourney = useTourneyStore(state => state.clearTourney);
+    // @ts-ignore
+    const {user} = useAuthContext();
 
     useFocusEffect(
         React.useCallback(() => {
             let isActive = true;
 
-            /* TODO Listar torneios por usuário*/
             (async () => {
                 let response: React.SetStateAction<TourneyForListing[]> | AxiosResponse<any, any>;
                 try {
                     response = await listTourneys();
                 } catch (err) {
                     console.error(err);
-                    setError("Erro ao carregar torneios. Tente novamente mais tarde.");
+                    setError("Erro ao carregar torneios do usuário. Tente novamente mais tarde.");
                 }
                 if (isActive) {
                     const params = route ? route.params : null;
+
                     if (params) alert(params.message);
                     // @ts-ignore
-                    setTourneys(response.data);
+                    setTourneys(response?.data);
                 }
-            })();
+            })
+            ();
 
             return () => {
                 isActive = false;
-
             };
-        }, [])
+        }, [route])
     );
 
     /* TODO Adicionar gesture para atualizar lista */
-
     return <VStack space={3} divider={<Divider/>} w="100%" p="4">
         <HStack justifyContent="flex-end">
             <Button
@@ -80,7 +81,8 @@ export function Home({route, navigation}) {
 
         <Modal
             onClose={() => setModalVisible(false)}
-            initialFocusRef={initialRef} finalFocusRef={finalRef}
+            initialFocusRef={initialRef}
+            finalFocusRef={finalRef}
             isOpen={modalVisible}
             safeAreaTop={true}
         >

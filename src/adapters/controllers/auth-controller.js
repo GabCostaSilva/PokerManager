@@ -15,9 +15,10 @@ const POST = async (data, path) => {
         // });
 
         let axiosResponse = await client.post(url, body);
-        console.log("POST TO " + url + "\nBODY: " + body, JSON.stringify(axiosResponse))
+        // console.log("POST TO " + url + "\nBODY: " + body, JSON.stringify(axiosResponse))
         return axiosResponse;
     } catch (e) {
+        console.error("Auth Controller POST", e)
         return e.response.data;
     }
 };

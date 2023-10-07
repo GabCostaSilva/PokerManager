@@ -39,8 +39,6 @@ const App = () => {
             <Box safeAreaTop bg="primary.400" />
             <Stack.Navigator initialRouteName={routes_names.login} screenOptions={{ headerShown: false }}>
               <Stack.Screen component={Routes} name={"Root"} />
-              <Stack.Screen name={"Login"} component={Login}/>
-              <Stack.Screen name={"Cadastro"} component={SignUp}/>
             </Stack.Navigator>
           </GluestackUIProvider>
         </NativeBaseProvider>
