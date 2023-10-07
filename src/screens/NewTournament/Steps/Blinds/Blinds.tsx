@@ -17,16 +17,10 @@ interface Blind {
 
 export default function Blinds({navigation, route, setPage}) {
     let {blinds} = useTourneyStore(state => state.tourney) || {blinds: []};
-    const [_blinds, set_blinds] = useState<Blind[]>(blinds);
     const [modalVisible, setModalVisible] = useState(false);
 
     const initialRef = React.useRef(null);
     const finalRef = React.useRef(null);
-
-    //TODO fix useeffect to update blinds
-    // useEffect(() => {
-    //     set_blinds(blinds);
-    // }, [blinds]);
 
     function onPress() {
         navigation.navigate(routes_names.tournament, {screen: "Resenha"});
@@ -52,7 +46,7 @@ export default function Blinds({navigation, route, setPage}) {
                 <Text>Tempo</Text>
                 <Text>Editar</Text>
             </HStack>
-            <FlatList data={_blinds}
+            <FlatList data={blinds}
                       renderItem={({item}) => <Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}}
                                                    borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]}>
                           <VStack space={[2, 3]} justifyContent="space-between">
