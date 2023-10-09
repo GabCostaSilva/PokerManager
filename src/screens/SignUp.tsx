@@ -23,7 +23,6 @@ export const SignUp = ({route, navigation}) => {
             docNumber,
             password
         });
-        console.log("Error ", error)
         if (!error)
             navigation.navigate("Login");
     }

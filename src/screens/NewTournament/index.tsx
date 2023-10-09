@@ -56,35 +56,10 @@ export interface TournamentState {
 
 const Stack = createNativeStackNavigator();
 
-export function NewTournament({navigation, route}) {
-    const currentPage = route.params?.currentPage || 0;
-    const [page, setPage] = useState(currentPage || 0);
-
-    const [formState, setFormState] = useState<TournamentState>({
-        name: "",
-        initialStack: 0,
-        chips: [],
-        blinds: [],
-        buyIn: {
-            value: 0,
-            currency: "R$"
-        },
-        shareCosts: false,
-        players: []
-    });
-
-    async function onSubmit() {
-        await saveTournament(formState);
-
-        setPage(0);
-        navigation.navigate(routes_names.home, {
-            message: "Torneio criado com sucesso!"
-        });
-    }
-
+export function NewTournament({navigation}) {
     return (
         <Stack.Navigator>
-            <Stack.Screen name={"Nome do Torneio"}
+            <Stack.Screen name={routes_names.new_tournament}
                           component={TourneyName}
                           options={{headerShown: true, headerBackTitleVisible: false}}
             />
@@ -96,6 +71,5 @@ export function NewTournament({navigation, route}) {
             <Stack.Screen name={"Jogadores"} component={PlayersList}/>
             <Stack.Screen name={"Partida"} component={Game}/>
         </Stack.Navigator>
-
     );
 }

@@ -63,6 +63,7 @@ export const useTourneyStore = create<TournamentState>()(set => ({
     players: []
   },
 
+  //Nome do Torneio-aetdhrQ9TIuLZKDmRvXNb
   loadTourney: async (uuid) => {
     let tourney = await getTourney(uuid);
     // @ts-ignore

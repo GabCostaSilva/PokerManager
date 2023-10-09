@@ -12,10 +12,6 @@ export const AuthContextProvider = ({children}) => {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
-        console.log('AuthContextProvider', user)
-    }, [user]);
-
     const login = async (email: string, password: string) => {
         try {
             const response = await AuthController.login(email, password);

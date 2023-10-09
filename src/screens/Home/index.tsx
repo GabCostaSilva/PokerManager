@@ -24,8 +24,6 @@ export function Home({route, navigation}) {
     const initialRef = React.useRef(null);
     const finalRef = React.useRef(null);
     const clearTourney = useTourneyStore(state => state.clearTourney);
-    // @ts-ignore
-    const {user} = useAuthContext();
 
     useFocusEffect(
         React.useCallback(() => {
@@ -63,9 +61,8 @@ export function Home({route, navigation}) {
                 backgroundColor={"green.500"}
                 onPress={() => {
                     clearTourney();
-                    navigation.navigate(routes_names.tournament);
-                }}
-            >
+                    navigation.navigate(routes_names.tournament, {screen: routes_names.new_tournament})
+                }}>
                 <Text color={"white"} bold>
                     Novo Torneio
                 </Text>
@@ -73,7 +70,7 @@ export function Home({route, navigation}) {
         </HStack>
 
         <Flex flexDir={"row"}>
-            <Text flexGrow={1} bold>Nome</Text>
+            <Text flexGrow={1} w={[16, 20]} bold>Nome</Text>
             <Text flexGrow={1} bold>Stack Inicial</Text>
             <Text flexGrow={1} bold>Jogadores</Text>
             <Text flexGrow={1} bold>Data</Text>
@@ -135,9 +132,9 @@ export function Home({route, navigation}) {
                                 }}
                                 flexDir={"row"}
                             >
-                                <Text flexGrow={1} maxW={24} ellipsizeMode={"tail"}
+                                <Text flexGrow={1} w={[16, 20]} ellipsizeMode={"tail"}
                                       numberOfLines={1}>{tourney.name}</Text>
-                                <Text flexGrow={1} textAlign={"center"}>{tourney.initialStack}</Text>
+                                <Text flexGrow={1} w={[18, 20]} textAlign={"center"}>{tourney.initialStack}</Text>
                                 <Text flexGrow={1} textAlign={"center"}>{tourney.players.length}</Text>
                                 <Center flexGrow={1}>22/04/23</Center>
                             </Flex>

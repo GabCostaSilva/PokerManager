@@ -1,6 +1,7 @@
 {
   "expo": {
-    "name": "PokerManagerProto",
+    "owner": "pokerdealer",
+    "name": "Poker Dealer",
     "slug": "PokerManagerProto",
     "jsEngine": "hermes",
     "version": "1.0.0",
@@ -18,7 +19,7 @@
     "ios": {
       "jsEngine": "hermes",
       "supportsTablet": true,
-      "bundleIdentifier": "com.gabcozta.PokerManagerProto",
+      "bundleIdentifier": "com.pokerdealer.PokerDealerApp",
       "infoPlist": {
         "UISupportsDocumentBrowser": true,
         "UIFileSharingEnabled": true,

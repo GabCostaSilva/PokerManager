@@ -20,16 +20,14 @@ export default ({navigation, children}) => {
         playersController.listPlayers()
             .then(async (response) => {
                 setPlayers(response.data);
-                console.log('players', response.data)
             });
-
-
     }, []);
 
     function handleStartTourney() {
         return async () => {
             await saveTournament(tourneyStore);
             navigation.navigate(routes_names.home);
+            navigation.reset();
         };
     }
 
