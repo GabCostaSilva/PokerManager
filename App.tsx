@@ -1,13 +1,12 @@
 import React from "react";
-import { Box, extendTheme, NativeBaseProvider } from "native-base";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { AuthContextProvider } from "./src/contexts/AuthContext";
-import { routes_names } from "./src/routes/routes_names";
-import { Routes } from "./src/Routes";
-import { config, GluestackUIProvider } from "@gluestack-ui/themed";
-import Login from "./src/screens/Login";
-import {SignUp} from "./src/screens/SignUp";
+import {Box, extendTheme, NativeBaseProvider} from "native-base";
+import {NavigationContainer} from "@react-navigation/native";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import {AuthContextProvider} from "./src/contexts/AuthContext";
+import {routes_names} from "./src/routes/routes_names";
+import {Routes} from "./src/Routes";
+import {config, GluestackUIProvider} from "@gluestack-ui/themed";
+import 'expo-dev-client';
 
 const newColorTheme = {
   primary: {

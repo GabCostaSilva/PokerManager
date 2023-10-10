@@ -35,7 +35,6 @@ export const Profile = ({navigation}) => {
         <Button variant="ghost" colorScheme="danger" alignSelf={"flex-start"} w={16}
                 onPress={async () => {
                     await logout();
-                    console.log('Logout user', user)
                     //@ts-ignore
                     navigation.navigate(routes_names.home)
                 }}>

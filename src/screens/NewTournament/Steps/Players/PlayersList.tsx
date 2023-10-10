@@ -1,8 +1,6 @@
-import {Box, Button, Center, Circle, Container, FlatList, Flex, HStack, Modal, Spacer, Text} from "native-base";
-import UserAvatar from "react-native-user-avatar";
+import {Box, Button, Center, Circle, Container, FlatList, Flex, HStack, Spacer, Text} from "native-base";
 
 import React, {useState} from "react";
-import {NewPlayer} from "./NewPlayer";
 import PlayersController from "../../../../adapters/controllers/players-controller";
 import {routes_names} from "../../../../routes/routes_names";
 import {useTourneyStore} from "../../../../state/Tournament";
@@ -10,11 +8,12 @@ import {saveTournament} from "../../../../state/actions/saveTournament";
 
 export default ({navigation, children}) => {
     const playersController = new PlayersController();
+
     const tourneyStore = useTourneyStore(state => state.tourney);
-    const [modalVisible, setModalVisible] = useState(false);
+    const addPlayerToTourney = useTourneyStore(state => state.addPlayer);
+    const removePlayerFromTourney = useTourneyStore(state => state.removePlayer);
+
     const [players, setPlayers] = useState([]);
-    const initialRef = React.useRef(null);
-    const finalRef = React.useRef(null);
 
     React.useEffect(() => {
         playersController.listPlayers()
@@ -28,6 +27,22 @@ export default ({navigation, children}) => {
             await saveTournament(tourneyStore);
             navigation.navigate(routes_names.home);
             navigation.reset();
+        };
+    }
+
+    function addPlayer(playerId: string) {
+        return () => {
+            addPlayerToTourney(playerId);
+        };
+    }
+
+    function isPlayerAdded(item: { uuid: string; }) {
+        return tourneyStore.players?.includes(item.uuid);
+    }
+
+    function removePlayer(uuid: string) {
+        return () => {
+            removePlayerFromTourney(uuid);
         };
     }
 
@@ -46,7 +61,6 @@ export default ({navigation, children}) => {
                                py="2"
                           >
                               <HStack space={[2, 3]} justifyContent="space-between" alignItems={"center"}>
-                                  {/*<Circle>{item.name?.charAt[0]}</Circle>*/}
                                   <Text _dark={{
                                       color: "warmGray.50"
                                   }} color="coolGray.800" bold w={48}>
@@ -55,9 +69,14 @@ export default ({navigation, children}) => {
                                   {item.isOnline ? <Circle size="15px" bg="green.500" ml="auto"/> :
                                       <Circle size="15px" bg="red.500" ml="auto"/>}
                                   <Spacer/>
-                                  <Button>
-                                      <Text color={"white"}>Adicionar</Text>
-                                  </Button>
+                                  {isPlayerAdded(item) ?
+                                      <Button size={"sm"} colorScheme={"secondary"} onPress={removePlayer(item.uuid)}>
+                                          Remover
+                                      </Button>
+                                      :
+                                      <Button onPress={addPlayer(item.uuid)} size={"sm"}>
+                                          Adicionar
+                                      </Button>}
                               </HStack>
                           </Box>)}
                       keyExtractor={item => item.userName}
@@ -79,26 +98,5 @@ export default ({navigation, children}) => {
             </Button>
         </Flex>
         {children}
-        <Modal
-            onClose={() => setModalVisible(false)}
-            initialFocusRef={initialRef} finalFocusRef={finalRef}
-            isOpen={modalVisible}
-            safeAreaTop={true}
-        >
-            <Modal.Content>
-                <Modal.Header>Novo Jogador</Modal.Header>
-                <Modal.CloseButton/>
-                <Modal.Body>
-                    <NewPlayer
-                        formState={{}}
-                        setIsNewPlayer={() => {
-                        }}
-                        closeModal={() => {
-                            setModalVisible(false);
-                        }}
-                    />
-                </Modal.Body>
-            </Modal.Content>
-        </Modal>
     </Center>;
 };
