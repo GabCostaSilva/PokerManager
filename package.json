@@ -11,8 +11,8 @@
   "dependencies": {
     "@formiz/core": "^1.8.1",
     "@formiz/validations": "^1.0.0",
-    "@gluestack-style/react": "^0.2.45",
-    "@gluestack-ui/themed": "^0.1.39",
+    "@gluestack-style/react": "^1.0.1",
+    "@gluestack-ui/themed": "^1.0.3",
     "@nestjs/config": "^3.0.0",
     "@react-native-async-storage/async-storage": "1.17.11",
     "@react-native-community/masked-view": "^0.1.11",

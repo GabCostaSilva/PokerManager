@@ -5,7 +5,9 @@ import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {AuthContextProvider} from "./src/contexts/AuthContext";
 import {routes_names} from "./src/routes/routes_names";
 import {Routes} from "./src/Routes";
-import {config, GluestackUIProvider} from "@gluestack-ui/themed";
+import {GluestackUIProvider} from "@gluestack-ui/themed";
+import { config } from "@gluestack-ui/config"
+
 import 'expo-dev-client';
 
 const newColorTheme = {
@@ -34,8 +36,8 @@ const App = () => {
     <NavigationContainer>
       <AuthContextProvider>
         <NativeBaseProvider theme={theme}>
-          <GluestackUIProvider config={config.theme}>
-            <Box safeAreaTop bg="primary.400" />
+          <GluestackUIProvider config={config}>
+            <Box safeAreaTop bg="blueGray.300" />
             <Stack.Navigator initialRouteName={routes_names.login} screenOptions={{ headerShown: false }}>
               <Stack.Screen component={Routes} name={"Root"} />
             </Stack.Navigator>

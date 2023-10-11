@@ -59,7 +59,7 @@ const Stack = createNativeStackNavigator();
 export function NewTournament({navigation}) {
     return (
         <Stack.Navigator>
-            <Stack.Screen name={routes_names.new_tournament}
+            <Stack.Screen name={"Nome do Torneio"}
                           component={TourneyName}
                           options={{headerShown: true, headerBackTitleVisible: false}}
             />

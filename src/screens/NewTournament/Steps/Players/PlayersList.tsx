@@ -1,10 +1,22 @@
-import {Box, Button, Center, Circle, Container, FlatList, Flex, HStack, Spacer, Text} from "native-base";
+import {
+    Box,
+    Center,
+    Circle,
+    Container,
+    FlatList,
+    Flex,
+    HStack,
+    Spacer,
+    Text,
+    Button as NativeBaseButton, Icon
+} from "native-base";
 
 import React, {useState} from "react";
 import PlayersController from "../../../../adapters/controllers/players-controller";
 import {routes_names} from "../../../../routes/routes_names";
 import {useTourneyStore} from "../../../../state/Tournament";
 import {saveTournament} from "../../../../state/actions/saveTournament";
+import {Button, ButtonIcon, ButtonText, PlayIcon} from "@gluestack-ui/themed";
 
 export default ({navigation, children}) => {
     const playersController = new PlayersController();
@@ -70,33 +82,43 @@ export default ({navigation, children}) => {
                                       <Circle size="15px" bg="red.500" ml="auto"/>}
                                   <Spacer/>
                                   {isPlayerAdded(item) ?
-                                      <Button size={"sm"} colorScheme={"secondary"} onPress={removePlayer(item.uuid)}>
-                                          Remover
-                                      </Button>
+                                      <NativeBaseButton size={"sm"} colorScheme={"secondary"}
+                                                        onPress={removePlayer(item.uuid)}>
+                                          <Text color={'white'}>
+                                              Remover
+                                          </Text>
+                                      </NativeBaseButton>
                                       :
-                                      <Button onPress={addPlayer(item.uuid)} size={"sm"}>
-                                          Adicionar
-                                      </Button>}
+                                      <NativeBaseButton onPress={addPlayer(item.uuid)} size={"sm"}>
+                                          <Text color={'white'}>Adicionar</Text>
+                                      </NativeBaseButton>}
                               </HStack>
                           </Box>)}
                       keyExtractor={item => item.userName}
             />
         </Container>
-        <Flex direction={"row"} justifyContent={"space-between"} minW={72} pl={[4, 6]} mb={[12, 24]}>
-            <Button w={[32, 64]} variant={"outline"} colorScheme={"danger"}
+        {/*<Flex direction={"row"} justifyContent={"space-between"} minW={72} pl={[4, 6]} mb={[12, 24]}>*/}
+        <HStack pl={4} pb={4} justifyContent={"space-between"} minW={72}>
+            <Button variant={"outline"} action={"secondary"} size="md"
                     onPress={() => {
                         navigation.navigate(routes_names.home);
-                    }}
-            >
-                Cancelar
+                    }}>
+
+
+                <ButtonText>
+                    Cancelar
+                </ButtonText>
             </Button>
-            <Button w={[32, 64]}
-                    colorScheme={"success"}
-                    onPress={handleStartTourney()}
+            <Button
+                action={"positive"}
+                onPress={handleStartTourney()}
+                size="md"
+
             >
-                <Text bold color={"white"}>Iniciar Partida</Text>
+                <ButtonText>Iniciar Partida</ButtonText>
             </Button>
-        </Flex>
+        </HStack>
+        {/*</Flex>*/}
         {children}
     </Center>;
 };
