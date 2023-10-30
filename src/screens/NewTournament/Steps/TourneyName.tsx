@@ -4,7 +4,6 @@ import {routes_names} from "../../../routes/routes_names";
 import FormContainer from "../FormContainer";
 import MyTextInput from "../../../components/MyTextInput";
 
-
 export default function TourneyName({navigation, route}) {
     let {name} = useTourneyStore(state => state.tourney) || {name: ""};
     let patchTourney = useTourneyStore(state => state.patchTourney);
