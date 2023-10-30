@@ -16,12 +16,10 @@ const SignIn = ({route, navigation}): JSX.Element => {
             navigation.navigate(routes_names.home);
         } catch (e) {
             console.error('LOGIN ERROR', e)
-            // @ts-ignore
             authContext.setError(e?.message);
         }
     };
 
-    // @ts-ignore
     return <Center w="100%">
         <Box safeArea p="2" py="8" w="90%" maxW="290">
             <Heading size="lg" fontWeight="600" color="coolGray.800" _dark={{
@@ -39,7 +37,9 @@ const SignIn = ({route, navigation}): JSX.Element => {
                 <FormControl>
                     <FormControl.Label>Email</FormControl.Label>
                     <Input
-                        onChangeText={(text) => setEmail(prevState => text)}/>
+                        onChangeText={(text) => setEmail(prevState => text)}
+                        autoCapitalize={"none"}
+                    />
                 </FormControl>
                 <FormControl>
                     <FormControl.Label>Senha</FormControl.Label>
@@ -78,7 +78,7 @@ const SignIn = ({route, navigation}): JSX.Element => {
                       onPress={() => {
                           authContext.setError(null);
                       }}
-                >{authContext.error}</Text>
+                >{authContext.error + ""}</Text>
             </Alert> || authContext.isLoading && <Alert w="100%" status="info">
                 <Text fontSize="md" color="coolGray.800">Carregando...</Text>
             </Alert>}
@@ -87,4 +87,3 @@ const SignIn = ({route, navigation}): JSX.Element => {
 };
 
 export default SignIn;
-;

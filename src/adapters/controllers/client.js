@@ -1,11 +1,11 @@
-import { localStorageAdapter } from "../localStorageAdapter";
-import { createAxiosClient } from "./createAxiosClient";
+import {localStorageAdapter} from "../localStorageAdapter";
+import {createAxiosClient} from "./createAxiosClient";
 
-const BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3000";
+const API_URL = process.env.EXPO_PUBLIC_API_URL || "https://poker-manager-backend.onrender.com";
 
 export const client = createAxiosClient({
   options: {
-    baseURL: BASE_URL,
+    baseURL: API_URL,
     timeout: 300000,
     headers: {
       "Accept": "application/json",

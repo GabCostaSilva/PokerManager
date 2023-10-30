@@ -4,9 +4,30 @@ import {AuthController} from "../adapters/controllers/auth-controller";
 import {localStorageAdapter} from "../adapters/localStorageAdapter";
 import jwtDecode from "jwt-decode";
 
-export const AuthContext = React.createContext({});
+interface AuthContextProps {
+    isSignedIn: boolean;
+    user: unknown;
+    token: unknown;
+    setUser: (value: unknown) => void;
+    error: unknown;
+    setError: (value: unknown) => void;
+    isLoading: boolean;
+    login: (email: string, password: string) => Promise<void>;
+    logout: () => Promise<void>;
+    register: (userData: UserData) => Promise<void>;
+}
 
-export const AuthContextProvider = ({children}) => {
+type UserData = {
+    name: string,
+    userName: string,
+    phoneNumber: string,
+    email: string,
+    docNumber: string,
+    password: string
+}
+export const AuthContext = React.createContext<AuthContextProps>(null);
+
+export const AuthContextProvider = ({children}): JSX.Element => {
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(null)
     const [error, setError] = useState(null);
@@ -35,14 +56,6 @@ export const AuthContextProvider = ({children}) => {
     //   await AuthController.resetPassword(email, password);
     // };
 
-    type UserData = {
-        name: string,
-        userName: string,
-        phoneNumber: string,
-        email: string,
-        docNumber: string,
-        password: string
-    }
     const register = async (userData: UserData) => {
         try {
             let response = await AuthController.register(userData);

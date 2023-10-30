@@ -1,22 +1,13 @@
 import {client} from "./client";
 
-const API_URL = "http://localhost:3000/auth";
+//TODO env variable
+const API_URL = "/auth";
+
 const POST = async (data, path) => {
     const url = `${API_URL}/${path}`;
     const body = JSON.stringify(data);
     try {
-        // return await fetch(url, {
-        //     method: "POST",
-        //     headers: {
-        //         Accept: "application/json",
-        //         "Content-Type": "application/json"
-        //     },
-        //     body: body
-        // });
-
-        let axiosResponse = await client.post(url, body);
-        // console.log("POST TO " + url + "\nBODY: " + body, JSON.stringify(axiosResponse))
-        return axiosResponse;
+        return await client.post(url, body);
     } catch (e) {
         console.error("Auth Controller POST", e)
         return e.response.data;
