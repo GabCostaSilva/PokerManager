@@ -1,21 +1,7 @@
 import * as React from "react";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {AuthController} from "../adapters/controllers/auth-controller";
 import {localStorageAdapter} from "../adapters/localStorageAdapter";
-import jwtDecode from "jwt-decode";
-
-interface AuthContextProps {
-    isSignedIn: boolean;
-    user: unknown;
-    token: unknown;
-    setUser: (value: unknown) => void;
-    error: unknown;
-    setError: (value: unknown) => void;
-    isLoading: boolean;
-    login: (email: string, password: string) => Promise<void>;
-    logout: () => Promise<void>;
-    register: (userData: UserData) => Promise<void>;
-}
 
 type UserData = {
     name: string,
@@ -25,6 +11,20 @@ type UserData = {
     docNumber: string,
     password: string
 }
+
+interface AuthContextProps {
+    isSignedIn: boolean;
+    user: unknown;
+    token: string;
+    setUser: (value: unknown) => void;
+    error: string;
+    setError: (value: unknown) => void;
+    isLoading: boolean;
+    login: (email: string, password: string) => Promise<void>;
+    logout: () => Promise<void>;
+    register: (userData: UserData) => Promise<void>;
+}
+
 export const AuthContext = React.createContext<AuthContextProps>(null);
 
 export const AuthContextProvider = ({children}): JSX.Element => {
@@ -71,18 +71,7 @@ export const AuthContextProvider = ({children}): JSX.Element => {
         }
     };
 
-    interface AuthContextProps {
-        isSignedIn: boolean;
-        user: unknown;
-        token: unknown;
-        setUser: (value: unknown) => void;
-        error: unknown;
-        setError: (value: unknown) => void;
-        isLoading: boolean;
-        login: (email: string, password: string) => Promise<void>;
-        logout: () => Promise<void>;
-        register: (userData: UserData) => Promise<void>;
-    }
+
 
     return (
         <AuthContext.Provider value={{

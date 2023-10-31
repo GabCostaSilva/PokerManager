@@ -1,14 +1,16 @@
-import {Input, VStack} from "native-base";
+import {VStack} from "native-base";
 import React from "react";
+import {Input, InputField} from "@gluestack-ui/themed";
 
-const TextInput = ({onChangeText, value, children}) => {
+const TextInput = ({onChangeText, value, isPassword = false, placeholder = ""}) => {
     return <VStack justifyContent={"center"}>
-        <Input size={"2xl"}
-               mb={5}
-               onChangeText={onChangeText}
-               value={value}
-        />
-        {children}
+        <Input size={"md"}>
+            <InputField placeholder={placeholder}
+                        onChangeText={onChangeText}
+                        type={isPassword ? "password" : "text"}
+                        autoCapitalize={"none"}
+                        value={value}/>
+        </Input>
     </VStack>;
 }
 
