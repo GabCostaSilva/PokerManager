@@ -1,15 +1,16 @@
 import TextInput from "../TextInput";
+import {getPhoneMasked} from "../../utils/utils";
 
-const PhoneInput = (value: any, onChangeText: any) => {
+interface PhoneInputProps {
+    value: string,
+    onChangeText: (value: (((prevState: string) => string) | string)) => void
+}
 
-    function getMasked(value: string): string {
-        value.replace(/\D/g, "")
-        return value;
-    }
-
+export const PhoneInput = ({value, onChangeText}: PhoneInputProps) => {
+    console.log("value", value)
+    console.log("onChangeText", onChangeText)
     return <TextInput
         onChangeText={onChangeText}
-        value={getMasked(value)}
-        placeholder={"+00 (00) 00000-0000"}
+        value={getPhoneMasked(value)}
     />
 }

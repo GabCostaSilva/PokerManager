@@ -3,6 +3,7 @@ import {Alert, Box, Button, Center, VStack} from "native-base";
 import {useAuthContext} from "../hooks/useAuthContext";
 import TextInput from "../components/TextInput";
 import {Heading, FormControl, Text, FormControlLabelText, FormControlLabel} from "@gluestack-ui/themed";
+import {PhoneInput} from "../components/inputs/PhoneInput";
 
 export const SignUp = ({navigation}) => {
 
@@ -53,10 +54,10 @@ export const SignUp = ({navigation}) => {
                 <FormControl>
                     <FormControlLabel>
                         <FormControlLabelText>
-                            Telefone para contato
+                            Telefone para contato (com DDD)
                         </FormControlLabelText>
                     </FormControlLabel>
-                    <TextInput
+                    <PhoneInput
                         value={phoneNumber}
                         onChangeText={setPhoneNumber}
                     />

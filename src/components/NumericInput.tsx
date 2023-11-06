@@ -1,5 +1,5 @@
 import {Input} from "native-base";
-import { onlyNumbers } from "../utils";
+import { onlyNumbers } from "../utils/utils";
 
 export const NumericInput = (props) => {
     return (

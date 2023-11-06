@@ -1,7 +1,7 @@
 import { Button, FormControl, HStack, Text } from "native-base";
 import React, { useState } from "react";
 import { NumericInput } from "../../../../components/NumericInput";
-import { onlyNumbers } from "../../../../utils";
+import { onlyNumbers } from "../../../../utils/utils";
 import { Blind, useTourneyStore } from "../../../../state/Tournament";
 
 const NewBlind = ({ setModalVisible }) => {

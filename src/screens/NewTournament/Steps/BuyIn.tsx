@@ -2,9 +2,8 @@ import {FormControl, Input, Select} from "native-base";
 import React, {useState} from "react";
 import FormContainer from "../FormContainer";
 import {routes_names} from "../../../routes/routes_names";
-import {onlyNumbers} from "../../../utils";
+import {onlyNumbers} from "../../../utils/utils";
 import {useTourneyStore} from "../../../state/Tournament";
-
 
 const CURRENCIES = [
     "R$",

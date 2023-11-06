@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import { useTourneyStore } from "../../../state/Tournament";
-import { routes_names } from "../../../routes/routes_names";
+import React, {useState} from "react";
+import {useTourneyStore} from "../../../state/Tournament";
+import {routes_names} from "../../../routes/routes_names";
 import FormContainer from "../FormContainer";
-import { NumericInput } from "../../../components/NumericInput";
-import { onlyNumbers } from "../../../utils";
-import { Input } from "native-base";
+import {Input} from "native-base";
+import {onlyNumbers} from "../../../utils/utils";
 
 export default ({ navigation, route }) => {
   let { initialStack } = useTourneyStore(state => state.tourney) || { initialStack: 0 };
@@ -16,7 +15,6 @@ export default ({ navigation, route }) => {
     navigation.navigate(routes_names.tournament, { screen: "Fichas" });
     patchTourney("initialStack", value);
   }
-
 
   return <FormContainer onPressNextPage={onPress}>
     {/*<NumericInput value={onlyNumbers(initialStack.toString()).toString()}*/}
