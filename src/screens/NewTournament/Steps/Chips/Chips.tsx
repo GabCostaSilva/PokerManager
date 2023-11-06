@@ -10,7 +10,7 @@ function Chips({navigation, route}) {
     let {chips} = useTourneyStore(state => state.tourney) || {chips: []}
     let patchTourney = useTourneyStore(state => state.patchTourney);
 
-    const [_chips, set_chips] = useState<Chip[]>(chips || []);
+    const [_chips, setChips] = useState<Chip[]>(chips || []);
     const [chipColor, setChipColor] = useState("");
     const [chipValue, setChipValue] = useState("");
 
@@ -22,7 +22,7 @@ function Chips({navigation, route}) {
     function handleClose(e: any, chipToClose: Chip) {
         let filteredChips = _chips.filter(chip =>
             chip.value !== chipToClose.value && chip.color !== chipToClose.color);
-        set_chips(filteredChips);
+        setChips(filteredChips);
     }
 
     function resetChip() {
@@ -41,7 +41,7 @@ function Chips({navigation, route}) {
             resetChip();
             return;
         }
-        set_chips(prevState => ([...prevState, {...chip, value: parseInt(chip.value)}]));
+        setChips(prevState => ([...prevState, {...chip, value: parseInt(chip.value)}]));
         resetChip();
     }
 
@@ -78,7 +78,7 @@ function Chips({navigation, route}) {
                         endIcon: <CheckIcon size="5"/>
                     }}
                     onValueChange={handleSelect}>
-                {colors.map((color, i) => {
+                {colors.map((color: { name: string; value: string; }, i: React.Key) => {
                     return <Select.Item key={i} label={color.name} value={color.value}/>;
                 })}
             </Select>

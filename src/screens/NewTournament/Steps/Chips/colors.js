@@ -1,4 +1,4 @@
-export const colors = [
+export const colors = new Map([
   {
     name: "Vermelho",
     value: "#ef4444",
@@ -64,4 +64,4 @@ export const colors = [
     value: "#22d3ee",
     scheme: "cyan"
   }
-];
+]).sort((a, b) => a.name.localeCompare(b.name));
