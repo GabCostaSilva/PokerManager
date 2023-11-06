@@ -6,6 +6,8 @@ module.exports = function (api) {
             "@babel/plugin-proposal-export-namespace-from",
             "react-native-reanimated/plugin",
         ],
-        presets: ['babel-preset-expo'],
+        presets: [
+            'babel-preset-expo',
+        ],
     };
 };
