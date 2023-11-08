@@ -58,8 +58,8 @@ export const SignUp = ({navigation}) => {
                         </FormControlLabelText>
                     </FormControlLabel>
                     <PhoneInput
-                        value={phoneNumber}
-                        onChangeText={setPhoneNumber}
+                        phoneNumber={phoneNumber}
+                        setPhone={setPhoneNumber}
                     />
                 </FormControl>
                 <FormControl>

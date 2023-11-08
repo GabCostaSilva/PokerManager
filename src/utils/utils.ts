@@ -7,18 +7,18 @@ export function onlyNumbers(text: string): number {
 
 const phoneLocales = {
     "BR": {
-        regex: /^(\d{2})(\d{4,5})(\d{4})/g,
+        regex: /[+](\d{1,3})\s[(](\d{2,3})[)]\s(\d{3,5})-(\d{4})/g,
         mask: "+55 ($1) $2-$3"
     }
 }
 
-export function getPhoneMasked(value: string): string {
+export function getPhoneMasked(value: string): RegExpMatchArray {
     const regionCode = getLocales()[0].regionCode;
     const phoneLocale = phoneLocales[regionCode];
 
     return value ?
         value
             .replace(/\D/g, "")
-            .replace(phoneLocale.regex, phoneLocale.mask)
+            .match(phoneLocale.regex)
         : null
 }
