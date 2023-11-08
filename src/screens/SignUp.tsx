@@ -4,6 +4,7 @@ import {useAuthContext} from "../hooks/useAuthContext";
 import TextInput from "../components/TextInput";
 import {Heading, FormControl, Text, FormControlLabelText, FormControlLabel} from "@gluestack-ui/themed";
 import {PhoneInput} from "../components/inputs/PhoneInput";
+import {CpfInput} from "../components/inputs/CpfInput";
 
 export const SignUp = ({navigation}) => {
 
@@ -54,12 +55,12 @@ export const SignUp = ({navigation}) => {
                 <FormControl>
                     <FormControlLabel>
                         <FormControlLabelText>
-                            Telefone para contato (com DDD)
+                            Telefone para contato
                         </FormControlLabelText>
                     </FormControlLabel>
                     <PhoneInput
-                        phoneNumber={phoneNumber}
-                        setPhone={setPhoneNumber}
+                        value={phoneNumber}
+                        onChangeText={setPhoneNumber}
                     />
                 </FormControl>
                 <FormControl>
@@ -90,7 +91,7 @@ export const SignUp = ({navigation}) => {
                             CPF
                         </FormControlLabelText>
                     </FormControlLabel>
-                    <TextInput
+                    <CpfInput
                         value={docNumber}
                         onChangeText={setDocNumber}
                     />
