@@ -1,0 +1,18 @@
+{
+  "storage": {
+    "rules": "y"
+  },
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "storage": {
+      "port": 9199
+    },
+    "ui": {
+      "enabled": true,
+      "port": 5555
+    },
+    "singleProjectMode": true
+  }
+}

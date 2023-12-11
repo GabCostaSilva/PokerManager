@@ -1,7 +1,7 @@
 import {Alert, Box, Button, Center, FormControl, Heading, HStack, Input, Link, Text, VStack} from "native-base";
 import React, {useState} from "react";
-import {routes_names} from "../routes/routes_names";
-import {useAuthContext} from "../hooks/useAuthContext";
+import {useAuthContext} from "../../hooks/useAuthContext";
+import {routes_names} from "../../routes/routes_names";
 
 const SignIn = ({route, navigation}): JSX.Element => {
 
@@ -73,15 +73,16 @@ const SignIn = ({route, navigation}): JSX.Element => {
                     </Link>
                 </HStack>
             </VStack>
-            {authContext.error && <Alert w="100%" status="error">
-                <Text fontSize="md" color="coolGray.800"
-                      onPress={() => {
-                          authContext.setError(null);
-                      }}
-                >{authContext.error + ""}</Text>
-            </Alert> || authContext.isLoading && <Alert w="100%" status="info">
-                <Text fontSize="md" color="coolGray.800">Carregando...</Text>
-            </Alert>}
+            {(authContext.error && <Alert w="100%" status="error">
+                    <Text fontSize="md" color="coolGray.800"
+                          onPress={() => {
+                              authContext.setError(null);
+                          }}
+                    >{authContext.error + ""}</Text>
+                </Alert>)
+                || authContext.isLoading && <Alert w="100%" status="info">
+                    <Text fontSize="md" color="coolGray.800">Carregando...</Text>
+                </Alert>}
         </Box>
     </Center>;
 };

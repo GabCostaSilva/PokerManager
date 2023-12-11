@@ -2,19 +2,25 @@ import * as React from "react";
 import {useState} from "react";
 import {AuthController} from "../adapters/controllers/auth-controller";
 import {localStorageAdapter} from "../adapters/localStorageAdapter";
+import {connectAuthEmulator} from "firebase/auth";
+import {auth} from "../../firebaseConfig";
 
 type UserData = {
     name: string,
-    userName: string,
+    username: string,
     phoneNumber: string,
     email: string,
     docNumber: string,
-    password: string
+    pix: string,
+    bank: string,
+    bankAgency: string,
+    bankAccountNumber: string,
+    picPay: string,
 }
 
 interface AuthContextProps {
     isSignedIn: boolean;
-    user: unknown;
+    user: UserData;
     token: string;
     setUser: (value: unknown) => void;
     error: string;
@@ -33,13 +39,14 @@ export const AuthContextProvider = ({children}): JSX.Element => {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
+    connectAuthEmulator(auth, "http://127.0.0.1:9099");
+
     const login = async (email: string, password: string) => {
         try {
-            const response = await AuthController.login(email, password);
-            await localStorageAdapter.setAccessToken(response?.data?.access_token);
-            setToken(response?.data?.access_token);
-            // @ts-ignore
-            setUser(response?.data?.profile);
+            await AuthController.login(email, password);
+            const accessToken = await auth.currentUser.getIdToken(true);
+            setToken(accessToken);
+            setUser(auth.currentUser);
         } catch (e) {
             setError(e.message);
         }
@@ -52,26 +59,31 @@ export const AuthContextProvider = ({children}): JSX.Element => {
         await localStorageAdapter.removeAccessToken();
     };
 
-    // const resetPassword = async (email: string, password: string) => {
-    //   await AuthController.resetPassword(email, password);
-    // };
+    const resetPassword = async (email: string, password: string) => {
+      await AuthController.resetPassword(email, password);
+    };
+
 
     const register = async (userData: UserData) => {
         try {
+            setIsLoading(true)
             let response = await AuthController.register(userData);
             if (null == response) {
+                console.log("response null")
                 setError("Sistema fora do ar");
-                return;
             } else if (response.statusCode >= 400) {
+                console.log("response 400", response.message)
                 setError(response.message);
             }
+            setIsLoading(false)
+            return;
         } catch (e) {
+            setIsLoading(false)
+            console.log("response error", {...e})
             console.error(e.message);
             setError(e.message);
         }
     };
-
-
 
     return (
         <AuthContext.Provider value={{
