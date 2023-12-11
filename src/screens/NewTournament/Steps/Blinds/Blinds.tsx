@@ -1,21 +1,15 @@
-import {Box, Button, FlatList, Flex, HStack, Icon, IconButton, Modal, Spacer, Text, VStack} from "native-base";
-import React, {useEffect, useState} from "react";
+import {Box, Flex, HStack, Icon, IconButton, Modal, Spacer, VStack} from "native-base";
+import React, {useState} from "react";
 import {AntDesign} from "@expo/vector-icons";
 import FormContainer from "../../FormContainer";
 import {routes_names} from "../../../../routes/routes_names";
 import NewBlind from "./NewBlind";
-import {useTourneyStore} from "../../../../state/Tournament";
+import {Blind, useTourneyStore} from "../../../../state/Tournament";
+import {Button, ButtonText, FlatList, Text} from "@gluestack-ui/themed";
+import NewBlindModal from "./NewBlindModal";
+import {ListRenderItemInfo} from "react-native";
 
-interface Blind {
-    title: number,
-    small: number,
-    big: number,
-    ante: number,
-    time: string,
-    pause: number
-}
-
-export default function Blinds({navigation, route, setPage}) {
+export default function Blinds({navigation}) {
     let {blinds} = useTourneyStore(state => state.tourney) || {blinds: []};
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -26,19 +20,20 @@ export default function Blinds({navigation, route, setPage}) {
         navigation.navigate(routes_names.tournament, {screen: "Resenha"});
     }
 
+    // @ts-ignore
     return <FormContainer onPressNextPage={onPress}>
-        <Flex direction={"row"} justify={"flex-end"} w={"100%"} mb={5}>
+        <Flex direction={"row"} justify={"flex-end"} w={"100%"} mb={2}>
             <Button
-                minW={100}
-                colorScheme={"info"}
+                size={"sm"}
+                action={"positive"}
                 onPress={() => {
                     setModalVisible(true);
                 }}>
-                Novo Blind
+                <ButtonText>Novo Blind</ButtonText>
             </Button>
         </Flex>
-        <VStack space={3} w="sm" mb={5}>
-            <HStack justifyContent="space-between" p={2}>
+        <VStack space={"md"} w="sm">
+            <HStack justifyContent="space-between">
                 <Text>No</Text>
                 <Text>Small</Text>
                 <Text>Big</Text>
@@ -47,30 +42,24 @@ export default function Blinds({navigation, route, setPage}) {
                 <Text>Editar</Text>
             </HStack>
             <FlatList data={blinds}
-                      renderItem={({item}) => <Box borderBottomWidth="1" _dark={{borderColor: "muted.50"}}
-                                                   borderColor="muted.800" pl={["0", "4"]} pr={["0", "5"]}>
+                      renderItem={({item: blind}: ListRenderItemInfo<Blind>) => <Box borderBottomWidth="1"
+                                                                                     _dark={{borderColor: "muted.50"}}
+                                                                                     borderColor="muted.800"
+                                                                                     pl={["0", "4"]} pr={["0", "5"]}>
                           <VStack space={[2, 3]} justifyContent="space-between">
-                              <HStack justifyContent="space-between" p={2}>
-                                  <Text>{item.title}</Text>
-                                  <Text _dark={{color: "warmGray.50"}}
-                                        color="coolGray.800"
-                                  >
-                                      {item.small}
+                              <HStack justifyContent="space-between">
+                                  <Text>{blind.title}</Text>
+                                  <Text>
+                                      {blind.small}
                                   </Text>
-                                  <Text color="coolGray.800" _dark={{
-                                      color: "warmGray.200"
-                                  }}>
-                                      {item.big}
+                                  <Text>
+                                      {blind.big}
                                   </Text>
-                                  <Text color="coolGray.800" _dark={{
-                                      color: "warmGray.200"
-                                  }}>
-                                      {item.ante}
+                                  <Text>
+                                      {blind.ante}
                                   </Text>
-                                  <Text fontSize="xs" bold _dark={{
-                                      color: "warmGray.50"
-                                  }} color="coolGray.800" alignSelf="flex-start">
-                                      {item.time + "s"}
+                                  <Text fontSize="$sm" bold alignSelf="flex-start">
+                                      {blind.time + "m"}
                                   </Text>
                                   <IconButton icon={<Icon as={<AntDesign name="edit"/>}/>}/>
                               </HStack>
@@ -81,19 +70,10 @@ export default function Blinds({navigation, route, setPage}) {
             />
         </VStack>
 
-        <Modal
-            onClose={() => setModalVisible(false)}
-            initialFocusRef={initialRef} finalFocusRef={finalRef}
-            isOpen={modalVisible}
-            safeAreaTop={true}
-        >
-            <Modal.Content>
-                <Modal.Header>Novo Blind</Modal.Header>
-                <Modal.CloseButton/>
-                <Modal.Body>
-                    <NewBlind setModalVisible={setModalVisible}/>
-                </Modal.Body>
-            </Modal.Content>
-        </Modal>
+        <NewBlindModal onClose={() => setModalVisible(false)}
+                       initialFocusRef={initialRef}
+                       finalFocusRef={finalRef}
+                       open={modalVisible}
+                       modalVisible={setModalVisible}/>
     </FormContainer>;
 }
