@@ -22,6 +22,7 @@ type UserCreationData = {
     userData: UserData,
     password: string
 }
+
 interface AuthContextProps {
     isSignedIn: boolean;
     user: UserData;
@@ -62,7 +63,7 @@ export const AuthContextProvider = ({children}): JSX.Element => {
     };
 
     const resetPassword = async (email: string, password: string) => {
-      await AuthController.resetPassword(email, password);
+        await AuthController.resetPassword(email, password);
     };
 
 
@@ -78,9 +79,16 @@ export const AuthContextProvider = ({children}): JSX.Element => {
             return;
         } catch (e) {
             setIsLoading(false)
-            console.log("Register user: response error", userData)
             console.error(e.message);
-            setError(e.message);
+            let message = null;
+            if (e.message.includes("email-already-in-use")) {
+                message = "Email já em uso."
+            } else if (e.message.include("weak-password")) {
+                message = "A senha deve conter ao menos 6 caracteres."
+            } else {
+                message = "Erro ao realizar cadastro. Tente novamente daqui alguns momentos."
+            }
+            setError(message);
         }
     };
 

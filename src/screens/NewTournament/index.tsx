@@ -1,17 +1,13 @@
-import React, {useState} from "react";
+import React from "react";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import StepsButtonGroup from "../../components/StepsButtonGroup";
 import {ShareCosts} from "./Steps/ShareCosts";
 import {BuyIn} from "./Steps/BuyIn";
-import {routes_names} from "../../routes/routes_names";
 import TourneyName from "./Steps/TourneyName";
 import InitialStack from "./Steps/InitialStack";
 import Chips from "./Steps/Chips/Chips";
 import Blinds from "./Steps/Blinds/Blinds";
 import PlayersList from "./Steps/Players/PlayersList";
-import {saveTournament} from "../../state/actions/saveTournament";
 import {Game} from "./Game";
-import {Box, Container} from "native-base";
 
 interface Chip {
     value: number,

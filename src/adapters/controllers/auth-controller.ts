@@ -1,5 +1,4 @@
 import {auth, createUser, loginUser} from "../../../firebaseConfig";
-import {createUserWithEmailAndPassword} from "firebase/auth";
 
 export interface UserRegistrationData {
     name: string,
@@ -20,12 +19,8 @@ export const AuthController = {
     //TODO call another persistence for saving user personal data
     register: async (userRegistrationData: UserRegistrationData) => {
         const {email, password} = userRegistrationData;
-        try {
-            return await createUser(email, password)
-        } catch (e) {
-            console.error(e.message)
-            return e.message
-        }
+        return await createUser(email, password)
+
     },
 
     login: async (email: string, password: string) => {

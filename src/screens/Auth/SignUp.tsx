@@ -1,6 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {Box, Button, Center, VStack} from "native-base";
-import {FormControl, FormControlLabel, FormControlLabelText, Heading} from "@gluestack-ui/themed";
+import {
+    FormControl, FormControlHelper,
+    FormControlHelperText,
+    FormControlLabel,
+    FormControlLabelText,
+    Heading
+} from "@gluestack-ui/themed";
 import TextInput from "../../components/TextInput";
 import {LoadingButton} from "../../components/LoadingButton";
 import {ErrorAlert} from "../../components/alerts/ErrorAlert";
@@ -41,6 +47,7 @@ export const SignUp = ({navigation}) => {
             }
         }
     }, [])
+
     // @ts-ignore
     const {register, error, isLoading, user} = useAuthContext();
 
@@ -59,11 +66,14 @@ export const SignUp = ({navigation}) => {
     }
 
     async function handleSignUp() {
-        console.log("Registering user:", state)
+        console.log("Registering user error:", error)
         await register({...state, password});
 
         if (null == error)
             navigation.navigate("Login");
+        else {
+            return;
+        }
     }
 
     function getOnChangeText(userProp: string) {
@@ -211,6 +221,11 @@ export const SignUp = ({navigation}) => {
                                 onChangeText={setPassword}
                                 isPassword={true}
                             />
+                            <FormControlHelper>
+                                <FormControlHelperText>
+                                    Deve conter ao menos 6 caracteres.
+                                </FormControlHelperText>
+                            </FormControlHelper>
                         </FormControl>
                         <FormControl>
                             <FormControlLabel>
