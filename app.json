@@ -40,7 +40,13 @@
     },
     "plugins": [
       "expo-build-properties",
-      "expo-localization"
+      "expo-localization",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Este app acessa sua câmera para que tire fotos de perfil de usuário."
+        }
+      ]
     ],
     "extra": {
       "eas": {

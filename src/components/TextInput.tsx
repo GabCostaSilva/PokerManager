@@ -2,8 +2,20 @@ import {VStack} from "native-base";
 import React from "react";
 import {Input, InputField} from "@gluestack-ui/themed";
 
-const TextInput = ({onChangeText, value, isPassword = false, placeholder = ""}) => {
-    return <VStack justifyContent={"center"}>
+type InputFieldProps = {
+    onChangeText: (text: any) => void,
+    value: any,
+    isPassword?: boolean,
+    placeholder?: string
+}
+
+const TextInput = ({
+                       onChangeText,
+                       value,
+                       isPassword = false,
+                       placeholder = ""
+                   }: InputFieldProps) =>
+    <VStack justifyContent={"center"}>
         <Input size={"md"}>
             <InputField placeholder={placeholder}
                         onChangeText={onChangeText}
@@ -11,7 +23,6 @@ const TextInput = ({onChangeText, value, isPassword = false, placeholder = ""}) 
                         autoCapitalize={"none"}
                         value={value}/>
         </Input>
-    </VStack>;
-}
+    </VStack>
 
 export default TextInput

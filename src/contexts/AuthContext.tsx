@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useState} from "react";
-import {AuthController} from "../adapters/controllers/auth-controller";
+import {AuthController, UserRegistrationData} from "../adapters/controllers/auth-controller";
 import {localStorageAdapter} from "../adapters/localStorageAdapter";
 import {connectAuthEmulator} from "firebase/auth";
 import {auth} from "../../firebaseConfig";
@@ -18,6 +18,10 @@ type UserData = {
     picPay: string,
 }
 
+type UserCreationData = {
+    userData: UserData,
+    password: string
+}
 interface AuthContextProps {
     isSignedIn: boolean;
     user: UserData;
@@ -28,7 +32,7 @@ interface AuthContextProps {
     isLoading: boolean;
     login: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
-    register: (userData: UserData) => Promise<void>;
+    register: (userData: UserRegistrationData) => Promise<void>;
 }
 
 export const AuthContext = React.createContext<AuthContextProps>(null);
@@ -38,8 +42,6 @@ export const AuthContextProvider = ({children}): JSX.Element => {
     const [token, setToken] = useState(null)
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-
-    connectAuthEmulator(auth, "http://127.0.0.1:9099");
 
     const login = async (email: string, password: string) => {
         try {
@@ -64,22 +66,19 @@ export const AuthContextProvider = ({children}): JSX.Element => {
     };
 
 
-    const register = async (userData: UserData) => {
+    const register = async (userData: UserRegistrationData) => {
         try {
             setIsLoading(true)
             let response = await AuthController.register(userData);
             if (null == response) {
                 console.log("response null")
                 setError("Sistema fora do ar");
-            } else if (response.statusCode >= 400) {
-                console.log("response 400", response.message)
-                setError(response.message);
             }
             setIsLoading(false)
             return;
         } catch (e) {
             setIsLoading(false)
-            console.log("response error", {...e})
+            console.log("Register user: response error", userData)
             console.error(e.message);
             setError(e.message);
         }

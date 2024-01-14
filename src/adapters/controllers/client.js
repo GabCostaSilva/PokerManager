@@ -1,7 +1,7 @@
 import {localStorageAdapter} from "../localStorageAdapter";
 import {createAxiosClient} from "./createAxiosClient";
 
-const API_URL = process.env.EXPO_PUBLIC_API_URL || "http://localhost:3000"
+const API_URL = "http://localhost:3000"
 export const client = createAxiosClient({
   options: {
     baseURL: API_URL,
