@@ -1,10 +1,11 @@
-import { client } from "../../adapters/controllers/client";
+import {httpClient} from "../../adapters/controllers/client";
 
 export const listTourneys = async () => {
 
   try {
-    return await client.get("/tourney");
+    return  httpClient.get("/tourney");
   } catch (error) {
+    console.log(error.message, "WTFFF")
     console.error(error);
     throw error;
   }

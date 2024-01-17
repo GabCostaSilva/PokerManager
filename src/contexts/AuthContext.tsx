@@ -2,7 +2,6 @@ import * as React from "react";
 import {useState} from "react";
 import {AuthController, UserRegistrationData} from "../adapters/controllers/auth-controller";
 import {localStorageAdapter} from "../adapters/localStorageAdapter";
-import {connectAuthEmulator} from "firebase/auth";
 import {auth} from "../../firebaseConfig";
 
 type UserData = {
@@ -51,7 +50,8 @@ export const AuthContextProvider = ({children}): JSX.Element => {
             setToken(accessToken);
             setUser(auth.currentUser);
         } catch (e) {
-            setError(e.message);
+            console.error(e)
+            setError(getErrorMessage(e));
         }
     };
 
@@ -66,6 +66,29 @@ export const AuthContextProvider = ({children}): JSX.Element => {
         await AuthController.resetPassword(email, password);
     };
 
+    function getErrorMessage(e: { message: string; }) {
+        let message = e.message;
+        console.log(message)
+        switch (message) {
+            case ("email-already-in-use"):
+                return "Email já em uso.";
+
+            case ("weak-password"):
+                return "A senha deve conter ao menos 6 caracteres.";
+
+            case ("wrong-password"):
+                return "Senha incorreta. Tente novamente com outra senha.";
+
+            case ("missing-password"):
+                return "Senha inválida. Tente novamente com outra senha.";
+
+            case ("invalid-email"):
+                return "Email inválido. Tente novamente com outro email.";
+
+            default:
+                return "Erro ao realizar cadastro. Tente novamente daqui alguns momentos.";
+        }
+    }
 
     const register = async (userData: UserRegistrationData) => {
         try {
@@ -80,15 +103,7 @@ export const AuthContextProvider = ({children}): JSX.Element => {
         } catch (e) {
             setIsLoading(false)
             console.error(e.message);
-            let message = null;
-            if (e.message.includes("email-already-in-use")) {
-                message = "Email já em uso."
-            } else if (e.message.include("weak-password")) {
-                message = "A senha deve conter ao menos 6 caracteres."
-            } else {
-                message = "Erro ao realizar cadastro. Tente novamente daqui alguns momentos."
-            }
-            setError(message);
+            setError(getErrorMessage(e));
         }
     };
 
