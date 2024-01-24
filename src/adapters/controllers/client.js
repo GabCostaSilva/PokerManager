@@ -2,7 +2,7 @@ import {auth} from "../../../firebaseConfig";
 
 import {createHttpClient} from "./httpClientBuilder";
 
-const API_URL = "http://localhost:3000"
+const API_URL = process.env.EXPO_PUBLIC_API_URL || "http://localhost:3000"
 
 export const httpClient = createHttpClient({
     options: {

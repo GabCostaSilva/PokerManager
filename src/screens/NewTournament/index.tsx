@@ -9,47 +9,6 @@ import Blinds from "./Steps/Blinds/Blinds";
 import PlayersList from "./Steps/Players/PlayersList";
 import {Game} from "./Game";
 
-interface Chip {
-    value: number,
-    color: string
-}
-
-interface Blind {
-    title: number,
-    small: number,
-    big: number,
-    ante: number,
-    time: string,
-    pause: number
-}
-
-interface BuyIn {
-    value: number,
-    currency: string
-}
-
-export interface Player {
-    name: string,
-    phoneNumber: string,
-    email: string,
-    docNumber: string,
-    pix: string,
-    bank: string,
-    bankAgency: string,
-    bankAccountNumber: string,
-    picPay: string
-}
-
-export interface TournamentState {
-    name: string,
-    initialStack: number,
-    chips: Chip[],
-    blinds: Blind[],
-    buyIn: BuyIn,
-    shareCosts: boolean,
-    players: Player[]
-}
-
 const Stack = createNativeStackNavigator();
 
 export function NewTournament({navigation}) {

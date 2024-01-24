@@ -46,7 +46,8 @@
         {
           "photosPermission": "Este app acessa sua câmera para que tire fotos de perfil de usuário."
         }
-      ]
+      ],
+      "expo-secure-store"
     ],
     "extra": {
       "eas": {

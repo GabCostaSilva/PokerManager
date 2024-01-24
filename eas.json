@@ -9,13 +9,19 @@
       "distribution": "internal",
       "ios": {
         "simulator": true,
+        "image": "latest",
         "resourceClass": "m-medium"
       }
+    },
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
     },
     "preview": {
       "distribution": "internal",
       "ios": {
-        "resourceClass": "m-medium"
+        "resourceClass": "m-medium",
+        "image": "latest"
       },
       "env": {
         "EXPO_PUBLIC_API_URL": "https://poker-manager-backend.onrender.com"
@@ -23,7 +29,8 @@
     },
     "production": {
       "ios": {
-        "resourceClass": "m-medium"
+        "resourceClass": "m-medium",
+        "image": "latest"
       },
       "env": {
         "EXPO_PUBLIC_API_URL": "https://poker-manager-backend.onrender.com"
@@ -36,6 +43,8 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+
+    }
   }
 }

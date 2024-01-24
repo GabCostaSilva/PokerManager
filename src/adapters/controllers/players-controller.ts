@@ -1,4 +1,4 @@
-import { client } from "./client";
+import { httpClient } from "./client";
 
 export default class PlayersController {
   private path = "/auth";
@@ -8,7 +8,7 @@ export default class PlayersController {
 
   async listPlayers() {
     try {
-      return await client.get(this.path);
+      return await httpClient.get(this.path);
     } catch (error) {
       console.error(error);
       throw error;

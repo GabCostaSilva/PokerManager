@@ -1,4 +1,5 @@
 import {auth, createUser, loginUser} from "../../../firebaseConfig";
+import {httpClient} from "./client";
 
 export interface UserRegistrationData {
     name: string,
@@ -11,15 +12,16 @@ export interface UserRegistrationData {
     bankAgency: string,
     bankAccountNumber: string,
     picPay: string,
-    password: string
+    password: string,
+    uid?: string,
 }
 
 export const AuthController = {
 
     //TODO call another persistence for saving user personal data
     register: async (userRegistrationData: UserRegistrationData) => {
-        const {email, password} = userRegistrationData;
-        return await createUser(email, password)
+        await httpClient.post("/auth/register", userRegistrationData)
+        return "Usuário salvo com sucesso"
 
     },
 
@@ -35,10 +37,5 @@ export const AuthController = {
     sendPasswordRecoveryEmail: async (email: string) => {
         // @ts-ignore
         return await auth.sendPasswordResetEmail(email)
-    },
-
-    resetPassword: async (oobCode: string, newPassword: string) => {
-        // @ts-ignore
-        return await auth.confirmPasswordReset(oobCode, newPassword)
     },
 };

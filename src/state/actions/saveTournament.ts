@@ -1,5 +1,5 @@
 import {httpClient} from "../../adapters/controllers/client";
-import {Chip, Blind, BuyIn} from "../Tournament";
+import {Blind, BuyIn, Chip, Player} from "../Tournament";
 
 interface SaveTournamentParams {
     name: string;

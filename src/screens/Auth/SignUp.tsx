@@ -66,7 +66,6 @@ export const SignUp = ({navigation}) => {
     }
 
     async function handleSignUp() {
-        console.log("Registering user error:", error)
         await register({...state, password});
 
         if (null == error)
@@ -75,13 +74,6 @@ export const SignUp = ({navigation}) => {
             return;
         }
     }
-
-    function getOnChangeText(userProp: string) {
-        return (userValue: string) => setState(prevState => (
-            {...prevState, [userProp]: userValue}
-        ));
-    }
-
     return <ScrollView>
         <KeyboardAvoidingView>
             <Center w="100%">

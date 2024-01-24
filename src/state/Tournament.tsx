@@ -2,6 +2,19 @@ import {create} from "zustand";
 import omit from "lodash-es/omit";
 import getTourney from "./actions/getTourney";
 
+export interface Player {
+    name: string,
+    phoneNumber: string,
+    email: string,
+    docNumber: string,
+    pix: string,
+    bank: string,
+    bankAgency: string,
+    bankAccountNumber: string,
+    picPay: string,
+    uuid?: string
+}
+
 export interface Chip {
     value: number,
     color: string
@@ -81,6 +94,7 @@ export const useTourneyStore = create<TournamentState>()(set => ({
 
     addPlayer: (playerId: string) => set(
         (state) => {
+            console.log("beens called?", playerId)
             return {
                 ...state,
                 tourney: {
@@ -97,7 +111,7 @@ export const useTourneyStore = create<TournamentState>()(set => ({
                 ...state,
                 tourney: {
                     ...state.tourney,
-                    players: state.tourney.players.filter((player) => player !== playerId)
+                    players: state.tourney.players.filter((playerUuid) => playerUuid !== playerId)
                 }
             };
         }

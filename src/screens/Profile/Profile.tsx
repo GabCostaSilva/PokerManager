@@ -25,7 +25,7 @@ export const Profile = ({navigation}) => {
             </HStack>
             <HStack justifyContent={"space-between"}>
                 <Text fontSize={"$sm"}>Usuário</Text>
-                <Text fontSize={"$md"}>{user?.userName}</Text>
+                <Text fontSize={"$md"}>{user?.username}</Text>
             </HStack>
             <HStack justifyContent={"space-between"}>
                 <Text fontSize={"$sm"}>PicPay</Text>
