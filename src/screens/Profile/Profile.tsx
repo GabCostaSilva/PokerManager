@@ -16,6 +16,10 @@ export const Profile = ({navigation}) => {
         <Heading size={"sm"} alignSelf={"center"}>{user?.name}</Heading>
         <VStack space="md">
             <HStack justifyContent={"space-between"}>
+                <Text fontSize={"$sm"}>Usuário</Text>
+                <Text fontSize={"$md"}>{user?.username}</Text>
+            </HStack>
+            <HStack justifyContent={"space-between"}>
                 <Text fontSize={"$sm"}>Email</Text>
                 <Text fontSize={"$md"}>{user?.email}</Text>
             </HStack>

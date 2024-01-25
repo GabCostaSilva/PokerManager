@@ -15,9 +15,8 @@ const firebaseConfig = {
 };
 
 // Editing this file with fast refresh will reinitialize the app on every refresh, let's not do that
-console.log(!getApps().length)
 if (!getApps().length) {
-    initializeApp(firebaseConfig);
+    initializeApp(firebaseConfig, );
 }
 
 // Firebase sets some timeers for a long period, which will trigger some warnings. Let's turn that off for this example

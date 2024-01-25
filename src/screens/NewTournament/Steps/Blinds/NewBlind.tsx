@@ -11,16 +11,12 @@ const NewBlind = ({setModalVisible}) => {
         small: 0,
         big: 0,
         ante: 0,
-        time: "",
-        pause: 0
+        time: 0,
+        durationInMinutes: 0,
+        stopGameAfterEnd: false,
+        isPause: false
     };
     const [blind, setBlind] = useState<Blind>(initialState);
-
-    function getBigBlind() {
-        return (blind.big > 0)
-            ? onlyNumbers(blind.big.toString()).toString()
-            : (2 * onlyNumbers(blind.small.toString())).toString();
-    }
 
     return (<>
         <FormControl>
@@ -52,16 +48,8 @@ const NewBlind = ({setModalVisible}) => {
         <FormControl>
             <FormControl.Label _text={{bold: true}}>{"Tempo (em minutos)"}</FormControl.Label>
             <NumericInput onChangeText={(value) => {
-                setBlind({...blind, time: value});
+                setBlind({...blind, time: onlyNumbers(value)});
             }} value={onlyNumbers(blind.time.toString()).toString()}
-            />
-        </FormControl>
-        {/*TODO - Implementar pausa em outra tela*/}
-        <FormControl mb={8}>
-            <FormControl.Label _text={{bold: true}}>{"Tempo de Pausa (em minutos)"}</FormControl.Label>
-            <NumericInput onChangeText={(value) => {
-                setBlind({...blind, pause: onlyNumbers(value)});
-            }} value={onlyNumbers(blind.pause.toString()).toString()}
             />
         </FormControl>
 

@@ -25,7 +25,7 @@ export const SignUp = ({navigation}) => {
     const [image, setImage] = useState(null);
     const [state, setState] = useState({
         name: "",
-        username: "",
+        userName: "",
         phoneNumber: "",
         email: "",
         docNumber: "",
@@ -131,7 +131,7 @@ export const SignUp = ({navigation}) => {
                                 </FormControlLabelText>
                             </FormControlLabel>
                             <TextInput
-                                value={state.username}
+                                value={state.userName}
                                 onChangeText={(username: string) => setState(prevState => (
                                     {...prevState, username}
                                 ))}

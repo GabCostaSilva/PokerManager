@@ -47,22 +47,28 @@ export default function Blinds({navigation}) {
                                                                                      borderColor="muted.800"
                                                                                      pl={["0", "4"]} pr={["0", "5"]}>
                           <VStack space={[2, 3]} justifyContent="space-between">
-                              <HStack justifyContent="space-between">
-                                  <Text>{blind.title}</Text>
-                                  <Text>
-                                      {blind.small}
-                                  </Text>
-                                  <Text>
-                                      {blind.big}
-                                  </Text>
-                                  <Text>
-                                      {blind.ante}
-                                  </Text>
-                                  <Text fontSize="$sm" bold alignSelf="flex-start">
-                                      {blind.time + "m"}
-                                  </Text>
-                                  <IconButton icon={<Icon as={<AntDesign name="edit"/>}/>}/>
-                              </HStack>
+                              {!blind.isPause ?
+                                  <HStack justifyContent="space-between">
+                                      <Text>{blind.title}</Text>
+                                      <Text>
+                                          {blind.small}
+                                      </Text>
+                                      <Text>
+                                          {blind.big}
+                                      </Text>
+                                      <Text>
+                                          {blind.ante}
+                                      </Text>
+                                      <Text fontSize="$sm" bold alignSelf="flex-start">
+                                          {blind.time + "m"}
+                                      </Text>
+                                      <IconButton icon={<Icon as={<AntDesign name="edit"/>}/>}/>
+                                  </HStack>
+                                  : <HStack justifyContent="space-between" backgroundColor={"yellow.500"}>
+                                      <Text italic>PAUSA</Text>
+                                      <Text fontSize="$sm" bold alignSelf="flex-start">{blind.durationInMinutes + "m"}</Text>
+                                      <Text italic>{blind.stopGameAfterEnd ? "pausa o jogo após o fim" : ""}</Text>
+                                  </HStack>}
                               <Spacer/>
                           </VStack>
                       </Box>}

@@ -25,8 +25,10 @@ export interface Blind {
     small: number,
     big: number,
     ante: number,
-    time: string,
-    pause: number
+    time: number,
+    durationInMinutes?: number,
+    stopGameAfterEnd?: boolean,
+    isPause?: boolean
 }
 
 export interface BuyIn {

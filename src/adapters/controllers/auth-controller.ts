@@ -3,7 +3,7 @@ import {httpClient} from "./client";
 
 export interface UserRegistrationData {
     name: string,
-    username: string,
+    userName: string,
     phoneNumber: string,
     email: string,
     docNumber: string,
@@ -18,7 +18,6 @@ export interface UserRegistrationData {
 
 export const AuthController = {
 
-    //TODO call another persistence for saving user personal data
     register: async (userRegistrationData: UserRegistrationData) => {
         await httpClient.post("/auth/register", userRegistrationData)
         return "Usuário salvo com sucesso"

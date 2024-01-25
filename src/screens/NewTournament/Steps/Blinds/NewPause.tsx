@@ -15,9 +15,25 @@ import {
     Text
 } from "@gluestack-ui/themed";
 import {HStack, VStack} from "native-base";
-import React from "react";
+import React, {useState} from "react";
+import {Blind, useTourneyStore} from "../../../../state/Tournament";
+import {onlyNumbers} from "../../../../utils/utils";
+import {NumericInput} from "../../../../components/NumericInput";
 
-export default function () {
+export default function ({setModalVisible}) {
+    let addBlind = useTourneyStore(state => state.addBlind);
+    let initialState = {
+        title: 0,
+        small: 0,
+        big: 0,
+        ante: 0,
+        time: 0,
+        durationInMinutes: 0,
+        stopGameAfterEnd: false,
+        isPause: true
+    };
+    const [pause, setPause] = useState<Blind>(initialState);
+
     return <Box h="$32" w="$72">
         <VStack space={3} mt="5">
             <FormControl
@@ -30,15 +46,13 @@ export default function () {
                 <FormControlLabel mb="$1">
                     <FormControlLabelText>Tempo em minutos</FormControlLabelText>
                 </FormControlLabel>
-                <Input>
-                    <InputField type="text" defaultValue="10" placeholder="minutos"/>
-                </Input>
-                <FormControlError>
-                    <FormControlErrorIcon as={AlertCircleIcon}/>
-                    <FormControlErrorText>
-                        Deve ser maior que zero
-                    </FormControlErrorText>
-                </FormControlError>
+                <NumericInput
+                    onChangeText={(value) => {
+                        const durationInMinutes = onlyNumbers(value);
+                        setPause({...pause, durationInMinutes});
+                    }}
+                    value={onlyNumbers(pause.durationInMinutes.toString()).toString()}
+                />
             </FormControl>
             <FormControl
                 size="md"
@@ -50,13 +64,19 @@ export default function () {
                 <FormControlLabel mb="$1">
                     <FormControlLabelText>Pausar o jogo após o fim deste intervalo?</FormControlLabelText>
                 </FormControlLabel>
-                <Switch size="md" isDisabled={false}/>
+                <Switch size="md"
+                        isDisabled={false}
+                        value={pause.stopGameAfterEnd}
+                        onToggle={() => {
+                            setPause({...pause, stopGameAfterEnd: !pause.stopGameAfterEnd})
+                        }}
+                />
             </FormControl>
             <HStack justifyContent="center" space="md">
                 <Button
                     variant="outline"
                     onPress={() => {
-
+                        setModalVisible(prevState => false);
                     }}>
                     <Text>
                         Cancelar
@@ -65,6 +85,9 @@ export default function () {
 
                 <Button
                     onPress={() => {
+                        addBlind(pause);
+                        setPause(initialState);
+                        setModalVisible(false);
                     }}>
                     <Text color="white">
                         Adicionar

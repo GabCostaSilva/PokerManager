@@ -34,7 +34,7 @@ export default function NewBlindModal(props: {
         <Modal.Header>Novo Intervalo</Modal.Header>
         <Modal.CloseButton/>
         <Modal.Body>
-            <NewPause/>
+            <NewPause setModalVisible={props.modalVisible}/>
         </Modal.Body>
     </Modal.Content>
 

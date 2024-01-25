@@ -7,7 +7,7 @@ import {
     HStack,
     Spacer,
     Text,
-    Button as NativeBaseButton, Icon
+    Button as NativeBaseButton, Icon, Avatar
 } from "native-base";
 
 import React, {useState} from "react";
@@ -38,6 +38,7 @@ export default ({navigation, children}) => {
 
     function handleStartTourney() {
         return async () => {
+            console.log("sending tourney", tourneyStore)
             await saveTournament(tourneyStore);
             navigation.reset({
                 routes: [{name: routes_names.home}]
@@ -78,10 +79,13 @@ export default ({navigation, children}) => {
                                             >
                                                 <HStack space={[2, 3]} justifyContent="space-between"
                                                         alignItems={"center"}>
+                                                    <Avatar bg="gray.300" alignSelf="center" size="md" source={{
+                                                        uri: user?.photoURL
+                                                    }}/>
                                                     <Text _dark={{
                                                         color: "warmGray.50"
                                                     }} color="coolGray.800" bold w={48}>
-                                                        {item.email}
+                                                        {item.displayName}
                                                     </Text>
                                                     {item.isOnline ? <Circle size="15px" bg="green.500" ml="auto"/> :
                                                         <Circle size="15px" bg="red.500" ml="auto"/>}
@@ -99,17 +103,16 @@ export default ({navigation, children}) => {
                                                         </NativeBaseButton>}
                                                 </HStack>
                                             </Box>)}
-                                        keyExtractor={item => item.username}
+                                        keyExtractor={item => item.uid}
             /> : <Text>Não há jogadores para serem adicionados. Convide seus amigos para jogar!</Text>}
         </Container>
-        {/*<Flex direction={"row"} justifyContent={"space-between"} minW={72} pl={[4, 6]} mb={[12, 24]}>*/}
         <HStack pl={4} pb={4} justifyContent={"space-between"} minW={72}>
             <Button variant={"outline"} action={"secondary"} size="md"
                     onPress={() => {
-                        navigation.navigate(routes_names.home);
+                        navigation.reset({
+                            routes: [{name: routes_names.home}]
+                        });
                     }}>
-
-
                 <ButtonText>
                     Cancelar
                 </ButtonText>
@@ -123,7 +126,6 @@ export default ({navigation, children}) => {
                 <ButtonText>Iniciar Partida</ButtonText>
             </Button>
         </HStack>
-        {/*</Flex>*/}
         {children}
     </Center>;
 };
