@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {ShareCosts} from "./Steps/ShareCosts";
 import {BuyIn} from "./Steps/BuyIn";

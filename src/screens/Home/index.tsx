@@ -51,7 +51,7 @@ export function Home({route, navigation}) {
     useFocusEffect(
         React.useCallback(() => {
             let isActive = true;
-
+            clearTourney();
             (async () => {
                 let response: React.SetStateAction<TourneyForListing[]> | AxiosResponse<any, any>;
                 try {
@@ -67,8 +67,7 @@ export function Home({route, navigation}) {
                     // @ts-ignore
                     setTourneys(response?.data);
                 }
-            })
-            ();
+            })();
 
             return () => {
                 isActive = false;
@@ -102,7 +101,8 @@ export function Home({route, navigation}) {
             safeAreaTop={true}
         >
             <Modal.Content>
-                <Modal.Header>Ações do Torneio <Text italic={true} size={"md"}>{selectedTourney?.name}</Text></Modal.Header>
+                <Modal.Header>Ações do Torneio <Text italic={true}
+                                                     size={"md"}>{selectedTourney?.name}</Text></Modal.Header>
                 <Modal.CloseButton/>
                 <Modal.Body>
                     <Center>

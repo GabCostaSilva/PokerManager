@@ -39,8 +39,9 @@ export default ({navigation, children}) => {
     function handleStartTourney() {
         return async () => {
             await saveTournament(tourneyStore);
-            navigation.navigate(routes_names.home);
-            navigation.reset();
+            navigation.reset({
+                routes: [{name: routes_names.home}]
+            });
         };
     }
 

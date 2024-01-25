@@ -16,6 +16,7 @@ type UserData = {
     bankAgency: string,
     bankAccountNumber: string,
     picPay: string,
+    photoURL?: string,
 }
 
 interface AuthContextProps {
@@ -42,9 +43,13 @@ export const AuthContextProvider = ({children}): JSX.Element => {
         const login = async (email: string, password: string) => {
             try {
                 await AuthController.login(email, password);
-                const accessToken = await auth.currentUser.getIdToken(true);
+                const currentUser = auth.currentUser;
+                const accessToken = await currentUser.getIdToken(true);
                 setToken(accessToken);
-                setUser(auth.currentUser);
+                const response = await AuthController.getUser();
+                const user = response.data;
+
+                setUser({...user, ...currentUser});
             } catch (e) {
                 console.error(e)
                 setError(_getErrorMessage(e));
@@ -84,7 +89,6 @@ export const AuthContextProvider = ({children}): JSX.Element => {
                 setIsLoading(true)
                 let response = await AuthController.register(userData);
                 if (null == response) {
-                    console.log("response null")
                     setError("Sistema fora do ar");
                 }
                 setIsLoading(false)

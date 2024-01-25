@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Modal} from "native-base";
 import NewBlind from "./NewBlind";
 import {Button, ButtonGroup, ButtonText} from "@gluestack-ui/themed";
@@ -9,10 +9,18 @@ export default function NewBlindModal(props: {
     initialFocusRef: React.MutableRefObject<null>,
     finalFocusRef: React.MutableRefObject<null>,
     open: boolean,
-    modalVisible: (value: (((prevState: boolean) => boolean) | boolean)) => void
+    modalVisible: (value: (((prevState: boolean) => boolean) | boolean)) => void,
+    isNewBlindOpen: boolean
+    isNewPauseOpen: boolean
 }) {
+
     const [newBlind, setNewBlind] = useState(false);
     const [newPause, setNewPause] = useState(false);
+
+    useEffect(() => {
+        setNewPause(false)
+        setNewBlind(false)
+    }, [props.open])
 
     const newBlindForm = <Modal.Content>
         <Modal.Header>Novo Blind</Modal.Header>
@@ -26,7 +34,7 @@ export default function NewBlindModal(props: {
         <Modal.Header>Novo Intervalo</Modal.Header>
         <Modal.CloseButton/>
         <Modal.Body>
-            <NewPause setModalVisible={props.modalVisible}/>
+            <NewPause/>
         </Modal.Body>
     </Modal.Content>
 
@@ -45,15 +53,15 @@ export default function NewBlindModal(props: {
                   finalFocusRef={props.finalFocusRef}
                   isOpen={props.open}
                   safeAreaTop={true}>
-        <ButtonGroup space={"xl"} direction={"column"}>
-            <Button size={"md"} onPress={openNewBlind} my={4}>
-                <ButtonText>Novo blind</ButtonText>
-            </Button>
-            <Button size={"md"} onPress={openNewPause} my={4}>
-                <ButtonText>Nova pausa</ButtonText>
-            </Button>
-        </ButtonGroup>
-
-        {newBlind ? newBlindForm : newPause ? newPauseForm : null}
+        {newBlind ? newBlindForm : newPause ? newPauseForm :
+            <ButtonGroup space={"xl"}>
+                <Button size={"md"} onPress={openNewBlind} my={4}>
+                    <ButtonText>Novo blind</ButtonText>
+                </Button>
+                <Button size={"md"} onPress={openNewPause} my={4}>
+                    <ButtonText>Nova pausa</ButtonText>
+                </Button>
+            </ButtonGroup>
+        }
     </Modal>;
 }

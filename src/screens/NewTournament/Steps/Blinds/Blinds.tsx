@@ -74,6 +74,9 @@ export default function Blinds({navigation}) {
                        initialFocusRef={initialRef}
                        finalFocusRef={finalRef}
                        open={modalVisible}
-                       modalVisible={setModalVisible}/>
+                       modalVisible={setModalVisible}
+                       isNewBlindOpen={false}
+                       isNewPauseOpen={false}
+        />
     </FormContainer>;
 }
