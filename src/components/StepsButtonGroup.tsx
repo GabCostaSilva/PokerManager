@@ -1,5 +1,6 @@
-import {Button, HStack, Text} from "native-base";
+import {HStack, Text} from "native-base";
 import React from "react";
+import {Button, ButtonText} from "@gluestack-ui/themed";
 
 interface StepsButtonGroupProps {
     functions?: (() => void)[],
@@ -24,24 +25,23 @@ const StepsButtonGroup = ({setPage, currentPage, pages, functions = []}: StepsBu
                 variant="outline"
                 isDisabled={currentPage === 0}
                 onPress={() => setPage(currentPage => currentPage - 1)}
-                minW={100}
+                minWidth={100}
             >
 
-                <Text>
+                <ButtonText>
                     Voltar
-                </Text>
+                </ButtonText>
             </Button>
             {/* CURRENT PAGE === 3 IS A TEMP WORKAROUND*/}
             <Button
                 isDisabled={currentPage === pages.length - 1}
                 onPress={() => nextPage()}
-                minW={100}
+                minWidth={100}
             >
-                <Text color="white">
+                <ButtonText>
                     Próximo
-                </Text>
+                </ButtonText>
             </Button>
-
         </HStack>
     )
 }

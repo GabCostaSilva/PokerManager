@@ -22,7 +22,7 @@ import {
     AddIcon,
     Button,
     ButtonIcon,
-    ButtonText,
+    ButtonText, CopyIcon,
     Input,
     InputField,
     InputIcon,
@@ -31,6 +31,7 @@ import {
     Text,
     TrashIcon
 } from "@gluestack-ui/themed";
+import {AntDesign} from "@expo/vector-icons";
 
 interface TourneyForListing {
     uuid: string,
@@ -72,7 +73,7 @@ export function Home({route, navigation}) {
             return () => {
                 isActive = false;
             };
-        }, [route])
+        }, [route, clearTourney])
     );
 
     return <VStack space={3} divider={<Divider/>} w="100%" p="4">
@@ -108,11 +109,12 @@ export function Home({route, navigation}) {
                     <Center>
                         <Text></Text>
                         <NativeButton.Group colorScheme="lightBlue" size="lg">
-                            {/*<Button variant="outline"*/}
-                            {/*        rightIcon={<Icon as={<AntDesign name="copy1"/>} name="editTourney"/>}*/}
-                            {/*>*/}
-                            {/*    Clonar*/}
-                            {/*</Button>*/}
+                            <Button variant="outline">
+                                <ButtonText>
+                                    Clonar
+                                </ButtonText>
+                                <ButtonIcon as={CopyIcon}/>
+                            </Button>
                             <Button variant="solid"
                                     action={"negative"}>
                                 <ButtonText>Remover</ButtonText>

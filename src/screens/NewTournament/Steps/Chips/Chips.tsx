@@ -90,10 +90,10 @@ function Chips({navigation, route}) {
             mb={5}
             space={3}>
             {_chips.map((chip, i) => {
-                return (<CloseableCircle size="40px"
+                return (<CloseableCircle
                                          bg={chip.color}
                                          shadow="9"
-                                         handleClose={(e) => handleClose(e, chip)}
+                                         handleClose={(e: any) => handleClose(e, chip)}
                                          key={i}>
                     <Text color={"white"} bold borderColor={"black"}>{chip.value}</Text>
                 </CloseableCircle>);

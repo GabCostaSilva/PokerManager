@@ -4,17 +4,17 @@ import {AntDesign} from "@expo/vector-icons";
 import {View} from "react-native";
 
 const CloseableCircle = ({
-                             size = "40px",
+                             size = 60,
                              bg, shadow = "9",
-                             handleClose,
+                             handleClose = undefined,
                              children
                          }) => {
 
     return (<Flex>
-            <IconButton
+            {handleClose && <IconButton
                 onPress={handleClose}
                 icon={<Icon as={<AntDesign name="close"/>} size="sm"/>}
-            />
+            />}
             <View
                 style={{
                     borderRadius: 50,
@@ -24,8 +24,8 @@ const CloseableCircle = ({
                     flexDirection: "column",
                     justifyContent: "center",
                     alignItems: "center",
-                    height: 60,
-                    width: 60,
+                    height: size,
+                    width: size,
                 }}
             >
                 {children}

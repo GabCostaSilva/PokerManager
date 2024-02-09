@@ -1,5 +1,5 @@
-import {Avatar, VStack, Divider, Button, HStack} from "native-base";
-import {Box, Heading, Text} from "@gluestack-ui/themed";
+import {Avatar, VStack, Divider, HStack} from "native-base";
+import {Box, ButtonText, Heading, Button, Text} from "@gluestack-ui/themed";
 
 import React from "react";
 import {useAuthContext} from "../../hooks/useAuthContext";
@@ -32,6 +32,10 @@ export const Profile = ({navigation}) => {
                 <Text fontSize={"$md"}>{user?.docNumber}</Text>
             </HStack>
             <HStack justifyContent={"space-between"}>
+                <Text fontSize={"$sm"}>Pix</Text>
+                <Text fontSize={"$md"}>{user?.pix}</Text>
+            </HStack>
+            <HStack justifyContent={"space-between"}>
                 <Text fontSize={"$sm"}>Banco</Text>
                 <Text fontSize={"$md"}>{user?.bank}</Text>
             </HStack>
@@ -45,13 +49,13 @@ export const Profile = ({navigation}) => {
             </HStack>
 
         </VStack>
-        <Button variant="solid" colorScheme="danger" alignSelf={"flex-start"} w={24}
+        <Button variant="solid" action="negative" alignSelf={"flex-start"} w={24}
                 onPress={async () => {
                     await logout();
                     //@ts-ignore
                     navigation.navigate(routes_names.home)
                 }}>
-            <Text color={"white"}>Sair</Text>
+            <ButtonText>Sair</ButtonText>
         </Button>
     </VStack>;
 };

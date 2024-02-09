@@ -17,6 +17,7 @@ import {useTourneyStore} from "../../../../state/Tournament";
 import {saveTournament} from "../../../../state/actions/saveTournament";
 import {Button, ButtonIcon, ButtonText, Heading, PlayIcon} from "@gluestack-ui/themed";
 import {useAuthContext} from "../../../../hooks/useAuthContext";
+import FormContainer from "../../FormContainer";
 
 export default ({navigation, children}) => {
     const playersController = new PlayersController();
@@ -24,21 +25,17 @@ export default ({navigation, children}) => {
     const tourneyStore = useTourneyStore(state => state.tourney);
     const addPlayerToTourney = useTourneyStore(state => state.addPlayer);
     const removePlayerFromTourney = useTourneyStore(state => state.removePlayer);
-
     const [players, setPlayers] = useState([]);
 
     React.useEffect(() => {
-        console.log("loading players")
         playersController.listPlayers()
             .then(async (response) => {
-                console.log(response.data.users)
                 setPlayers(response.data.users.filter(player => player.uid !== user.uid));
             });
     }, []);
 
     function handleStartTourney() {
         return async () => {
-            console.log("sending tourney", tourneyStore)
             await saveTournament(tourneyStore);
             navigation.reset({
                 routes: [{name: routes_names.home}]
@@ -62,7 +59,11 @@ export default ({navigation, children}) => {
         };
     }
 
-    return <Center>
+    function onPress() {
+        navigation.navigate(routes_names.tournament, {screen: "Resumo"});
+    }
+
+    return <FormContainer onPressNextPage={onPress}>
         <Container w={"100%"} h={[600, 1024]} pt={[4, 8]}>
             {players.length ? <FlatList data={players}
                                         w={"100%"}
@@ -83,7 +84,7 @@ export default ({navigation, children}) => {
                                                         uri: user?.photoURL
                                                     }}/>
                                                     <Text _dark={{
-                                                        color: "warmGray.50"
+                                                        color: "$dark" + ((Math.random() * 100) + 100).toString()
                                                     }} color="coolGray.800" bold w={48}>
                                                         {item.displayName}
                                                     </Text>
@@ -91,23 +92,23 @@ export default ({navigation, children}) => {
                                                         <Circle size="15px" bg="red.500" ml="auto"/>}
                                                     <Spacer/>
                                                     {isPlayerAdded(item) ?
-                                                        <NativeBaseButton size={"sm"} colorScheme={"secondary"}
-                                                                          onPress={removePlayer(item.uid)}>
-                                                            <Text color={'white'}>
+                                                        <Button width={"$32"} action={"negative"}
+                                                                onPress={removePlayer(item.uid)}>
+                                                            <ButtonText>
                                                                 Remover
-                                                            </Text>
-                                                        </NativeBaseButton>
+                                                            </ButtonText>
+                                                        </Button>
                                                         :
-                                                        <NativeBaseButton onPress={addPlayer(item.uid)} size={"sm"}>
-                                                            <Text color={'white'}>Adicionar</Text>
-                                                        </NativeBaseButton>}
+                                                        <Button onPress={addPlayer(item.uid)} width={"$32"}>
+                                                            <ButtonText>Adicionar</ButtonText>
+                                                        </Button>}
                                                 </HStack>
                                             </Box>)}
                                         keyExtractor={item => item.uid}
             /> : <Text>Não há jogadores para serem adicionados. Convide seus amigos para jogar!</Text>}
         </Container>
         <HStack pl={4} pb={4} justifyContent={"space-between"} minW={72}>
-            <Button variant={"outline"} action={"secondary"} size="md"
+            <Button variant={"outline"} action={"secondary"} size="md" minWidth={20}
                     onPress={() => {
                         navigation.reset({
                             routes: [{name: routes_names.home}]
@@ -117,15 +118,13 @@ export default ({navigation, children}) => {
                     Cancelar
                 </ButtonText>
             </Button>
-            <Button
-                action={"positive"}
-                onPress={handleStartTourney()}
-                size="md"
-
-            >
-                <ButtonText>Iniciar Partida</ButtonText>
-            </Button>
+            {/*<Button action={"positive"}*/}
+            {/*        onPress={handleStartTourney()}*/}
+            {/*        size="md"*/}
+            {/*        minWidth={20}>*/}
+            {/*    <ButtonText>Criar Torneio</ButtonText>*/}
+            {/*</Button>*/}
         </HStack>
         {children}
-    </Center>;
+    </FormContainer>;
 };

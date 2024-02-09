@@ -88,7 +88,7 @@ export const useTourneyStore = create<TournamentState>()(set => ({
                 ...state,
                 tourney: {
                     ...state.tourney,
-                    blinds: [...state.tourney.blinds || [], blind]
+                    blinds: [...state.tourney.blinds || [], {...blind, title: state.tourney.blinds.length + 1}]
                 }
             };
         }

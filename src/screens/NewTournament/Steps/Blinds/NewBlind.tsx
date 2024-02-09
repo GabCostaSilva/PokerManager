@@ -1,8 +1,9 @@
-import {Button, FormControl, HStack, Text} from "native-base";
+import {FormControl, HStack, Text} from "native-base";
 import React, {useState} from "react";
 import {NumericInput} from "../../../../components/NumericInput";
 import {onlyNumbers} from "../../../../utils/utils";
 import {Blind, useTourneyStore} from "../../../../state/Tournament";
+import {Button, ButtonText} from "@gluestack-ui/themed";
 
 const NewBlind = ({setModalVisible}) => {
     let addBlind = useTourneyStore(state => state.addBlind);
@@ -56,12 +57,13 @@ const NewBlind = ({setModalVisible}) => {
         <HStack justifyContent="center" space="md">
             <Button
                 variant="outline"
+                action="negative"
                 onPress={() => {
                     setModalVisible(prevState => false);
                 }}>
-                <Text>
+                <ButtonText>
                     Cancelar
-                </Text>
+                </ButtonText>
             </Button>
 
             <Button
@@ -70,13 +72,12 @@ const NewBlind = ({setModalVisible}) => {
                     setBlind(prevState => (initialState));
                     setModalVisible(false);
                 }}>
-                <Text color="white">
+                <ButtonText color="white">
                     Adicionar
-                </Text>
+                </ButtonText>
             </Button>
         </HStack>
-    </>)
-        ;
+    </>);
 };
 
 export default NewBlind;

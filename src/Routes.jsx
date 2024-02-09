@@ -6,7 +6,7 @@ import {routes_names} from "./routes/routes_names";
 import {NewTournament} from "./screens/NewTournament";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {Profile} from "./screens/Profile/Profile";
-import {Icon} from "native-base";
+import {Icon, useTheme} from "native-base";
 import {FontAwesome} from '@expo/vector-icons';
 import PasswordRecovery from "./screens/Auth/PasswordRecovery";
 import {SignUp} from "./screens/Auth/SignUp";
@@ -17,12 +17,14 @@ const Tab = createBottomTabNavigator();
 
 export const Routes = () => {
     const {isSignedIn} = useAuthContext();
-
+    const {
+        colors
+    } = useTheme();
     // @ts-ignore
     return isSignedIn
         ? <Tab.Navigator
             screenOptions={({route}) => ({
-                tabBarActiveTintColor: 'tomato',
+                tabBarActiveTintColor: "#059669",
                 tabBarInactiveTintColor: 'gray',
             })}
         >

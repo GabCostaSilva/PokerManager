@@ -8,6 +8,7 @@ import Chips from "./Steps/Chips/Chips";
 import Blinds from "./Steps/Blinds/Blinds";
 import PlayersList from "./Steps/Players/PlayersList";
 import {Game} from "./Game";
+import {TourneyResume} from "./Steps/TourneyResume";
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,7 @@ export function NewTournament({navigation}) {
             <Stack.Screen name={"Blinds"} component={Blinds}/>
             <Stack.Screen name={"Resenha"} component={ShareCosts}/>
             <Stack.Screen name={"Jogadores"} component={PlayersList}/>
+            <Stack.Screen name={"Resumo"} component={TourneyResume}/>
             <Stack.Screen name={"Partida"} component={Game}/>
         </Stack.Navigator>
     );

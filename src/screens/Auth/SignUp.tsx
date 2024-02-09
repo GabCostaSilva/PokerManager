@@ -1,7 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {Box, Button, Center, VStack} from "native-base";
+import {Box, Center, VStack} from "native-base";
 import {
-    FormControl, FormControlHelper,
+    Button,
+    ButtonText,
+    FormControl,
+    FormControlHelper,
     FormControlHelperText,
     FormControlLabel,
     FormControlLabelText,
@@ -74,6 +77,7 @@ export const SignUp = ({navigation}) => {
             return;
         }
     }
+
     return <ScrollView>
         <KeyboardAvoidingView>
             <Center w="100%">
@@ -133,7 +137,7 @@ export const SignUp = ({navigation}) => {
                             <TextInput
                                 value={state.userName}
                                 onChangeText={(username: string) => setState(prevState => (
-                                    {...prevState, username}
+                                    {...prevState, userName: username}
                                 ))}
                             />
                         </FormControl>
@@ -229,14 +233,14 @@ export const SignUp = ({navigation}) => {
                                        onChangeText={setPasswordConfirmation}/>
                         </FormControl>
                         {isLoading ? <LoadingButton/> :
-                            <Button colorScheme="primary" minW={20} mt="4" onPress={handleSignUp} disabled={isLoading}>
-                                Cadastrar
+                            <Button minWidth={20} marginTop="$4" onPress={handleSignUp} disabled={isLoading}>
+                                <ButtonText>Cadastrar</ButtonText>
                             </Button>}
-                        <Button colorScheme="primary" minW={20} mt="4"
+                        <Button minWidth={20} marginTop="$4"
                                 onPress={() => {
                                     navigation.navigate("Login");
                                 }}>
-                            Voltar
+                            <ButtonText>Entrar</ButtonText>
                         </Button>
                     </VStack>
                     {error && <ErrorAlert message={error}/>}

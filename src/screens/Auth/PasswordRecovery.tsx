@@ -1,6 +1,8 @@
-import {ActivityIndicator, Button, KeyboardAvoidingView, StyleSheet, Text, TextInput, View} from "react-native";
+import {ActivityIndicator, KeyboardAvoidingView, StyleSheet, TextInput, View} from "react-native";
 import {useState} from "react";
 import {AuthController} from "../../adapters/controllers/auth-controller";
+import {ButtonGroup, Button, Text, ButtonText} from "@gluestack-ui/themed";
+import {Center, HStack} from "native-base";
 
 export default function PasswordRecovery({navigation}) {
     const [isLoading, setIsLoading] = useState(false)
@@ -12,9 +14,10 @@ export default function PasswordRecovery({navigation}) {
         try {
             await AuthController.sendPasswordRecoveryEmail(email)
             alert(`Email enviado para ${email}`)
+            navigation.goBack();
         } catch (error) {
             console.error(error)
-            alert("Erro ao enviar email")
+            alert("Usuário não encontrado.")
         } finally {
             setIsLoading(false)
         }
@@ -25,11 +28,20 @@ export default function PasswordRecovery({navigation}) {
             <KeyboardAvoidingView behavior={"position"}>
                 <Text style={styles.title}>Recuperar senha</Text>
                 <TextInput onChangeText={setEmail} style={styles.input} autoCapitalize={"none"} placeholder="Email"/>
-                {
-                    isLoading
-                        ? <ActivityIndicator size={"large"} color={"#000fff"}/>
-                        : <Button title="Enviar email" color={"#000fff"} onPress={sendEmail}/>
-                }
+                <Center>
+                    {
+                        isLoading
+                            ? <ActivityIndicator size={"large"} color={"#000fff"}/>
+                            : <ButtonGroup justifyContent={"space-between"}>
+                                <Button variant="outline" action={"secondary"} onPress={() => navigation.goBack()}>
+                                    <ButtonText>Voltar</ButtonText>
+                                </Button>
+                                <Button onPress={() => sendEmail()}>
+                                    <ButtonText>Enviar</ButtonText>
+                                </Button>
+                            </ButtonGroup>
+                    }
+                </Center>
             </KeyboardAvoidingView>
         </View>
     );

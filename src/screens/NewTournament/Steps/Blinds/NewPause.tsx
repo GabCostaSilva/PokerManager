@@ -1,18 +1,11 @@
 import {
-    AlertCircleIcon,
-    Box, Button, ButtonGroup,
+    Box,
+    Button,
+    ButtonText,
     FormControl,
-    FormControlError,
-    FormControlErrorIcon,
-    FormControlErrorText,
-    FormControlHelper,
-    FormControlHelperText,
     FormControlLabel,
     FormControlLabelText,
-    Input,
-    InputField,
-    Switch,
-    Text
+    Switch
 } from "@gluestack-ui/themed";
 import {HStack, VStack} from "native-base";
 import React, {useState} from "react";
@@ -74,13 +67,13 @@ export default function ({setModalVisible}) {
             </FormControl>
             <HStack justifyContent="center" space="md">
                 <Button
-                    variant="outline"
+                    action="secondary"
                     onPress={() => {
                         setModalVisible(prevState => false);
                     }}>
-                    <Text>
+                    <ButtonText>
                         Cancelar
-                    </Text>
+                    </ButtonText>
                 </Button>
 
                 <Button
@@ -89,9 +82,9 @@ export default function ({setModalVisible}) {
                         setPause(initialState);
                         setModalVisible(false);
                     }}>
-                    <Text color="white">
+                    <ButtonText>
                         Adicionar
-                    </Text>
+                    </ButtonText>
                 </Button>
             </HStack>
         </VStack>

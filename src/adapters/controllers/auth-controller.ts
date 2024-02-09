@@ -1,4 +1,4 @@
-import {auth, createUser, loginUser} from "../../../firebaseConfig";
+import {auth, loginUser, recoverPassword} from "../../../firebaseConfig";
 import {httpClient} from "./client";
 
 export interface UserRegistrationData {
@@ -25,8 +25,7 @@ export const AuthController = {
     },
 
     getUser: async () => {
-        const response = await httpClient.get("auth/profile");
-        return response;
+        return await httpClient.get("auth/profile");
     },
 
     login: async (email: string, password: string) => {
@@ -39,7 +38,6 @@ export const AuthController = {
     },
 
     sendPasswordRecoveryEmail: async (email: string) => {
-        // @ts-ignore
-        return await auth.sendPasswordResetEmail(email)
+        return await recoverPassword(email)
     },
 };

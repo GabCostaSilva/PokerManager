@@ -9,8 +9,7 @@ export default ({ onPressNextPage, children }) => {
     <Button
       onPress={onPressNextPage}
       minW={100}
-      variant="ghost"
-    >
+      variant="outline">
         Próximo
     </Button>
   </Center>;

@@ -4,6 +4,7 @@ export const routes_names = {
     new_tournament: "Novo Torneio",
     edit_tourney: "Editar Torneio",
     login: "Login",
-    signIn: "Cadastrar",
-    profile: "Perfil"
+    signUp: "Cadastro",
+    profile: "Perfil",
+    password_recovery: "Recuperar Senha"
 };

@@ -1,9 +1,8 @@
-import {Box, Flex, HStack, Icon, IconButton, Modal, Spacer, VStack} from "native-base";
+import {Box, Flex, HStack, Icon, IconButton, Spacer, VStack} from "native-base";
 import React, {useState} from "react";
 import {AntDesign} from "@expo/vector-icons";
 import FormContainer from "../../FormContainer";
 import {routes_names} from "../../../../routes/routes_names";
-import NewBlind from "./NewBlind";
 import {Blind, useTourneyStore} from "../../../../state/Tournament";
 import {Button, ButtonText, FlatList, Text} from "@gluestack-ui/themed";
 import NewBlindModal from "./NewBlindModal";
