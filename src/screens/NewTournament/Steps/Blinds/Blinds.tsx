@@ -45,7 +45,7 @@ export default function Blinds({navigation}) {
                                                                                      _dark={{borderColor: "muted.50"}}
                                                                                      borderColor="muted.800"
                                                                                      pl={["0", "4"]} pr={["0", "5"]}>
-                          <VStack space={[2, 3]} justifyContent="space-between">
+                          <VStack space={[1, 2]} justifyContent="space-between">
                               {!blind.isPause ?
                                   <HStack justifyContent="space-between">
                                       <Text>{blind.title}</Text>

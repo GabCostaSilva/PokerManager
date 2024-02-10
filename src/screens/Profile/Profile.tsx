@@ -1,5 +1,5 @@
-import {Avatar, VStack, Divider, HStack} from "native-base";
-import {Box, ButtonText, Heading, Button, Text} from "@gluestack-ui/themed";
+import {Avatar, Divider, HStack, VStack} from "native-base";
+import {Button, ButtonText, Heading, Text} from "@gluestack-ui/themed";
 
 import React from "react";
 import {useAuthContext} from "../../hooks/useAuthContext";
@@ -49,7 +49,7 @@ export const Profile = ({navigation}) => {
             </HStack>
 
         </VStack>
-        <Button variant="solid" action="negative" alignSelf={"flex-start"} w={24}
+        <Button variant="solid" action="negative" alignSelf={"flex-start"}
                 onPress={async () => {
                     await logout();
                     //@ts-ignore

@@ -34,15 +34,6 @@ export default ({navigation, children}) => {
             });
     }, []);
 
-    function handleStartTourney() {
-        return async () => {
-            await saveTournament(tourneyStore);
-            navigation.reset({
-                routes: [{name: routes_names.home}]
-            });
-        };
-    }
-
     function addPlayer(playerId: string) {
         return () => {
             addPlayerToTourney(playerId);
@@ -107,24 +98,14 @@ export default ({navigation, children}) => {
                                         keyExtractor={item => item.uid}
             /> : <Text>Não há jogadores para serem adicionados. Convide seus amigos para jogar!</Text>}
         </Container>
-        <HStack pl={4} pb={4} justifyContent={"space-between"} minW={72}>
-            <Button variant={"outline"} action={"secondary"} size="md" minWidth={20}
-                    onPress={() => {
-                        navigation.reset({
-                            routes: [{name: routes_names.home}]
-                        });
-                    }}>
-                <ButtonText>
-                    Cancelar
-                </ButtonText>
-            </Button>
-            {/*<Button action={"positive"}*/}
-            {/*        onPress={handleStartTourney()}*/}
-            {/*        size="md"*/}
-            {/*        minWidth={20}>*/}
-            {/*    <ButtonText>Criar Torneio</ButtonText>*/}
-            {/*</Button>*/}
-        </HStack>
+        {/*<HStack pl={4} pb={4} justifyContent={"space-between"} minW={72}>*/}
+        {/*    /!*<Button action={"positive"}*!/*/}
+        {/*    /!*        onPress={handleStartTourney()}*!/*/}
+        {/*    /!*        size="md"*!/*/}
+        {/*    /!*        minWidth={20}>*!/*/}
+        {/*    /!*    <ButtonText>Criar Torneio</ButtonText>*!/*/}
+        {/*    /!*</Button>*!/*/}
+        {/*</HStack>*/}
         {children}
     </FormContainer>;
 };
