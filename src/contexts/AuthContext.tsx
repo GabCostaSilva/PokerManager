@@ -58,9 +58,13 @@ export const AuthContextProvider = ({children}): JSX.Element => {
 
         function _getErrorMessage(e: { message: string; }) {
             const {message} = e;
+            console.error(message)
 
             if (message.includes("email-already-in-use"))
                 return "Email já em uso."
+
+            if (message.includes("user-not-found"))
+                return "Usuário não encontrado."
 
             else if (message.includes("weak-password"))
                 return "A senha deve conter ao menos 6 caracteres.";

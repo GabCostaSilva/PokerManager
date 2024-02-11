@@ -1,5 +1,17 @@
-import {Heading, Text, Divider, VStack, ButtonGroup, Button, ButtonText, Box} from "@gluestack-ui/themed";
-import {HStack, Stack} from "native-base";
+import {
+    Box,
+    Button,
+    ButtonGroup,
+    ButtonIcon,
+    ButtonText,
+    Divider,
+    EditIcon,
+    Heading,
+    HStack,
+    Text,
+    VStack
+} from "@gluestack-ui/themed";
+import {Stack} from "native-base";
 import CloseableCircle from "../../../components/CloseableCircle";
 import React from "react";
 import {useTourneyStore} from "../../../state/Tournament";
@@ -27,11 +39,24 @@ export const TourneyResume = ({navigation}) => {
         };
     }
 
-    function listSimpleTourneyInfo(title: string, content: string) {
-        return <VStack>
+    function getHeading(title: string) {
+        return <HStack justifyContent={"space-between"}>
             <Heading>
                 {title}
             </Heading>
+            <Button variant="link" action={"secondary"} onPress={() => {
+                navigation.navigate(routes_names.tournament, {screen: title})
+            }}>
+                <ButtonIcon as={EditIcon} color="$backgroundLight900" h="$7"
+                            w="$7" mr={"$3"}/>
+            </Button>
+        </HStack>;
+    }
+
+    function listSimpleTourneyInfo(title: string,
+                                   content: string) {
+        return <VStack>
+            {getHeading(title)}
             <Text>
                 {content}
             </Text>
@@ -39,19 +64,18 @@ export const TourneyResume = ({navigation}) => {
         </VStack>;
     }
 
-    return <Box h="$80" justifyContent="center">
-        <VStack ml={12}>
-            {listSimpleTourneyInfo("Título", name)}
+    return <Box justifyContent="center">
+        <VStack ml={"$3"}>
+            {listSimpleTourneyInfo("Nome do Torneio", name)}
             {listSimpleTourneyInfo("Stack Inicial", initialStack.toString())}
             {listSimpleTourneyInfo("Buy In", buyIn.currency + buyIn.value)}
-            {listSimpleTourneyInfo("Dividir custos de resenha?", shareCosts ? "Sim" : "Não")}
+            {listSimpleTourneyInfo("Resenha", shareCosts ? "Sim" : "Não")}
             <VStack>
-                <Heading>Fichas</Heading>
+                {getHeading("Fichas")}
                 <Stack
                     flexWrap={"wrap"}
                     direction="row"
                     justifyContent={""}
-                    mb={5}
                     space={3}>
                     {chips.map((chip, i) => {
                         return (<CloseableCircle size={50}
@@ -65,7 +89,7 @@ export const TourneyResume = ({navigation}) => {
                 <Divider my="$0.5"/>
             </VStack>
             <VStack>
-                <Heading>Blinds</Heading>
+                {getHeading("Blinds")}
                 {blinds.map(blind => (
                         <HStack space={"lg"} key={blind.title}>
                             <Text>{blind.title}</Text>
@@ -74,6 +98,7 @@ export const TourneyResume = ({navigation}) => {
                         </HStack>
                     )
                 )}
+                <Divider my="$0.5"/>
             </VStack>
 
             <ButtonGroup justifyContent={"center"} py={24}>
