@@ -3,6 +3,7 @@ import {Masks, useMaskedInputProps} from 'react-native-mask-input';
 import React from "react";
 import TextInput from "../TextInput";
 import {InputProps} from "./InputProps";
+import {onlyNumbers} from "../../utils/utils";
 
 export const PhoneInput = ({value, onChangeText}: InputProps) => {
 

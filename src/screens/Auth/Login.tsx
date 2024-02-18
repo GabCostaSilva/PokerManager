@@ -1,9 +1,9 @@
-import {Alert, Box, Center, FormControl, Heading, HStack, Input, Link, Text, VStack} from "native-base";
+import {Box, Center, FormControl, Heading, HStack, Input, Link, Text, VStack} from "native-base";
 import React, {useState} from "react";
 import {useAuthContext} from "../../hooks/useAuthContext";
 import {routes_names} from "../../routes/routes_names";
-import {Button, ButtonText} from "@gluestack-ui/themed";
-import {LoadingButton} from "../../components/LoadingButton";
+import {Button, ButtonSpinner, ButtonText, useToast} from "@gluestack-ui/themed";
+import {ErrorAlert} from "../../components/alerts/ErrorAlert";
 
 const SignIn = ({route, navigation}): JSX.Element => {
 
@@ -11,14 +11,20 @@ const SignIn = ({route, navigation}): JSX.Element => {
     const [password, setPassword] = useState("");
 
     const authContext = useAuthContext();
+    const toast = useToast();
+
     const handleLogin = async () => {
         try {
-            // @ts-ignore
             await authContext.login(email, password);
             navigation.navigate(routes_names.home);
         } catch (e) {
-            console.error('LOGIN ERROR', e)
-            authContext.setError(e?.message);
+            toast.show({
+                placement: "top",
+                render: ({id}) => {
+                    const toastId = "toast-" + id;
+                    return <ErrorAlert message={authContext.error} id={toastId}/>
+                }
+            })
         }
     };
 
@@ -52,15 +58,14 @@ const SignIn = ({route, navigation}): JSX.Element => {
                         color: "indigo.500"
                     }} alignSelf="flex-end" mt="1"
                           href="#"
-                          onPress={() => navigation.navigate(routes_names.password_recovery)}
-                    >
+                          onPress={() => navigation.navigate(routes_names.password_recovery)}>
                         Esqueceu sua senha?
                     </Link>
                 </FormControl>
-                {authContext.isLoading ? <LoadingButton/> :
-                    <Button marginTop="$2" onPress={handleLogin}>
-                        <ButtonText>Entrar</ButtonText>
-                    </Button>}
+                <Button marginTop="$2" onPress={handleLogin}>
+                    <ButtonText>Entrar</ButtonText>
+                    {authContext.isLoading && <ButtonSpinner/>}
+                </Button>
                 <HStack mt="6" justifyContent="center">
                     <Text fontSize="sm" color="coolGray.600" _dark={{
                         color: "warmGray.200"
@@ -73,22 +78,11 @@ const SignIn = ({route, navigation}): JSX.Element => {
                         fontSize: "sm"
                     }}
                           href="#"
-                          onPress={() => navigation.navigate(routes_names.signUp)}
-                    >
+                          onPress={() => navigation.navigate(routes_names.signUp)}>
                         Cadastre-Se
                     </Link>
                 </HStack>
             </VStack>
-            {(authContext.error && <Alert w="100%" status="error">
-                    <Text fontSize="md" color="coolGray.800"
-                          onPress={() => {
-                              authContext.setError(null);
-                          }}
-                    >{authContext.error + ""}</Text>
-                </Alert>)
-                || authContext.isLoading && <Alert w="100%" status="info">
-                    <Text fontSize="md" color="coolGray.800">Carregando...</Text>
-                </Alert>}
         </Box>
     </Center>;
 };

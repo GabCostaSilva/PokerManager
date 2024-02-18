@@ -5,8 +5,7 @@ import React from "react";
 import {useAuthContext} from "../../hooks/useAuthContext";
 import {routes_names} from "../../routes/routes_names";
 
-export const Profile = ({navigation}) => {
-    // @ts-ignore
+export const UserProfile = ({navigation}) => {
     const {user, logout} = useAuthContext();
 
     return <VStack space={3} divider={<Divider/>} p="4">
@@ -47,25 +46,35 @@ export const Profile = ({navigation}) => {
                 <Text fontSize={"$sm"}>Conta</Text>
                 <Text fontSize={"$md"}>{user?.bankAccountNumber}</Text>
             </HStack>
-
         </VStack>
-        <ButtonGroup>
+        <ButtonGroup justifyContent={"space-between"}>
             <Button variant="solid" action="negative" alignSelf={"flex-start"}
+                    minWidth={"$10"}
                     onPress={async () => {
                         await logout();
                         navigation.navigate(routes_names.home)
                     }}>
                 <ButtonText>Sair</ButtonText>
             </Button>
-            <Button variant="solid" action="primary" alignSelf={"flex-start"}
-                    onPress={async () => {
-                        navigation.navigate(routes_names.signUp, {
-                            isEdit: true
-                        })
-                    }}>
-                <ButtonText>Editar</ButtonText>
-                <ButtonIcon as={EditIcon}/>
-            </Button>
+            <ButtonGroup flexDirection={"column"}
+                         justifyContent={"flex-end"} alignItems={"flex-end"} minWidth={"$10"}>
+                <Button variant="solid" action="primary"
+                        size="md"
+                        alignSelf={"flex-end"}
+                        onPress={async () => {
+                            navigation.navigate(routes_names.edit_profile)
+                        }}>
+                    <ButtonText>Editar</ButtonText>
+                    <ButtonIcon as={EditIcon} ml={"$1"}/>
+                </Button>
+                <Button variant="link" action="primary"
+                        size="md"
+                        onPress={async () => {
+                            navigation.navigate(routes_names.change_password)
+                        }}>
+                    <ButtonText>Trocar senha</ButtonText>
+                </Button>
+            </ButtonGroup>
 
         </ButtonGroup>
     </VStack>;

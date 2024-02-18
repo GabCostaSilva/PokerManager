@@ -3,7 +3,6 @@ import TextInput from "./TextInput";
 import {PhoneInput} from "./inputs/PhoneInput";
 import {CpfInput} from "./inputs/CpfInput";
 import React from "react";
-import {UserData} from "../contexts/AuthContext";
 
 export const UserBasicInfoForm = ({state, setState, children}) => {
     return <VStack space={"md"}>
@@ -55,7 +54,7 @@ export const UserBasicInfoForm = ({state, setState, children}) => {
             <TextInput
                 value={state.username}
                 onChangeText={(username: string) => setState(prevState => (
-                    {...prevState, userName: username}
+                    {...prevState, username}
                 ))}
             />
         </FormControl>

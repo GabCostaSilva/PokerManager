@@ -6,5 +6,8 @@ export const routes_names = {
     login: "Login",
     signUp: "Cadastro",
     profile: "Perfil",
-    password_recovery: "Recuperar Senha"
+    user_area: "Área do Usuário",
+    edit_profile: "Editar Perfil",
+    password_recovery: "Recuperar Senha",
+    change_password: "Trocar Senha"
 };

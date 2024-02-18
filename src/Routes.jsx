@@ -4,8 +4,8 @@ import React from "react";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {routes_names} from "./routes/routes_names";
 import {NewTournament} from "./screens/NewTournament";
+import {Profile} from "./screens/Profile";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
-import {Profile} from "./screens/Profile/Profile";
 import {Icon, useTheme} from "native-base";
 import {FontAwesome} from '@expo/vector-icons';
 import PasswordRecovery from "./screens/Auth/PasswordRecovery";
@@ -20,14 +20,13 @@ export const Routes = () => {
     const {
         colors
     } = useTheme();
-    // @ts-ignore
+
     return isSignedIn
         ? <Tab.Navigator
             screenOptions={({route}) => ({
                 tabBarActiveTintColor: "#059669",
                 tabBarInactiveTintColor: 'gray',
-            })}
-        >
+            })}>
             <Tab.Screen name={routes_names.home}
                         component={Home}
                         options={{

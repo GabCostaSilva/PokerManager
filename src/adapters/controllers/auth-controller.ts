@@ -24,12 +24,7 @@ export const AuthController = {
 
     },
 
-    getUser: async () => {
-        return await httpClient.get("auth/profile");
-    },
-
     login: async (email: string, password: string) => {
-        //@ts-ignore
         await loginUser(email, password)
     },
 

@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {Box, Center} from "native-base";
 import {
-    Button, ButtonGroup, ButtonSpinner,
+    Button,
+    ButtonGroup,
+    ButtonSpinner,
     ButtonText,
     FormControl,
     FormControlHelper,
@@ -11,7 +13,6 @@ import {
     Heading
 } from "@gluestack-ui/themed";
 import TextInput from "../../components/TextInput";
-import {LoadingButton} from "../../components/LoadingButton";
 import {ErrorAlert} from "../../components/alerts/ErrorAlert";
 import {useAuthContext} from "../../hooks/useAuthContext";
 import {collection, doc, setDoc} from "firebase/firestore";
@@ -21,7 +22,7 @@ import * as ImagePicker from "expo-image-picker";
 import {KeyboardAvoidingView, Platform, ScrollView} from "react-native";
 import {UserBasicInfoForm} from "../../components/UserBasicInfoForm";
 
-const state = {
+const initialState = {
     name: "",
     userName: "",
     phoneNumber: "",
@@ -35,28 +36,14 @@ const state = {
     password: "",
 }
 
-export const SignUp = ({navigation, route}) => {
+export const SignUp = ({navigation}) => {
     const {register, error, isLoading} = useAuthContext();
 
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [image, setImage] = useState(null);
 
-    const [state, setState] = useState(
-        {
-            name: "",
-            userName: "",
-            phoneNumber: "",
-            email: "",
-            docNumber: "",
-            pix: "",
-            bank: "",
-            bankAgency: "",
-            bankAccountNumber: "",
-            picPay: "",
-            password: "",
-        }
-    )
+    const [state, setState] = useState(initialState)
 
     useEffect(() => {
         const requestMediaLibrary = async () => {

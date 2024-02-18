@@ -2,6 +2,8 @@ import * as React from "react";
 import {useState} from "react";
 import {AuthController, UserRegistrationData} from "../adapters/controllers/auth-controller";
 import {auth} from "../../firebaseConfig";
+import {userActions} from "../state/actions/userActions";
+import {useToast} from "@gluestack-ui/themed";
 
 export type UserData = {
     name: string,
@@ -30,6 +32,7 @@ interface AuthContextProps {
     login: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
     register: (userData: UserRegistrationData) => Promise<void>;
+    editProfile: (userData: UserData) => Promise<void>;
 }
 
 export const AuthContext = React.createContext<AuthContextProps>(null);
@@ -38,6 +41,7 @@ export const AuthContextProvider = ({children}): JSX.Element => {
         const [user, setUser] = useState(null);
         const [token, setToken] = useState(null)
         const [error, setError] = useState(null);
+        const toast = useToast();
         const [isLoading, setIsLoading] = useState(false);
 
         const login = async (email: string, password: string) => {
@@ -46,19 +50,59 @@ export const AuthContextProvider = ({children}): JSX.Element => {
                 const currentUser = auth.currentUser;
                 const accessToken = await currentUser.getIdToken(true);
                 setToken(accessToken);
-                const response = await AuthController.getUser();
+                const response = await userActions.getProfile();
                 const user = response.data;
 
                 setUser({...user, ...currentUser});
             } catch (e) {
-                console.error(e)
-                setError(_getErrorMessage(e));
+                setIsLoading(false)
+                _setError(e);
+                throw e;
             }
         };
 
+        const logout = async () => {
+            await AuthController.logout();
+            setUser(null);
+            setToken(null);
+        };
+
+        const register = async (userData: UserRegistrationData) => {
+            try {
+                setIsLoading(true)
+                let response = await AuthController.register(userData);
+                if (null == response) {
+                    _setError(new Error("Sistema fora do ar"));
+                }
+                setIsLoading(false)
+                return;
+            } catch (e) {
+                setIsLoading(false)
+                _setError(e);
+                throw e;
+            }
+        };
+
+        const editProfile = async (userData: UserData) => {
+            try {
+                setIsLoading(true)
+                await userActions.editUserInfo(userData)
+                setIsLoading(false)
+            } catch (e) {
+                setIsLoading(false)
+                _setError(e)
+                throw e;
+            }
+        }
+
+        function _setError(e: Error) {
+            console.error(e.message)
+            const errorMessage = _getErrorMessage(e);
+            setError(errorMessage)
+        }
+
         function _getErrorMessage(e: { message: string; }) {
             const {message} = e;
-            console.error(message)
 
             if (message.includes("email-already-in-use"))
                 return "Email já em uso."
@@ -82,28 +126,6 @@ export const AuthContextProvider = ({children}): JSX.Element => {
                 return "Erro ao processar operação. Tente novamente daqui alguns momentos.";
         }
 
-        const logout = async () => {
-            await AuthController.logout();
-            setUser(null);
-            setToken(null);
-        };
-
-        const register = async (userData: UserRegistrationData) => {
-            try {
-                setIsLoading(true)
-                let response = await AuthController.register(userData);
-                if (null == response) {
-                    setError("Sistema fora do ar");
-                }
-                setIsLoading(false)
-                return;
-            } catch (e) {
-                setIsLoading(false)
-                console.error(e.message);
-                setError(_getErrorMessage(e));
-            }
-        };
-
         return (
             <AuthContext.Provider value={{
                 isSignedIn: token !== null,
@@ -111,11 +133,12 @@ export const AuthContextProvider = ({children}): JSX.Element => {
                 token,
                 setUser,
                 error,
-                setError,
+                setError: _setError,
                 isLoading,
                 login,
                 logout,
-                register
+                register,
+                editProfile
             } as AuthContextProps}>
                 {children}
             </AuthContext.Provider>
