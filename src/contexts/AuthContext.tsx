@@ -3,7 +3,7 @@ import {useState} from "react";
 import {AuthController, UserRegistrationData} from "../adapters/controllers/auth-controller";
 import {auth} from "../../firebaseConfig";
 
-type UserData = {
+export type UserData = {
     name: string,
     username: string,
     uid: string,

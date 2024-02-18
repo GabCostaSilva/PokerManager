@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
-import {Box, Center, VStack} from "native-base";
+import {Box, Center} from "native-base";
 import {
-    Button,
+    Button, ButtonGroup, ButtonSpinner,
     ButtonText,
     FormControl,
     FormControlHelper,
@@ -13,32 +13,50 @@ import {
 import TextInput from "../../components/TextInput";
 import {LoadingButton} from "../../components/LoadingButton";
 import {ErrorAlert} from "../../components/alerts/ErrorAlert";
-import {CpfInput} from "../../components/inputs/CpfInput";
-import {PhoneInput} from "../../components/inputs/PhoneInput";
 import {useAuthContext} from "../../hooks/useAuthContext";
 import {collection, doc, setDoc} from "firebase/firestore";
 import {database} from "../../../firebaseConfig";
 
 import * as ImagePicker from "expo-image-picker";
 import {KeyboardAvoidingView, Platform, ScrollView} from "react-native";
+import {UserBasicInfoForm} from "../../components/UserBasicInfoForm";
 
-export const SignUp = ({navigation}) => {
+const state = {
+    name: "",
+    userName: "",
+    phoneNumber: "",
+    email: "",
+    docNumber: "",
+    pix: "",
+    bank: "",
+    bankAgency: "",
+    bankAccountNumber: "",
+    picPay: "",
+    password: "",
+}
+
+export const SignUp = ({navigation, route}) => {
+    const {register, error, isLoading} = useAuthContext();
+
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [image, setImage] = useState(null);
-    const [state, setState] = useState({
-        name: "",
-        userName: "",
-        phoneNumber: "",
-        email: "",
-        docNumber: "",
-        pix: "",
-        bank: "",
-        bankAgency: "",
-        bankAccountNumber: "",
-        picPay: "",
-        password: "",
-    })
+
+    const [state, setState] = useState(
+        {
+            name: "",
+            userName: "",
+            phoneNumber: "",
+            email: "",
+            docNumber: "",
+            pix: "",
+            bank: "",
+            bankAgency: "",
+            bankAccountNumber: "",
+            picPay: "",
+            password: "",
+        }
+    )
 
     useEffect(() => {
         const requestMediaLibrary = async () => {
@@ -50,9 +68,6 @@ export const SignUp = ({navigation}) => {
             }
         }
     }, [])
-
-    // @ts-ignore
-    const {register, error, isLoading, user} = useAuthContext();
 
     async function saveImageToUser(userId: string,
                                    userEmail: string,
@@ -81,131 +96,16 @@ export const SignUp = ({navigation}) => {
     return <ScrollView>
         <KeyboardAvoidingView>
             <Center w="100%">
-                <Box safeArea p="2" w="90%" maxW="290" py="8">
+                <Box safeArea p="2" w="90%" maxW="290" py="4">
                     <Heading size="lg" fontWeight="600">
                         Boas vindas ao Poker Dealer!
                     </Heading>
-                    <Heading fontWeight="400" size="xs">
+                    <Heading fontWeight="400" size="xs" mb={"$4"}>
                         Cadastre-se para continuar
                     </Heading>
-                    <VStack space={3} mt="5">
-                        <FormControl>
-                            <FormControlLabel>
-                                <FormControlLabelText>
-                                    Email
-                                </FormControlLabelText>
-                            </FormControlLabel>
-                            <TextInput
-                                value={state.email}
-                                onChangeText={(email: string) => setState(prevState => (
-                                    {...prevState, email}))
-                                }
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <FormControlLabel>
-                                <FormControlLabelText>
-                                    Telefone para contato
-                                </FormControlLabelText>
-                            </FormControlLabel>
-                            <PhoneInput
-                                value={state.phoneNumber}
-                                onChangeText={(phoneNumber: string) => setState(prevState => (
-                                    {...prevState, phoneNumber}))
-                                }
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <FormControlLabel>
-                                <FormControlLabelText>
-                                    Nome completo
-                                </FormControlLabelText>
-                            </FormControlLabel>
-                            <TextInput
-                                value={state.name}
-                                onChangeText={(name: string) => setState(prevState => (
-                                    {...prevState, name}))
-                                }
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <FormControlLabel>
-                                <FormControlLabelText>
-                                    Nome de usuário
-                                </FormControlLabelText>
-                            </FormControlLabel>
-                            <TextInput
-                                value={state.userName}
-                                onChangeText={(username: string) => setState(prevState => (
-                                    {...prevState, userName: username}
-                                ))}
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <FormControlLabel>
-                                <FormControlLabelText>
-                                    CPF
-                                </FormControlLabelText>
-                            </FormControlLabel>
-                            <CpfInput
-                                value={state.docNumber}
-                                onChangeText={(docNumber: string) => setState(prevState => (
-                                    {...prevState, docNumber}
-                                ))}
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <FormControlLabel>
-                                <FormControlLabelText>
-                                    Pix
-                                </FormControlLabelText>
-                            </FormControlLabel>
-                            <TextInput
-                                value={state.pix}
-                                onChangeText={(pix: string) => setState(prevState => (
-                                    {...prevState, pix}
-                                ))}
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <FormControlLabel>
-                                <FormControlLabelText>
-                                    Banco
-                                </FormControlLabelText>
-                            </FormControlLabel>
-                            <TextInput
-                                value={state.bank}
-                                onChangeText={(bank: string) => setState(prevState => (
-                                    {...prevState, bank}
-                                ))}
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <FormControlLabel>
-                                <FormControlLabelText>
-                                    Agência
-                                </FormControlLabelText>
-                            </FormControlLabel>
-                            <TextInput
-                                value={state.bankAgency}
-                                onChangeText={(bankAgency: string) => setState(prevState => (
-                                    {...prevState, bankAgency}
-                                ))}
-                            />
-                        </FormControl>
-                        <FormControl>
-                            <FormControlLabel>
-                                <FormControlLabelText>
-                                    Conta
-                                </FormControlLabelText>
-                            </FormControlLabel>
-                            <TextInput
-                                value={state.bankAccountNumber}
-                                onChangeText={(bankAccountNumber: string) => setState(prevState => (
-                                    {...prevState, bankAccountNumber}
-                                ))}
-                            />
-                        </FormControl>
+                    <UserBasicInfoForm
+                        state={state}
+                        setState={setState}>
                         <FormControl>
                             <FormControlLabel>
                                 <FormControlLabelText>
@@ -223,7 +123,7 @@ export const SignUp = ({navigation}) => {
                                 </FormControlHelperText>
                             </FormControlHelper>
                         </FormControl>
-                        <FormControl>
+                        <FormControl mb={"$4"}>
                             <FormControlLabel>
                                 <FormControlLabelText>
                                     Confirme sua senha
@@ -232,17 +132,21 @@ export const SignUp = ({navigation}) => {
                             <TextInput isPassword={true} value={passwordConfirmation}
                                        onChangeText={setPasswordConfirmation}/>
                         </FormControl>
-                        {isLoading ? <LoadingButton/> :
-                            <Button minWidth={20} marginTop="$4" onPress={handleSignUp} disabled={isLoading}>
+                        <ButtonGroup flexDirection={"column"}>
+                            <Button action={"positive"} onPress={handleSignUp}
+                                    disabled={isLoading}>
                                 <ButtonText>Cadastrar</ButtonText>
-                            </Button>}
-                        <Button minWidth={20} marginTop="$4"
-                                onPress={() => {
-                                    navigation.navigate("Login");
-                                }}>
-                            <ButtonText>Entrar</ButtonText>
-                        </Button>
-                    </VStack>
+                                {isLoading && <ButtonSpinner/>}
+                            </Button>
+                            <Button action={"negative"}
+                                    variant={"outline"}
+                                    onPress={() => {
+                                        navigation.navigate("Login");
+                                    }}>
+                                <ButtonText>Cancelar</ButtonText>
+                            </Button>
+                        </ButtonGroup>
+                    </UserBasicInfoForm>
                     {error && <ErrorAlert message={error}/>}
                 </Box>
             </Center>

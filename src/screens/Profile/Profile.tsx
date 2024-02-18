@@ -1,5 +1,5 @@
 import {Avatar, Divider, HStack, VStack} from "native-base";
-import {Button, ButtonText, Heading, Text} from "@gluestack-ui/themed";
+import {Button, ButtonGroup, ButtonIcon, ButtonText, EditIcon, Heading, Text} from "@gluestack-ui/themed";
 
 import React from "react";
 import {useAuthContext} from "../../hooks/useAuthContext";
@@ -49,13 +49,24 @@ export const Profile = ({navigation}) => {
             </HStack>
 
         </VStack>
-        <Button variant="solid" action="negative" alignSelf={"flex-start"}
-                onPress={async () => {
-                    await logout();
-                    //@ts-ignore
-                    navigation.navigate(routes_names.home)
-                }}>
-            <ButtonText>Sair</ButtonText>
-        </Button>
+        <ButtonGroup>
+            <Button variant="solid" action="negative" alignSelf={"flex-start"}
+                    onPress={async () => {
+                        await logout();
+                        navigation.navigate(routes_names.home)
+                    }}>
+                <ButtonText>Sair</ButtonText>
+            </Button>
+            <Button variant="solid" action="primary" alignSelf={"flex-start"}
+                    onPress={async () => {
+                        navigation.navigate(routes_names.signUp, {
+                            isEdit: true
+                        })
+                    }}>
+                <ButtonText>Editar</ButtonText>
+                <ButtonIcon as={EditIcon}/>
+            </Button>
+
+        </ButtonGroup>
     </VStack>;
 };
