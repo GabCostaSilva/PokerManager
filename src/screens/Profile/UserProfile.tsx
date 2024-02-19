@@ -50,6 +50,7 @@ export const UserProfile = ({navigation}) => {
         <ButtonGroup justifyContent={"space-between"}>
             <Button variant="solid" action="negative" alignSelf={"flex-start"}
                     minWidth={"$10"}
+                    style={{flex: 1}}
                     onPress={async () => {
                         await logout();
                         navigation.navigate(routes_names.home)
@@ -57,10 +58,9 @@ export const UserProfile = ({navigation}) => {
                 <ButtonText>Sair</ButtonText>
             </Button>
             <ButtonGroup flexDirection={"column"}
-                         justifyContent={"flex-end"} alignItems={"flex-end"} minWidth={"$10"}>
+                         style={{flex: 5}}
+                             alignItems={"flex-end"}>
                 <Button variant="solid" action="primary"
-                        size="md"
-                        alignSelf={"flex-end"}
                         onPress={async () => {
                             navigation.navigate(routes_names.edit_profile)
                         }}>
@@ -68,7 +68,6 @@ export const UserProfile = ({navigation}) => {
                     <ButtonIcon as={EditIcon} ml={"$1"}/>
                 </Button>
                 <Button variant="link" action="primary"
-                        size="md"
                         onPress={async () => {
                             navigation.navigate(routes_names.change_password)
                         }}>

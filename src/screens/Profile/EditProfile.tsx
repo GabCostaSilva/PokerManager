@@ -1,5 +1,5 @@
 import {Box, ButtonGroup, Center, Heading, useToast} from "@gluestack-ui/themed";
-import React, {useRef, useState} from "react";
+import React, {useState} from "react";
 import {KeyboardAvoidingView, Platform, ScrollView} from "react-native";
 import {UserBasicInfoForm} from "../../components/UserBasicInfoForm";
 import {useAuthContext} from "../../hooks/useAuthContext";
@@ -60,11 +60,11 @@ export const EditProfile = ({navigation}) => {
                         Editar dados de perfil
                     </Heading>
                     <UserBasicInfoForm state={state} setState={setState}>
-                        <ButtonGroup flexDirection={"column"}>
-                            <ConfirmButton onPress={handleEditUser} isLoading={isLoading}/>
+                        <ButtonGroup flexDirection={"row"} justifyContent={"space-around"}>
                             <CancelButton onPress={() => {
                                 navigation.goBack();
                             }}/>
+                            <ConfirmButton onPress={handleEditUser} isLoading={isLoading}/>
                         </ButtonGroup>
                     </UserBasicInfoForm>
                 </Box>

@@ -45,11 +45,11 @@ export const ChangePassword = ({navigation}) => {
                     <TextInput isPassword={true} onChangeText={setNewPassword} value={newPassword}/>
                 </FormControl>
 
-                <ButtonGroup flexDirection={"column"}>
-                    <ConfirmButton isLoading={isLoading} onPress={changePassword}/>
+                <ButtonGroup flexDirection={"row"} justifyContent={"center"}>
                     <CancelButton onPress={() => {
                         navigation.goBack();
                     }}/>
+                    <ConfirmButton isLoading={isLoading} onPress={changePassword}/>
                 </ButtonGroup>
             </VStack>
         </Center>
