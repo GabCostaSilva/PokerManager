@@ -1,50 +1,69 @@
 import {Avatar, Divider, HStack, VStack} from "native-base";
 import {Button, ButtonGroup, ButtonIcon, ButtonText, EditIcon, Heading, Text} from "@gluestack-ui/themed";
 
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {useAuthContext} from "../../hooks/useAuthContext";
 import {routes_names} from "../../routes/routes_names";
 
-export const UserProfile = ({navigation}) => {
-    const {user, logout} = useAuthContext();
+export const UserProfile = ({navigation, route}) => {
+    let {user, logout, getProfile} = useAuthContext();
 
+    const [currentUser, setCurrentUser] = useState(user)
+
+    useEffect(() => {
+        return navigation.addListener('focus', () => {
+            (async () => {
+                const userData = await getProfile();
+                setCurrentUser(userData)
+            })()
+        });
+    }, [navigation])
+
+    function getPhone() {
+        const phone = currentUser?.phoneNumber;
+        return `(${phone.substring(3, 5)}) ${phone.substring(5, 9)}-${phone.substring(9, phone.length)}`
+    }
+
+    function getDocMasked(doc) {
+        return `${doc.substring(0,3)}.${doc.substring(3,6)}.${doc.substring(6, 9)}-${doc.substring(9, doc.length)}`
+    }
     return <VStack space={3} divider={<Divider/>} p="4">
         <Avatar bg="gray.300" alignSelf="center" size="2xl" source={{
-            uri: user?.photoURL
+            uri: currentUser?.photoURL
         }}/>
-        <Heading size={"sm"} alignSelf={"center"}>{user?.name}</Heading>
+        <Heading size={"sm"} alignSelf={"center"}>{currentUser?.name}</Heading>
         <VStack space="md">
             <HStack justifyContent={"space-between"}>
                 <Text fontSize={"$sm"}>Usuário</Text>
-                <Text fontSize={"$md"}>{user?.username}</Text>
+                <Text fontSize={"$md"}>{currentUser?.username}</Text>
             </HStack>
             <HStack justifyContent={"space-between"}>
                 <Text fontSize={"$sm"}>Email</Text>
-                <Text fontSize={"$md"}>{user?.email}</Text>
+                <Text fontSize={"$md"}>{currentUser?.email}</Text>
             </HStack>
             <HStack justifyContent={"space-between"}>
                 <Text fontSize={"$sm"}>Telefone</Text>
-                <Text fontSize={"$md"}>{user?.phoneNumber}</Text>
+                <Text fontSize={"$md"}>{getPhone()}</Text>
             </HStack>
             <HStack justifyContent={"space-between"}>
                 <Text fontSize={"$sm"}>Documento</Text>
-                <Text fontSize={"$md"}>{user?.docNumber}</Text>
+                <Text fontSize={"$md"}>{getDocMasked(currentUser?.docNumber)}</Text>
             </HStack>
             <HStack justifyContent={"space-between"}>
                 <Text fontSize={"$sm"}>Pix</Text>
-                <Text fontSize={"$md"}>{user?.pix}</Text>
+                <Text fontSize={"$md"}>{currentUser?.pix}</Text>
             </HStack>
             <HStack justifyContent={"space-between"}>
                 <Text fontSize={"$sm"}>Banco</Text>
-                <Text fontSize={"$md"}>{user?.bank}</Text>
+                <Text fontSize={"$md"}>{currentUser?.bank}</Text>
             </HStack>
             <HStack justifyContent={"space-between"}>
                 <Text fontSize={"$sm"}>Agência</Text>
-                <Text fontSize={"$md"}>{user?.bankAgency}</Text>
+                <Text fontSize={"$md"}>{currentUser?.bankAgency}</Text>
             </HStack>
             <HStack justifyContent={"space-between"}>
                 <Text fontSize={"$sm"}>Conta</Text>
-                <Text fontSize={"$md"}>{user?.bankAccountNumber}</Text>
+                <Text fontSize={"$md"}>{currentUser?.bankAccountNumber}</Text>
             </HStack>
         </VStack>
         <ButtonGroup justifyContent={"space-between"}>
@@ -59,7 +78,7 @@ export const UserProfile = ({navigation}) => {
             </Button>
             <ButtonGroup flexDirection={"column"}
                          style={{flex: 5}}
-                             alignItems={"flex-end"}>
+                         alignItems={"flex-end"}>
                 <Button variant="solid" action="primary"
                         onPress={async () => {
                             navigation.navigate(routes_names.edit_profile)
@@ -74,7 +93,6 @@ export const UserProfile = ({navigation}) => {
                     <ButtonText>Trocar senha</ButtonText>
                 </Button>
             </ButtonGroup>
-
         </ButtonGroup>
     </VStack>;
 };

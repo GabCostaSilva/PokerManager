@@ -33,10 +33,10 @@ export default function PasswordRecovery({navigation}) {
                         isLoading
                             ? <ActivityIndicator size={"large"} color={"#000fff"}/>
                             : <ButtonGroup justifyContent={"space-between"}>
-                                <Button variant="outline" action={"secondary"} onPress={() => navigation.goBack()}>
+                                <Button style={{flex: 1}} variant="outline" action={"secondary"} onPress={() => navigation.goBack()}>
                                     <ButtonText>Voltar</ButtonText>
                                 </Button>
-                                <Button onPress={() => sendEmail()}>
+                                <Button style={{flex: 1}} onPress={() => sendEmail()}>
                                     <ButtonText>Enviar</ButtonText>
                                 </Button>
                             </ButtonGroup>

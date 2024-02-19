@@ -6,17 +6,19 @@ type InputFieldProps = {
     onChangeText: (text: any) => void,
     value: any,
     isPassword?: boolean,
-    placeholder?: string
+    placeholder?: string,
+    isDisabled?: boolean
 }
 
 const TextInput = ({
                        onChangeText,
                        value,
                        isPassword = false,
-                       placeholder = ""
+                       placeholder = "",
+                       isDisabled = false
                    }: InputFieldProps) =>
     <VStack justifyContent={"center"}>
-        <Input size={"md"}>
+        <Input size={"md"} isDisabled={isDisabled}>
             <InputField placeholder={placeholder}
                         onChangeText={onChangeText}
                         type={isPassword ? "password" : "text"}

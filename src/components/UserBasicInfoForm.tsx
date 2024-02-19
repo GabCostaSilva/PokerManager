@@ -4,9 +4,9 @@ import {PhoneInput} from "./inputs/PhoneInput";
 import {CpfInput} from "./inputs/CpfInput";
 import React from "react";
 
-export const UserBasicInfoForm = ({state, setState, children}) => {
+export const UserBasicInfoForm = ({state, setState, children, emailDisabled = false}) => {
     return <VStack space={"md"}>
-        <FormControl>
+        <FormControl isDisabled={emailDisabled}>
             <FormControlLabel>
                 <FormControlLabelText>
                     Email
@@ -14,6 +14,7 @@ export const UserBasicInfoForm = ({state, setState, children}) => {
             </FormControlLabel>
             <TextInput
                 value={state.email}
+                isDisabled={emailDisabled}
                 onChangeText={(email: string) => setState(prevState => (
                     {...prevState, email}))
                 }

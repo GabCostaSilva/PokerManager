@@ -30,9 +30,12 @@ export const EditProfile = ({navigation}) => {
 
     const handleEditUser = async () => {
         try {
+            const {phoneNumber, ...partial} = state
+            const number = "+55" + onlyNumbers(phoneNumber);
+            console.log(partial)
             await editProfile({
-                phoneNumber: "+55" + onlyNumbers(state.phoneNumber),
-                ...state
+                phoneNumber: number,
+                ...partial
             })
             navigation.goBack();
         } catch (e) {
@@ -59,7 +62,7 @@ export const EditProfile = ({navigation}) => {
                     <Heading fontWeight="400" size="xs" mb={"$4"}>
                         Editar dados de perfil
                     </Heading>
-                    <UserBasicInfoForm state={state} setState={setState}>
+                    <UserBasicInfoForm state={state} setState={setState} emailDisabled={true}>
                         <ButtonGroup flexDirection={"row"} justifyContent={"space-around"}>
                             <CancelButton onPress={() => {
                                 navigation.goBack();

@@ -33,6 +33,7 @@ interface AuthContextProps {
     logout: () => Promise<void>;
     register: (userData: UserRegistrationData) => Promise<void>;
     editProfile: (userData: UserData) => Promise<void>;
+    getProfile: () => Promise<UserData>
 }
 
 export const AuthContext = React.createContext<AuthContextProps>(null);
@@ -86,6 +87,7 @@ export const AuthContextProvider = ({children}): JSX.Element => {
         const editProfile = async (userData: UserData) => {
             try {
                 setIsLoading(true)
+                console.log("this is data", userData)
                 await userActions.editUserInfo(userData)
                 setIsLoading(false)
             } catch (e) {
@@ -126,10 +128,17 @@ export const AuthContextProvider = ({children}): JSX.Element => {
                 return "Erro ao processar operação. Tente novamente daqui alguns momentos.";
         }
 
+        async function getProfile() {
+            const axiosResponse = await userActions.getProfile();
+            const user: UserData = axiosResponse.data;
+            return user
+        }
+
         return (
             <AuthContext.Provider value={{
                 isSignedIn: token !== null,
                 user,
+                getProfile,
                 token,
                 setUser,
                 error,

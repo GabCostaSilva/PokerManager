@@ -16,13 +16,13 @@ export function getPhoneMasked(value: string): RegExpMatchArray {
     const regionCode = locale.regionCode;
     const phoneLocale = phoneLocales[regionCode];
 
+    console.log(value)
     if (!value)
         throw new Error("Phone number is needed.")
 
-
     const s = value
         .replace(/\D/g, "");
-    console.log(s)
+
     const regExpMatchArray = s
         .match(phoneLocale.regex);
 
