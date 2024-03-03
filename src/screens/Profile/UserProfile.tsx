@@ -4,29 +4,31 @@ import {Button, ButtonGroup, ButtonIcon, ButtonText, EditIcon, Heading, Text} fr
 import React, {useEffect, useState} from "react";
 import {useAuthContext} from "../../hooks/useAuthContext";
 import {routes_names} from "../../routes/routes_names";
+import {getPhoneBR} from "../../utils/utils";
 
 export const UserProfile = ({navigation, route}) => {
     let {user, logout, getProfile} = useAuthContext();
-
     const [currentUser, setCurrentUser] = useState(user)
 
     useEffect(() => {
         return navigation.addListener('focus', () => {
             (async () => {
+                console.log("inside focus")
                 const userData = await getProfile();
+                console.log("this is user data", userData)
                 setCurrentUser(userData)
             })()
         });
     }, [navigation])
 
-    function getPhone() {
-        const phone = currentUser?.phoneNumber;
-        return `(${phone.substring(3, 5)}) ${phone.substring(5, 9)}-${phone.substring(9, phone.length)}`
-    }
-
-    function getDocMasked(doc) {
+    function getDocMasked(doc: string) {
+        if(!doc)
+            return ""
+        if(doc.length < 11)
+            return doc
         return `${doc.substring(0,3)}.${doc.substring(3,6)}.${doc.substring(6, 9)}-${doc.substring(9, doc.length)}`
     }
+
     return <VStack space={3} divider={<Divider/>} p="4">
         <Avatar bg="gray.300" alignSelf="center" size="2xl" source={{
             uri: currentUser?.photoURL
@@ -43,7 +45,7 @@ export const UserProfile = ({navigation, route}) => {
             </HStack>
             <HStack justifyContent={"space-between"}>
                 <Text fontSize={"$sm"}>Telefone</Text>
-                <Text fontSize={"$md"}>{getPhone()}</Text>
+                <Text fontSize={"$md"}>{getPhoneBR(currentUser?.phoneNumber)}</Text>
             </HStack>
             <HStack justifyContent={"space-between"}>
                 <Text fontSize={"$sm"}>Documento</Text>
@@ -86,7 +88,7 @@ export const UserProfile = ({navigation, route}) => {
                     <ButtonText>Editar</ButtonText>
                     <ButtonIcon as={EditIcon} ml={"$1"}/>
                 </Button>
-                <Button variant="link" action="primary"
+                <Button variant="link" action="secondary" disabled={true}
                         onPress={async () => {
                             navigation.navigate(routes_names.change_password)
                         }}>

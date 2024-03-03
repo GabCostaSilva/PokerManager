@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Box, Center} from "native-base";
 import {
     Button,
@@ -10,17 +10,14 @@ import {
     FormControlHelperText,
     FormControlLabel,
     FormControlLabelText,
-    Heading
+    Heading,
+    useToast
 } from "@gluestack-ui/themed";
 import TextInput from "../../components/TextInput";
-import {ErrorAlert} from "../../components/alerts/ErrorAlert";
 import {useAuthContext} from "../../hooks/useAuthContext";
-import {collection, doc, setDoc} from "firebase/firestore";
-import {database} from "../../../firebaseConfig";
-
-import * as ImagePicker from "expo-image-picker";
-import {KeyboardAvoidingView, Platform, ScrollView} from "react-native";
+import {KeyboardAvoidingView, ScrollView} from "react-native";
 import {UserBasicInfoForm} from "../../components/UserBasicInfoForm";
+import {useShowToast} from "../../hooks/useShowToast";
 
 const initialState = {
     name: "",
@@ -38,45 +35,26 @@ const initialState = {
 
 export const SignUp = ({navigation}) => {
     const {register, error, isLoading} = useAuthContext();
+    const toast = useToast();
+    const showToast = useShowToast(toast);
 
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
-    const [image, setImage] = useState(null);
-
     const [state, setState] = useState(initialState)
 
-    useEffect(() => {
-        const requestMediaLibrary = async () => {
-            if (Platform.OS !== "web") {
-                const {status} = await ImagePicker.requestMediaLibraryPermissionsAsync();
-                if (status !== "granted") {
-                    alert("Desculpe, mas precisamos do acesso à câmera para prosseguir.");
-                }
-            }
-        }
-    }, [])
-
-    async function saveImageToUser(userId: string,
-                                   userEmail: string,
-                                   imageUrl: string) {
-        console.log('saving image to user')
-
-        const collectionReference = collection(database, "photos");
-
-        await setDoc(doc(collectionReference), {
-            userId: userId,
-            userEmail: userEmail,
-            imageUrl: imageUrl
-        });
-    }
-
     async function handleSignUp() {
-        await register({...state, password});
+        try {
+            await register({...state, password});
 
-        if (null == error)
-            navigation.navigate("Login");
-        else {
-            return;
+            if (null == error)
+                navigation.navigate("Login");
+            else {
+                console.error("Error: ", error)
+                showToast("Erro ao cadastrar usuário")
+            }
+        } catch (e) {
+            console.error("Error: ", error)
+            showToast("Erro ao cadastrar usuário")
         }
     }
 
@@ -102,8 +80,7 @@ export const SignUp = ({navigation}) => {
                             <TextInput
                                 value={password}
                                 onChangeText={setPassword}
-                                isPassword={true}
-                            />
+                                isPassword={true}/>
                             <FormControlHelper>
                                 <FormControlHelperText>
                                     Deve conter ao menos 6 caracteres.
@@ -134,7 +111,6 @@ export const SignUp = ({navigation}) => {
                             </Button>
                         </ButtonGroup>
                     </UserBasicInfoForm>
-                    {error && <ErrorAlert message={error}/>}
                 </Box>
             </Center>
         </KeyboardAvoidingView>

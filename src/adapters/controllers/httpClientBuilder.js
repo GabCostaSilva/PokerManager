@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {secureStorage} from "../secureStorage";
 
 export function createHttpClient({
                                      options,
@@ -9,7 +10,7 @@ export function createHttpClient({
                                      logout,
                                      setRefreshedTokens,
                                  }) {
-   const client = axios.create(options)
+    const client = axios.create(options)
 
     //TODO change XMLHttpRequest for Axios
     client.interceptors.request.use(
@@ -19,14 +20,27 @@ export function createHttpClient({
                 if (token) {
                     config.headers.Authorization = `Bearer ${token}`;
                 }
-            }
 
+                const session = await secureStorage.getSession();
+                if (session) {
+                    config.headers['X-Session'] = session.sessionCookie;
+                }
+            }
             return config;
         },
         (error) => {
+            console.error('interceptor error', error)
             return Promise.reject(error);
         }
     );
 
+    client.interceptors.response.use((response) => {
+        return response;
+    }, async (error) => {
+        if (error.response?.status === 401) {
+            throw new Error('Usuário não autorizado. Autentique-se novamente.')
+        }
+        throw error
+    })
     return client
 }

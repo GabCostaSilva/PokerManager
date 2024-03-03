@@ -1,9 +1,10 @@
 import * as React from "react";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {AuthController, UserRegistrationData} from "../adapters/controllers/auth-controller";
 import {auth} from "../../firebaseConfig";
 import {userActions} from "../state/actions/userActions";
 import {useToast} from "@gluestack-ui/themed";
+import {useShowToast} from "../hooks/useShowToast";
 
 export type UserData = {
     name: string,
@@ -28,12 +29,13 @@ interface AuthContextProps {
     setUser: (value: unknown) => void;
     error: string;
     setError: (value: unknown) => void;
+    getErrorMessage: () => string;
     isLoading: boolean;
     login: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
     register: (userData: UserRegistrationData) => Promise<void>;
     editProfile: (userData: UserData) => Promise<void>;
-    getProfile: () => Promise<UserData>
+    getProfile: () => Promise<UserData>,
 }
 
 export const AuthContext = React.createContext<AuthContextProps>(null);
@@ -42,22 +44,27 @@ export const AuthContextProvider = ({children}): JSX.Element => {
         const [user, setUser] = useState(null);
         const [token, setToken] = useState(null)
         const [error, setError] = useState(null);
-        const toast = useToast();
         const [isLoading, setIsLoading] = useState(false);
+        const toast = useToast();
+        const showToast = useShowToast(toast);
+
+        useEffect(() => {
+            setError(null)
+        }, []);
 
         const login = async (email: string, password: string) => {
+            setError(null)
             try {
-                await AuthController.login(email, password);
-                const currentUser = auth.currentUser;
-                const accessToken = await currentUser.getIdToken(true);
-                setToken(accessToken);
-                const response = await userActions.getProfile();
-                const user = response.data;
-
-                setUser({...user, ...currentUser});
+                const userCredentials = await AuthController.login(email, password);
+                setToken(await userCredentials.user?.getIdToken(true));
+                const axiosResponse = await userActions.getProfile();
+                const {data: userProfile} = axiosResponse;
+                const {uid, email: userEmail, displayName, photoURL} = auth.currentUser;
+                setUser({...userProfile, uid, email: userEmail, displayName, photoURL});
             } catch (e) {
-                setIsLoading(false)
                 _setError(e);
+                setToken(null)
+                setIsLoading(false)
                 throw e;
             }
         };
@@ -78,8 +85,8 @@ export const AuthContextProvider = ({children}): JSX.Element => {
                 setIsLoading(false)
                 return;
             } catch (e) {
-                setIsLoading(false)
                 _setError(e);
+                setIsLoading(false)
                 throw e;
             }
         };
@@ -87,18 +94,16 @@ export const AuthContextProvider = ({children}): JSX.Element => {
         const editProfile = async (userData: UserData) => {
             try {
                 setIsLoading(true)
-                console.log("this is data", userData)
                 await userActions.editUserInfo(userData)
                 setIsLoading(false)
             } catch (e) {
-                setIsLoading(false)
                 _setError(e)
+                setIsLoading(false)
                 throw e;
             }
         }
 
         function _setError(e: Error) {
-            console.error(e.message)
             const errorMessage = _getErrorMessage(e);
             setError(errorMessage)
         }
@@ -106,10 +111,13 @@ export const AuthContextProvider = ({children}): JSX.Element => {
         function _getErrorMessage(e: { message: string; }) {
             const {message} = e;
 
-            if (message.includes("email-already-in-use"))
+            if (message.includes("session-not-found") || message.includes("session-cookie-expired"))
+                return "Faça login novamente para continuar.";
+
+            else if (message.includes("email-already-in-use"))
                 return "Email já em uso."
 
-            if (message.includes("user-not-found"))
+            else if (message.includes("user-not-found"))
                 return "Usuário não encontrado."
 
             else if (message.includes("weak-password"))
@@ -129,9 +137,21 @@ export const AuthContextProvider = ({children}): JSX.Element => {
         }
 
         async function getProfile() {
-            const axiosResponse = await userActions.getProfile();
-            const user: UserData = axiosResponse.data;
-            return user
+            setIsLoading(true)
+            setError(null)
+            try {
+                const axiosResponse = await userActions.getProfile();
+                setIsLoading(false)
+                const user: UserData = axiosResponse.data;
+                return user
+            } catch (e) {
+                setIsLoading(false)
+                setError(e.message)
+            }
+        }
+
+        function getErrorMessage() {
+            return error;
         }
 
         return (
@@ -142,6 +162,7 @@ export const AuthContextProvider = ({children}): JSX.Element => {
                 token,
                 setUser,
                 error,
+                getErrorMessage,
                 setError: _setError,
                 isLoading,
                 login,

@@ -1,5 +1,5 @@
-import {Box, ButtonGroup, Center, Heading, useToast} from "@gluestack-ui/themed";
-import React, {useState} from "react";
+import {Box, ButtonGroup, Center, Heading, Spinner, useToast} from "@gluestack-ui/themed";
+import React, {useEffect, useState} from "react";
 import {KeyboardAvoidingView, Platform, ScrollView} from "react-native";
 import {UserBasicInfoForm} from "../../components/UserBasicInfoForm";
 import {useAuthContext} from "../../hooks/useAuthContext";
@@ -9,32 +9,34 @@ import {ConfirmButton} from "../../components/buttons/ConfirmButton";
 import {onlyNumbers} from "../../utils/utils";
 
 export const EditProfile = ({navigation}) => {
-    const {user, isLoading, error, editProfile} = useAuthContext();
+    const {getProfile, isLoading, error, editProfile, user} = useAuthContext();
+    const [userProfile, setUserProfile] = useState({phoneNumber: user.phoneNumber.split("+55")[1], ...user})
+    const [state, setState] = useState({
+        docNumber: onlyNumbers(user.docNumber),
+        ...userProfile
+    })
+
+    useEffect(() => {
+        // console.log("this is user", user)
+        return navigation.addListener('focus', () => {
+            (async () => {
+                console.log("inside focus")
+                const userData = await getProfile();
+                console.log("this is user data", userData)
+                setUserProfile(userData)
+            })()
+        });
+    }, [navigation]);
 
     const toast = useToast();
-    const [state, setState] = useState({
-        name: user.name,
-        username: user.username,
-        uid: user.uid,
-        phoneNumber: user.phoneNumber,
-        metadata: user.metadata,
-        email: user.email,
-        docNumber: user.docNumber,
-        pix: user.pix,
-        bank: user.bank,
-        bankAgency: user.bankAgency,
-        bankAccountNumber: user.bankAccountNumber,
-        picPay: user.picPay,
-        photoURL: user.photoURL
-    })
 
     const handleEditUser = async () => {
         try {
             const {phoneNumber, ...partial} = state
-            const number = "+55" + onlyNumbers(phoneNumber);
-            console.log(partial)
+            const phoneIso = "+55" + onlyNumbers(phoneNumber);
+
             await editProfile({
-                phoneNumber: number,
+                phoneNumber: phoneIso,
                 ...partial
             })
             navigation.goBack();
@@ -53,9 +55,10 @@ export const EditProfile = ({navigation}) => {
         keyboardVerticalOffset={100}
         enabled
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+
         <ScrollView>
             <Center>
-                <Box px="$2" w="90%" py="$4" justifyContent="center">
+                {isLoading ? <Spinner/> : <Box px="$2" w="90%" py="$4" justifyContent="center">
                     <Heading size="lg" fontWeight="600">
                         Área do Usuário
                     </Heading>
@@ -70,7 +73,7 @@ export const EditProfile = ({navigation}) => {
                             <ConfirmButton onPress={handleEditUser} isLoading={isLoading}/>
                         </ButtonGroup>
                     </UserBasicInfoForm>
-                </Box>
+                </Box>}
             </Center>
         </ScrollView>
     </KeyboardAvoidingView>

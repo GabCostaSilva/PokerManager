@@ -1,9 +1,9 @@
 import {Box, Center, FormControl, Heading, HStack, Input, Link, Text, VStack} from "native-base";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useAuthContext} from "../../hooks/useAuthContext";
 import {routes_names} from "../../routes/routes_names";
 import {Button, ButtonSpinner, ButtonText, useToast} from "@gluestack-ui/themed";
-import {ErrorAlert} from "../../components/alerts/ErrorAlert";
+import {useShowToast} from "../../hooks/useShowToast";
 
 const SignIn = ({route, navigation}): JSX.Element => {
 
@@ -12,20 +12,20 @@ const SignIn = ({route, navigation}): JSX.Element => {
 
     const authContext = useAuthContext();
     const toast = useToast();
+    const showToast = useShowToast(toast);
+
+    useEffect(() => {
+        if (authContext.isSignedIn) {
+            navigation.navigate(routes_names.home);
+        }
+        if (authContext.getErrorMessage())
+            showToast(authContext.getErrorMessage());
+
+    }, [authContext.isSignedIn, authContext.error, authContext.getErrorMessage]);
 
     const handleLogin = async () => {
-        try {
-            await authContext.login(email, password);
-            navigation.navigate(routes_names.home);
-        } catch (e) {
-            toast.show({
-                placement: "top",
-                render: ({id}) => {
-                    const toastId = "toast-" + id;
-                    return <ErrorAlert message={authContext.error} id={toastId}/>
-                }
-            })
-        }
+        await authContext.login(email, password);
+        navigation.navigate(routes_names.home);
     };
 
     return <Center w="100%">

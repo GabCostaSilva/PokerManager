@@ -3,12 +3,16 @@ import {Masks, useMaskedInputProps} from 'react-native-mask-input';
 import React from "react";
 import TextInput from "../TextInput";
 import {InputProps} from "./InputProps";
-import {onlyNumbers} from "../../utils/utils";
 
 export const PhoneInput = ({value, onChangeText}: InputProps) => {
 
+    const removeCountryCode = (value: string) => {
+        console.log("this is value", value)
+        return value.replace(/^\+\d{1,3}/, '');
+    };
+
     const maskedInputProps = useMaskedInputProps({
-        value: value,
+        value: removeCountryCode(value),
         onChangeText: onChangeText,
         mask: Masks.BRL_PHONE,
     });

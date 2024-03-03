@@ -1,4 +1,7 @@
 import {getLocales} from "expo-localization";
+import {ErrorAlert} from "../components/alerts/ErrorAlert";
+import {SuccessAlert} from "../components/alerts/SuccessAlert";
+import React from "react";
 
 export function onlyNumbers(text: string): number {
     return Number.parseInt(text?.replace(/[^0-9]/g, '')) || 0;
@@ -27,4 +30,16 @@ export function getPhoneMasked(value: string): RegExpMatchArray {
         .match(phoneLocale.regex);
 
     return regExpMatchArray
+}
+
+export function getPhoneIso(value: string): string {
+    return `+55${onlyNumbers(value)}`
+}
+
+export function getPhoneBR(phoneNumber: string) {
+    if (!phoneNumber)
+        return "";
+    // if (phoneNumber.length < 11)
+    //     return phoneNumber;
+    return `${phoneNumber.substring(0,3)} (${phoneNumber.substring(3, 5)}) ${phoneNumber.substring(5, 10)}-${phoneNumber.substring(10, phoneNumber.length)}`
 }

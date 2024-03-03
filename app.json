@@ -19,6 +19,7 @@
     "ios": {
       "jsEngine": "hermes",
       "supportsTablet": true,
+      "googleServicesFile": "./GoogleService-Info.plist",
       "bundleIdentifier": "com.pokerdealer.PokerDealerApp",
       "infoPlist": {
         "UISupportsDocumentBrowser": true,
@@ -39,6 +40,16 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
+      "@react-native-firebase/app",
+      "@react-native-firebase/auth",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "useFrameworks": "static"
+          }
+        }
+      ],
       "expo-build-properties",
       "expo-localization",
       [
@@ -47,7 +58,12 @@
           "photosPermission": "Este app acessa sua câmera para que tire fotos de perfil de usuário."
         }
       ],
-      "expo-secure-store"
+      [
+        "expo-secure-store",
+        {
+          "faceIDPermission": "Permitir $(PRODUCT_NAME) acessar dados biométricos do Face ID?"
+        }
+      ]
     ],
     "extra": {
       "eas": {

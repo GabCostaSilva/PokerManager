@@ -1,5 +1,6 @@
 import {auth, loginUser, recoverPassword} from "../../../firebaseConfig";
 import {httpClient} from "./client";
+import {secureStorage} from "../secureStorage";
 
 export interface UserRegistrationData {
     name: string,
@@ -16,6 +17,10 @@ export interface UserRegistrationData {
     uid?: string,
 }
 
+const getCookie = async (idToken: string) => {
+    return await httpClient.post("/auth/csrf", {idToken})
+};
+
 export const AuthController = {
 
     register: async (userRegistrationData: UserRegistrationData) => {
@@ -25,7 +30,14 @@ export const AuthController = {
     },
 
     login: async (email: string, password: string) => {
-        await loginUser(email, password)
+        const userCredential = await loginUser(email, password);
+        const idToken = await userCredential.user?.getIdToken();
+
+        const axiosResponse = await httpClient.post("/auth/sessionLogin", {idToken});
+        console.log("axiosResponse", axiosResponse)
+        // await secureStorage.saveSession(axiosResponse.data.sessionCookie);
+
+        return userCredential;
     },
 
     logout: async () => {

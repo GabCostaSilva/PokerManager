@@ -3,6 +3,7 @@ import TextInput from "./TextInput";
 import {PhoneInput} from "./inputs/PhoneInput";
 import {CpfInput} from "./inputs/CpfInput";
 import React from "react";
+import {getPhoneBR, onlyNumbers} from "../utils/utils";
 
 export const UserBasicInfoForm = ({state, setState, children, emailDisabled = false}) => {
     return <VStack space={"md"}>
@@ -28,9 +29,10 @@ export const UserBasicInfoForm = ({state, setState, children, emailDisabled = fa
             </FormControlLabel>
             <PhoneInput
                 value={state.phoneNumber}
-                onChangeText={(phoneNumber: string) => setState(prevState => (
-                    {...prevState, phoneNumber}))
-                }
+                onChangeText={(phoneNumber: string) => setState(prevState => ({
+                        ...prevState, phoneNumber
+                    })
+                )}
             />
         </FormControl>
         <FormControl>

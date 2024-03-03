@@ -3,6 +3,7 @@ import {getFirestore} from "firebase/firestore";
 import {connectAuthEmulator, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword} from "firebase/auth";
 import {LogBox} from "react-native";
 
+//TODO remover firebase api key em prod
 const firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY || "AIzaSyCqlBK4umAOsnIObRnOSAEF7t3fqGn1Fdk",
     authDomain: "pokermanager-828c7.firebaseapp.com",
@@ -22,9 +23,12 @@ if (!getApps().length) {
 LogBox.ignoreLogs([`Setting a timer for a long period`]);
 
 export const auth = getAuth();
+
 if (process.env.REACT_APP_NODE_ENV !== 'prod') {
+    console.log("Using Emulator")
     connectAuthEmulator(auth, "http://192.168.100.76:9099");
 }
+
 export const loginUser = (email, password) => signInWithEmailAndPassword(auth, email, password);
 export const recoverPassword = (email) => sendPasswordResetEmail(auth, email)
 export const database = getFirestore();

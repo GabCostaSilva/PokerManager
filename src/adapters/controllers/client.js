@@ -14,6 +14,11 @@ export const httpClient = createHttpClient({
         }
     },
     getCurrentAccessToken: async () => {
+
+        return auth.currentUser?.getIdToken(true);
+    },
+
+    getCurrentRefreshToken: async () => {
         return auth.currentUser?.getIdToken(true);
     }
 });
