@@ -4,7 +4,7 @@ import React from "react";
 import TextInput from "../TextInput";
 import {InputProps} from "./InputProps";
 
-export const CpfInput = ({value, onChangeText}: InputProps) => {
+export const CpfInput = ({value, onChangeText, isInvalid = false}: InputProps) => {
 
     const maskedInputProps = useMaskedInputProps({
         value: value,
@@ -12,5 +12,5 @@ export const CpfInput = ({value, onChangeText}: InputProps) => {
         mask: Masks.BRL_CPF,
     });
 
-    return <TextInput {...maskedInputProps}/>
+    return <TextInput {...maskedInputProps} isInvalid={isInvalid}/>
 }
