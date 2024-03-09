@@ -2,6 +2,7 @@ import {AlertProps} from "./AlertProps";
 import {Toast, ToastDescription, ToastTitle, VStack} from "@gluestack-ui/themed";
 
 export const MyAlert = (props: AlertProps) => {
+    console.log("MyAlert", props)
     const getTitle = () => {
         switch (props.action) {
             case "error":

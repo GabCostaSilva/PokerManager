@@ -31,13 +31,12 @@ export const UserBasicInfoForm = ({
             </FormControlLabel>
             <TextInput
                 value={state.email}
-                isInvalid={"email" in errors}
                 isDisabled={emailDisabled}
+                errors={errors.email}
                 onChangeText={(email: string) => setState(prevState => (
                     {...prevState, email}))
                 }
             />
-            {errors.email && <InputErrorLabel error={errors.email}/>}
         </FormControl>
         <FormControl>
             <FormControlLabel>
@@ -47,13 +46,12 @@ export const UserBasicInfoForm = ({
             </FormControlLabel>
             <PhoneInput
                 value={state.phoneNumber}
-                isInvalid={"phoneNumber" in errors}
+                errors={errors.phoneNumber}
                 onChangeText={(phoneNumber: string) => setState(prevState => ({
                         ...prevState, phoneNumber
                     })
                 )}
             />
-            {errors.phoneNumber && <InputErrorLabel error={errors.phoneNumber}/>}
         </FormControl>
         <FormControl>
             <FormControlLabel>
@@ -63,12 +61,11 @@ export const UserBasicInfoForm = ({
             </FormControlLabel>
             <TextInput
                 value={state.name}
-                isInvalid={"name" in errors}
+                errors={errors.name}
                 onChangeText={(name: string) => setState(prevState => (
                     {...prevState, name}))
                 }
             />
-            {errors.name && <InputErrorLabel error={errors.name}/>}
         </FormControl>
         <FormControl>
             <FormControlLabel>
@@ -77,13 +74,12 @@ export const UserBasicInfoForm = ({
                 </FormControlLabelText>
             </FormControlLabel>
             <TextInput
-                value={state.username}
-                isInvalid={"username" in errors}
-                onChangeText={(username: string) => setState(prevState => (
-                    {...prevState, username}
+                value={state.userName}
+                errors={errors.userName}
+                onChangeText={(userName: string) => setState(prevState => (
+                    {...prevState, userName}
                 ))}
             />
-            {errors.username && <InputErrorLabel error={errors.username}/>}
         </FormControl>
         <FormControl>
             <FormControlLabel>
@@ -93,12 +89,11 @@ export const UserBasicInfoForm = ({
             </FormControlLabel>
             <CpfInput
                 value={state.docNumber}
-                isInvalid={"docNumber" in errors}
+                errors={errors.docNumber}
                 onChangeText={(docNumber: string) => setState(prevState => (
                     {...prevState, docNumber}
                 ))}
             />
-            {errors.docNumber && <InputErrorLabel error={errors.docNumber}/>}
         </FormControl>
         <FormControl>
             <FormControlLabel>
@@ -126,12 +121,11 @@ export const UserBasicInfoForm = ({
             </FormControlLabel>
             <TextInput
                 value={state.bank}
-                isInvalid={"bank" in errors}
+                errors={errors.bank}
                 onChangeText={(bank: string) => setState(prevState => (
                     {...prevState, bank}
                 ))}
             />
-            {errors.bank && <InputErrorLabel error={errors.bank}/>}
         </FormControl>
         <FormControl>
             <FormControlLabel>
@@ -141,12 +135,11 @@ export const UserBasicInfoForm = ({
             </FormControlLabel>
             <TextInput
                 value={state.bankAgency}
-                isInvalid={"bankAgency" in errors}
+                errors={errors.bankAgency}
                 onChangeText={(bankAgency: string) => setState(prevState => (
                     {...prevState, bankAgency}
                 ))}
             />
-            {errors.bankAgency && <InputErrorLabel error={errors.bankAgency}/>}
         </FormControl>
         <FormControl>
             <FormControlLabel>
@@ -156,12 +149,11 @@ export const UserBasicInfoForm = ({
             </FormControlLabel>
             <TextInput
                 value={state.bankAccountNumber}
-                isInvalid={"bankAccountNumber" in errors}
+                errors={errors.bankAccountNumber}
                 onChangeText={(bankAccountNumber: string) => setState(prevState => (
                     {...prevState, bankAccountNumber}
                 ))}
             />
-            {errors.bankAccountNumber && <InputErrorLabel error={errors.bankAccountNumber}/>}
         </FormControl>
         {children}
     </VStack>

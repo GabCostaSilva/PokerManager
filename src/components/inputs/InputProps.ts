@@ -1,6 +1,6 @@
 export interface InputProps {
     value: string,
-    isInvalid?: boolean,
+    errors?: string[],
     isDisabled?: boolean,
     handleBlur?: () => void,
     onChangeText: (value: string) => void

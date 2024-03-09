@@ -29,7 +29,7 @@ export const MySelect = ({ options, isInvalid, handleChange }: MySelectProps) =>
                     <SelectDragIndicator/>
                 </SelectDragIndicatorWrapper>
                 {options.map(option => (
-                        <SelectItem label={option.label} value={option.value} isDisabled={option.isDisabled}/>
+                        <SelectItem label={option.label} value={option.value} isDisabled={option.isDisabled} key={option.value}/>
                     )
                 )}
             </SelectContent>

@@ -16,9 +16,8 @@ import {useAuthContext} from "../../hooks/useAuthContext";
 import {KeyboardAvoidingView, ScrollView} from "react-native";
 import {UserBasicInfoForm} from "../../components/UserBasicInfoForm";
 import {useShowToast} from "../../hooks/useShowToast";
-import {Formik} from "formik";
 import * as yup from "yup";
-import {InputErrorLabel} from "../../components/inputs/InputErrorLabel";
+import {ValidationError} from "yup";
 
 const initialState = {
     name: "",
@@ -35,15 +34,16 @@ const initialState = {
 }
 
 export const SignUp = ({navigation}) => {
-    const {register, error, isLoading, getErrorMessage} = useAuthContext();
+    const {register, isLoading, getErrorMessage} = useAuthContext();
     const toast = useToast();
     const showToast = useShowToast(toast);
 
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
     const [state, setState] = useState(initialState)
+    const [validationErrors, setValidationErrors] = useState({} as Record<string, string[]>)
 
-    const validationSchema = yup.object().shape({
+    const validationSchema = yup.object({
         email: yup
             .string()
             .email("Por favor, insira um e-mail válido")
@@ -51,23 +51,37 @@ export const SignUp = ({navigation}) => {
         phoneNumber: yup.string().required('Telefone é obrigatório'),
         name: yup.string().required('Nome é obrigatório'),
         password: yup.string().required('Senha é obrigatória').min(6, 'Senha deve conter ao menos 6 caracteres'),
-        username: yup.string().required('Nome de usuário é obrigatório'),
+        userName: yup.string().required('Nome de usuário é obrigatório'),
         docNumber: yup.string().required('CPF é obrigatório')
     })
 
-    async function handleSignUp() {
-        try {
-            await register({...state, password});
+    function cleanupForm() {
+        setValidationErrors({} as Record<string, string[]>)
+    }
 
-            if (null == getErrorMessage())
-                navigation.navigate("Login");
-            else {
-                console.error("Error: ", getErrorMessage())
-                showToast("Erro ao cadastrar usuário")
-            }
+    async function handleSignUp() {
+        cleanupForm();
+        try {
+            const userData = {...state, password};
+            validationSchema.validateSync(userData, {abortEarly: false});
+
+            await register({
+                ...userData,
+                phoneNumber: "+55" + userData.phoneNumber.replace(/\D/g, "")
+            });
+
+            navigation.navigate("Login", {message: "Usuário cadastrado com sucesso!"});
+
         } catch (e) {
-            console.error("Error: ", error)
-            showToast("Erro ao cadastrar usuário")
+            if (e.name === "ValidationError") {
+                e.inner.forEach((error: ValidationError) => {
+                    showToast("Verifique os campos do cadastro")
+                    setValidationErrors((prev) => ({...prev, [error.path]: error.errors}))
+                })
+            } else {
+                showToast("Erro ao cadastrar usuário")
+                console.error("Error: in catch", JSON.stringify(e, null, 2), getErrorMessage())
+            }
         }
     }
 
@@ -81,60 +95,48 @@ export const SignUp = ({navigation}) => {
                     <Heading fontWeight="400" size="xs" mb={"$4"}>
                         Cadastre-se para continuar
                     </Heading>
-                    <Formik
-                        initialValues={initialState}
-                        validationSchema={validationSchema}
-                        onSubmit={async (values) => {
-                            await handleSignUp();
-                        }}
-                    >{({
-                           handleSubmit,
-                           errors
-                       }) => (
-                        <UserBasicInfoForm state={state} setState={setState} errors={errors}>
-                            <FormControl>
-                                <FormControlLabel>
-                                    <FormControlLabelText>
-                                        Senha
-                                    </FormControlLabelText>
-                                </FormControlLabel>
-                                <TextInput
-                                    name={"password"}
-                                    value={password}
-                                    isInvalid={'password' in errors}
-                                    onChangeText={setPassword}
-                                    isPassword={true}/>
-                                {errors.password && <InputErrorLabel error={errors.password}/>}
-                            </FormControl>
-                            <FormControl mb={"$4"}>
-                                <FormControlLabel>
-                                    <FormControlLabelText>
-                                        Confirme sua senha
-                                    </FormControlLabelText>
-                                </FormControlLabel>
-                                <TextInput isPassword={true}
-                                           value={passwordConfirmation}
-                                           onChangeText={setPasswordConfirmation}/>
-                            </FormControl>
-                            <ButtonGroup flexDirection={"column"}>
-                                <Button action={"positive"}
-                                        onPress={() => {
-                                            handleSubmit()
-                                        }}
-                                        disabled={isLoading}>
-                                    <ButtonText>Cadastrar</ButtonText>
-                                    {isLoading && <ButtonSpinner pl={"$4"}/>}
-                                </Button>
-                                <Button action={"negative"}
-                                        variant={"outline"}
-                                        onPress={() => {
-                                            navigation.navigate("Login");
-                                        }}>
-                                    <ButtonText>Cancelar</ButtonText>
-                                </Button>
-                            </ButtonGroup>
-                        </UserBasicInfoForm>)}
-                    </Formik>
+                    <UserBasicInfoForm state={state} setState={setState} errors={validationErrors}>
+                        <FormControl>
+                            <FormControlLabel>
+                                <FormControlLabelText>
+                                    Senha
+                                </FormControlLabelText>
+                            </FormControlLabel>
+                            <TextInput
+                                name={"password"}
+                                value={password}
+                                errors={validationErrors.password}
+                                onChangeText={(password: string) => setPassword(password)}
+                                isPassword={true}/>
+                        </FormControl>
+                        <FormControl mb={"$4"}>
+                            <FormControlLabel>
+                                <FormControlLabelText>
+                                    Confirme sua senha
+                                </FormControlLabelText>
+                            </FormControlLabel>
+                            <TextInput isPassword={true}
+                                       value={passwordConfirmation}
+                                       onChangeText={setPasswordConfirmation}/>
+                        </FormControl>
+                        <ButtonGroup flexDirection={"column"}>
+                            <Button action={"positive"}
+                                    onPress={() => {
+                                        handleSignUp();
+                                    }}
+                                    disabled={isLoading}>
+                                <ButtonText>Cadastrar</ButtonText>
+                                {isLoading && <ButtonSpinner pl={"$4"}/>}
+                            </Button>
+                            <Button action={"negative"}
+                                    variant={"outline"}
+                                    onPress={() => {
+                                        navigation.navigate("Login");
+                                    }}>
+                                <ButtonText>Cancelar</ButtonText>
+                            </Button>
+                        </ButtonGroup>
+                    </UserBasicInfoForm>
                 </Box>
             </Center>
         </KeyboardAvoidingView>

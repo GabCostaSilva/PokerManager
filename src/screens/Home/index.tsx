@@ -65,7 +65,6 @@ export function Home({route, navigation}) {
                     const params = route ? route.params : null;
 
                     if (params) alert(params.message);
-                    console.log("home response", response)
                     // @ts-ignore
                     setTourneys(response?.data);
                 }

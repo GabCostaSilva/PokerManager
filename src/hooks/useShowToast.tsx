@@ -5,6 +5,7 @@ import {SuccessAlert} from "../components/alerts/SuccessAlert";
 export const useShowToast = (toast) => {
 
     return function showToast(message: string, type: 'error' | 'success' = 'error') {
+        console.log("showToast", message, type)
         toast.show({
             placement: "top",
             render: ({id}) => {

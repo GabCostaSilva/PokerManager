@@ -45,12 +45,10 @@ export const AuthContextProvider = ({children}): JSX.Element => {
         const [token, setToken] = useState(null)
         const [error, setError] = useState(null);
         const [isLoading, setIsLoading] = useState(false);
-        const toast = useToast();
-        const showToast = useShowToast(toast);
 
         useEffect(() => {
-            setError(null)
-        }, []);
+            console.log("hello Mr Error", error)
+        }, [error]);
 
         const login = async (email: string, password: string) => {
             setError(null)
@@ -110,7 +108,7 @@ export const AuthContextProvider = ({children}): JSX.Element => {
 
         function _getErrorMessage(e: { message: string; }) {
             const {message} = e;
-
+            console.log("getErrorMessage", message)
             if (message.includes("session-not-found") || message.includes("session-cookie-expired"))
                 return "Faça login novamente para continuar.";
 

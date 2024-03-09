@@ -25,11 +25,8 @@ export const secureStorage = {
 
     getSession: async () => {
         const s = await SecureStore.getItemAsync("session");
-        if (!s) throw new Error("session-not-found");
         const session: Session = JSON.parse(s);
-        if (!_verifySessionExpiration(session))
-            return session;
-        else
-            throw new Error("session-cookie-expired");
+
+        return session;
     },
 }

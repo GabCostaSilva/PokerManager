@@ -21,6 +21,11 @@ export function createHttpClient({
                     config.headers.Authorization = `Bearer ${token}`;
                 }
 
+                const uri = axios.getUri(config);
+                if (uri.includes('login') || uri.includes('refresh-token') || uri.includes('logout') || uri.includes('sessionLogin')) {
+                    return config;
+                }
+
                 const session = await secureStorage.getSession();
                 if (session) {
                     config.headers['X-Session'] = session.sessionCookie;

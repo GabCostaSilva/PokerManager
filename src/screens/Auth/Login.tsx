@@ -6,6 +6,7 @@ import {Button, ButtonSpinner, ButtonText, useToast} from "@gluestack-ui/themed"
 import {useShowToast} from "../../hooks/useShowToast";
 
 const SignIn = ({route, navigation}): JSX.Element => {
+    const {params: routeParams} = route;
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -15,13 +16,16 @@ const SignIn = ({route, navigation}): JSX.Element => {
     const showToast = useShowToast(toast);
 
     useEffect(() => {
+        if (routeParams && routeParams.message) {
+            showToast(routeParams.message, 'success');
+        }
         if (authContext.isSignedIn) {
             navigation.navigate(routes_names.home);
         }
         if (authContext.getErrorMessage())
             showToast(authContext.getErrorMessage());
 
-    }, [authContext.isSignedIn, authContext.error, authContext.getErrorMessage]);
+    }, [authContext.isSignedIn, authContext.error, authContext.getErrorMessage, route]);
 
     const handleLogin = async () => {
         await authContext.login(email, password);

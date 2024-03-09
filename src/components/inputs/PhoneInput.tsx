@@ -4,7 +4,7 @@ import React from "react";
 import TextInput from "../TextInput";
 import {InputProps} from "./InputProps";
 
-export const PhoneInput = ({value, isInvalid = false, onChangeText}: InputProps) => {
+export const PhoneInput = ({value, errors = [], onChangeText}: InputProps) => {
 
     const removeCountryCode = (value: string) => {
         return value.replace(/^\+\d{1,3}/, '');
@@ -16,5 +16,5 @@ export const PhoneInput = ({value, isInvalid = false, onChangeText}: InputProps)
         mask: Masks.BRL_PHONE,
     });
 
-    return <TextInput {...maskedInputProps} isInvalid={isInvalid}/>
+    return <TextInput {...maskedInputProps} errors={errors}/>
 }
