@@ -3,6 +3,7 @@ import {Modal} from "native-base";
 import NewBlind from "./NewBlind";
 import {Button, ButtonGroup, ButtonText} from "@gluestack-ui/themed";
 import NewPause from "./NewPause";
+import CustomModal from "../../../../components/CustomModal";
 
 export default function NewBlindModal(props: {
     onClose: () => void,

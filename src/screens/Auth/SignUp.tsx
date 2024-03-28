@@ -8,8 +8,7 @@ import {
     FormControl,
     FormControlLabel,
     FormControlLabelText,
-    Heading,
-    useToast
+    Heading
 } from "@gluestack-ui/themed";
 import TextInput from "../../components/TextInput";
 import {useAuthContext} from "../../hooks/useAuthContext";
@@ -34,9 +33,8 @@ const initialState = {
 }
 
 export const SignUp = ({navigation}) => {
-    const {register, isLoading, getErrorMessage} = useAuthContext();
-    const toast = useToast();
-    const showToast = useShowToast(toast);
+    const {register, isLoading} = useAuthContext();
+    const showToast = useShowToast();
 
     const [password, setPassword] = useState("");
     const [passwordConfirmation, setPasswordConfirmation] = useState("");
@@ -70,17 +68,17 @@ export const SignUp = ({navigation}) => {
                 phoneNumber: "+55" + userData.phoneNumber.replace(/\D/g, "")
             });
 
+            console.log("Usuário cadastrado com sucesso!")
             navigation.navigate("Login", {message: "Usuário cadastrado com sucesso!"});
 
         } catch (e) {
             if (e.name === "ValidationError") {
                 e.inner.forEach((error: ValidationError) => {
-                    showToast("Verifique os campos do cadastro")
+                    showToast("Verifique os campos do cadastro", "error")
                     setValidationErrors((prev) => ({...prev, [error.path]: error.errors}))
                 })
             } else {
-                showToast("Erro ao cadastrar usuário")
-                console.error("Error: in catch", JSON.stringify(e, null, 2), getErrorMessage())
+                showToast(e.response.data.message, "error")
             }
         }
     }

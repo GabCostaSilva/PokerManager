@@ -18,7 +18,7 @@ import {InputErrorLabel} from "./inputs/InputErrorLabel";
 export const UserBasicInfoForm = ({
                                       state,
                                       setState,
-                                      errors,
+                                      errors = null,
                                       children,
                                       emailDisabled = false
                                   }) => {
@@ -32,7 +32,7 @@ export const UserBasicInfoForm = ({
             <TextInput
                 value={state.email}
                 isDisabled={emailDisabled}
-                errors={errors.email}
+                errors={errors?.email}
                 onChangeText={(email: string) => setState(prevState => (
                     {...prevState, email}))
                 }
@@ -46,7 +46,7 @@ export const UserBasicInfoForm = ({
             </FormControlLabel>
             <PhoneInput
                 value={state.phoneNumber}
-                errors={errors.phoneNumber}
+                errors={errors?.phoneNumber}
                 onChangeText={(phoneNumber: string) => setState(prevState => ({
                         ...prevState, phoneNumber
                     })
@@ -61,7 +61,7 @@ export const UserBasicInfoForm = ({
             </FormControlLabel>
             <TextInput
                 value={state.name}
-                errors={errors.name}
+                errors={errors?.name}
                 onChangeText={(name: string) => setState(prevState => (
                     {...prevState, name}))
                 }
@@ -75,7 +75,7 @@ export const UserBasicInfoForm = ({
             </FormControlLabel>
             <TextInput
                 value={state.userName}
-                errors={errors.userName}
+                errors={errors?.userName}
                 onChangeText={(userName: string) => setState(prevState => (
                     {...prevState, userName}
                 ))}
@@ -89,7 +89,7 @@ export const UserBasicInfoForm = ({
             </FormControlLabel>
             <CpfInput
                 value={state.docNumber}
-                errors={errors.docNumber}
+                errors={errors?.docNumber}
                 onChangeText={(docNumber: string) => setState(prevState => (
                     {...prevState, docNumber}
                 ))}
@@ -121,7 +121,7 @@ export const UserBasicInfoForm = ({
             </FormControlLabel>
             <TextInput
                 value={state.bank}
-                errors={errors.bank}
+                errors={errors?.bank}
                 onChangeText={(bank: string) => setState(prevState => (
                     {...prevState, bank}
                 ))}
@@ -135,7 +135,7 @@ export const UserBasicInfoForm = ({
             </FormControlLabel>
             <TextInput
                 value={state.bankAgency}
-                errors={errors.bankAgency}
+                errors={errors?.bankAgency}
                 onChangeText={(bankAgency: string) => setState(prevState => (
                     {...prevState, bankAgency}
                 ))}
@@ -149,7 +149,7 @@ export const UserBasicInfoForm = ({
             </FormControlLabel>
             <TextInput
                 value={state.bankAccountNumber}
-                errors={errors.bankAccountNumber}
+                errors={errors?.bankAccountNumber}
                 onChangeText={(bankAccountNumber: string) => setState(prevState => (
                     {...prevState, bankAccountNumber}
                 ))}

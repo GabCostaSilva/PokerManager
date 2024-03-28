@@ -6,7 +6,7 @@ import {routes_names} from "./routes/routes_names";
 import {NewTournament} from "./screens/NewTournament";
 import {Profile} from "./screens/Profile";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
-import {Icon, useTheme} from "native-base";
+import {Icon} from "native-base";
 import {FontAwesome} from '@expo/vector-icons';
 import PasswordRecovery from "./screens/Auth/PasswordRecovery";
 import {SignUp} from "./screens/Auth/SignUp";
@@ -17,9 +17,6 @@ const Tab = createBottomTabNavigator();
 
 export const Routes = () => {
     const {isSignedIn} = useAuthContext();
-    const {
-        colors
-    } = useTheme();
 
     return isSignedIn
         ? <Tab.Navigator

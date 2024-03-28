@@ -57,7 +57,7 @@ const NewBlind = ({setModalVisible}) => {
         <HStack justifyContent="center" space="md">
             <Button
                 variant="outline"
-                action="negative"
+                action="secondary"
                 onPress={() => {
                     setModalVisible(prevState => false);
                 }}>

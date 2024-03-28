@@ -27,7 +27,7 @@ export default function ({setModalVisible}) {
     };
     const [pause, setPause] = useState<Blind>(initialState);
 
-    return <Box h="$32" w="$72">
+    return <Box>
         <VStack space={3} mt="5">
             <FormControl
                 size="md"
@@ -67,6 +67,7 @@ export default function ({setModalVisible}) {
             </FormControl>
             <HStack justifyContent="center" space="md">
                 <Button
+                    variant="outline"
                     action="secondary"
                     onPress={() => {
                         setModalVisible(prevState => false);

@@ -7,8 +7,6 @@ export const userActions = {
     },
 
     getProfile: async() => {
-        const axiosResponse = await httpClient.get("/user/profile");
-        console.log("getProfile", axiosResponse)
-        return axiosResponse
+        return await httpClient.get("/user/profile")
     }
 }

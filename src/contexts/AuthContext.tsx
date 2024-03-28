@@ -3,8 +3,6 @@ import {useEffect, useState} from "react";
 import {AuthController, UserRegistrationData} from "../adapters/controllers/auth-controller";
 import {auth} from "../../firebaseConfig";
 import {userActions} from "../state/actions/userActions";
-import {useToast} from "@gluestack-ui/themed";
-import {useShowToast} from "../hooks/useShowToast";
 
 export type UserData = {
     name: string,
@@ -46,15 +44,10 @@ export const AuthContextProvider = ({children}): JSX.Element => {
         const [error, setError] = useState(null);
         const [isLoading, setIsLoading] = useState(false);
 
-        useEffect(() => {
-            console.log("hello Mr Error", error)
-        }, [error]);
-
         const login = async (email: string, password: string) => {
-            setError(null)
             try {
                 const userCredentials = await AuthController.login(email, password);
-                setToken(await userCredentials.user?.getIdToken(true));
+                setToken(await userCredentials.user?.getIdToken());
                 const axiosResponse = await userActions.getProfile();
                 const {data: userProfile} = axiosResponse;
                 const {uid, email: userEmail, displayName, photoURL} = auth.currentUser;
@@ -108,7 +101,6 @@ export const AuthContextProvider = ({children}): JSX.Element => {
 
         function _getErrorMessage(e: { message: string; }) {
             const {message} = e;
-            console.log("getErrorMessage", message)
             if (message.includes("session-not-found") || message.includes("session-cookie-expired"))
                 return "Faça login novamente para continuar.";
 

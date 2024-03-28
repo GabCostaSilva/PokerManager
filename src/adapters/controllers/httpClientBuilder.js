@@ -18,6 +18,7 @@ export function createHttpClient({
             if (config.authorization !== false) {
                 const token = await getCurrentAccessToken();
                 if (token) {
+                    console.log('token', token)
                     config.headers.Authorization = `Bearer ${token}`;
                 }
 
@@ -25,16 +26,12 @@ export function createHttpClient({
                 if (uri.includes('login') || uri.includes('refresh-token') || uri.includes('logout') || uri.includes('sessionLogin')) {
                     return config;
                 }
-
-                const session = await secureStorage.getSession();
-                if (session) {
-                    config.headers['X-Session'] = session.sessionCookie;
-                }
             }
             return config;
         },
         (error) => {
-            console.error('interceptor error', error)
+            console.error('interceptor request error', error.response.data.message)
+
             return Promise.reject(error);
         }
     );
@@ -42,6 +39,7 @@ export function createHttpClient({
     client.interceptors.response.use((response) => {
         return response;
     }, async (error) => {
+        console.error('interceptor response error', error.response.data.message)
         if (error.response?.status === 401) {
             throw new Error('Usuário não autorizado. Autentique-se novamente.')
         }

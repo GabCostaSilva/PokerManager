@@ -13,11 +13,13 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "platforms": [
+      "ios"
+    ],
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "jsEngine": "hermes",
       "supportsTablet": true,
       "googleServicesFile": "./GoogleService-Info.plist",
       "bundleIdentifier": "com.pokerdealer.PokerDealerApp",

@@ -91,10 +91,18 @@ export const TourneyResume = ({navigation}) => {
             <VStack>
                 {getHeading("Blinds")}
                 {blinds.map(blind => (
-                        <HStack space={"lg"} key={blind.title}>
+                        <HStack space={"md"} key={blind.title}>
                             <Text>{blind.title}</Text>
-                            {blind.isPause ? <Text italic>Pausa</Text> : <Text>{blind.small + "/" + blind.big}</Text>}
-                            <Text>{blind.durationInMinutes + "m"}</Text>
+                            {blind.isPause ?
+                                <HStack space={"md"}>
+                                    <Text italic>Pausa</Text>
+                                    <Text>{blind.durationInMinutes + "m"}</Text>
+                                </HStack> :
+                                <HStack space={"md"}>
+                                    <Text>{blind.small + "/" + blind.big}</Text>
+                                    <Text>{blind.time + "m"}</Text>
+                                </HStack>
+                            }
                         </HStack>
                     )
                 )}

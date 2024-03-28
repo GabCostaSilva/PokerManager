@@ -1,19 +1,46 @@
 import {Box, Center, FormControl, Heading, HStack, Input, Link, Text, VStack} from "native-base";
-import React, {useEffect, useState} from "react";
+import React, {ReactElement, useEffect, useState} from "react";
 import {useAuthContext} from "../../hooks/useAuthContext";
 import {routes_names} from "../../routes/routes_names";
-import {Button, ButtonSpinner, ButtonText, useToast} from "@gluestack-ui/themed";
+import {Button, ButtonSpinner, ButtonText} from "@gluestack-ui/themed";
 import {useShowToast} from "../../hooks/useShowToast";
 
-const SignIn = ({route, navigation}): JSX.Element => {
+function _getErrorMessage(e: { message: string; }) {
+    const {message} = e;
+    if (message.includes("session-not-found") || message.includes("session-cookie-expired"))
+        return "Faça login novamente para continuar.";
+
+    else if (message.includes("email-already-in-use"))
+        return "Email já em uso."
+
+    else if (message.includes("user-not-found"))
+        return "Usuário não encontrado."
+
+    else if (message.includes("weak-password"))
+        return "A senha deve conter ao menos 6 caracteres.";
+
+    else if (message.includes("wrong-password"))
+        return "Senha incorreta. Tente novamente com outra senha.";
+
+    else if (message.includes("missing-password"))
+        return "Digite sua senha para entrar.";
+
+    else if (message.includes("invalid-email"))
+        return "Email inválido. Tente novamente com outro email.";
+
+    else
+        return "Erro ao processar operação. Tente novamente daqui alguns momentos.";
+}
+
+const Login = ({route, navigation}): ReactElement => {
     const {params: routeParams} = route;
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const authContext = useAuthContext();
-    const toast = useToast();
-    const showToast = useShowToast(toast);
+
+    const showToast = useShowToast();
 
     useEffect(() => {
         if (routeParams && routeParams.message) {
@@ -22,14 +49,16 @@ const SignIn = ({route, navigation}): JSX.Element => {
         if (authContext.isSignedIn) {
             navigation.navigate(routes_names.home);
         }
-        if (authContext.getErrorMessage())
-            showToast(authContext.getErrorMessage());
 
-    }, [authContext.isSignedIn, authContext.error, authContext.getErrorMessage, route]);
+    }, [authContext.isSignedIn, route]);
 
     const handleLogin = async () => {
-        await authContext.login(email, password);
-        navigation.navigate(routes_names.home);
+        try {
+            await authContext.login(email, password);
+            navigation.navigate(routes_names.home);
+        } catch (e) {
+            showToast(_getErrorMessage(e), 'error');
+        }
     };
 
     return <Center w="100%">
@@ -91,4 +120,4 @@ const SignIn = ({route, navigation}): JSX.Element => {
     </Center>;
 };
 
-export default SignIn;
+export default Login;

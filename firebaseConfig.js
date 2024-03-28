@@ -25,7 +25,6 @@ LogBox.ignoreLogs([`Setting a timer for a long period`]);
 export const auth = getAuth();
 
 if (process.env.REACT_APP_NODE_ENV !== 'prod') {
-    console.log("Using Emulator")
     connectAuthEmulator(auth, "http://192.168.100.76:9099");
 }
 

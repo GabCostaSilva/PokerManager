@@ -1,21 +1,31 @@
-import {JSX} from "react";
-import {ErrorAlert} from "../components/alerts/ErrorAlert";
-import {SuccessAlert} from "../components/alerts/SuccessAlert";
+import {Toast, ToastDescription, ToastTitle, useToast, VStack} from "@gluestack-ui/themed";
 
-export const useShowToast = (toast) => {
+export const useShowToast = () => {
+    const toast = useToast()
 
     return function showToast(message: string, type: 'error' | 'success' = 'error') {
-        console.log("showToast", message, type)
+        const title = {
+            error: "Erro",
+            warning: "Aviso",
+            success: "Sucesso",
+            info: "Notificação"
+        }
         toast.show({
             placement: "top",
             render: ({id}) => {
                 const toastId = "toast-" + id;
-                return type === 'error' ? <ErrorAlert message={message} id={toastId}
-                    />
-                    :
-                    <SuccessAlert message={message}
-                                  id={toastId}
-                    />
+                return (
+                    <Toast nativeID={toastId}
+                           action={type}
+                           variant="accent">
+                        <VStack space="xs">
+                            <ToastTitle>{title[type]}</ToastTitle>
+                            <ToastDescription>
+                                {message}
+                            </ToastDescription>
+                        </VStack>
+                    </Toast>
+                )
             }
         })
     }

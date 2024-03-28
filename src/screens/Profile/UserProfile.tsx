@@ -13,9 +13,7 @@ export const UserProfile = ({navigation, route}) => {
     useEffect(() => {
         return navigation.addListener('focus', () => {
             (async () => {
-                console.log("inside focus")
                 const userData = await getProfile();
-                console.log("this is user data", userData)
                 setCurrentUser(userData)
             })()
         });
@@ -81,13 +79,13 @@ export const UserProfile = ({navigation, route}) => {
             <ButtonGroup flexDirection={"column"}
                          style={{flex: 5}}
                          alignItems={"flex-end"}>
-                <Button variant="solid" action="primary"
-                        onPress={async () => {
-                            navigation.navigate(routes_names.edit_profile)
-                        }}>
-                    <ButtonText>Editar</ButtonText>
-                    <ButtonIcon as={EditIcon} ml={"$1"}/>
-                </Button>
+                {/*<Button variant="solid" action="primary"*/}
+                {/*        onPress={async () => {*/}
+                {/*            navigation.navigate(routes_names.edit_profile)*/}
+                {/*        }}>*/}
+                {/*    <ButtonText>Editar</ButtonText>*/}
+                {/*    <ButtonIcon as={EditIcon} ml={"$1"}/>*/}
+                {/*</Button>*/}
                 <Button variant="link" action="secondary" disabled={true}
                         onPress={async () => {
                             navigation.navigate(routes_names.change_password)

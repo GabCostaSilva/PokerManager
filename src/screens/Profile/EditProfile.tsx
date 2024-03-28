@@ -3,10 +3,10 @@ import React, {useEffect, useState} from "react";
 import {KeyboardAvoidingView, Platform, ScrollView} from "react-native";
 import {UserBasicInfoForm} from "../../components/UserBasicInfoForm";
 import {useAuthContext} from "../../hooks/useAuthContext";
-import {ErrorAlert} from "../../components/alerts/ErrorAlert";
 import {CancelButton} from "../../components/buttons/CancelButton";
 import {ConfirmButton} from "../../components/buttons/ConfirmButton";
 import {onlyNumbers} from "../../utils/utils";
+import {useShowToast} from "../../hooks/useShowToast";
 
 export const EditProfile = ({navigation}) => {
     const {getProfile, isLoading, error, editProfile, user} = useAuthContext();
@@ -15,25 +15,21 @@ export const EditProfile = ({navigation}) => {
         docNumber: onlyNumbers(user.docNumber),
         ...userProfile
     })
-
+    const showToast = useShowToast();
     useEffect(() => {
         // console.log("this is user", user)
         return navigation.addListener('focus', () => {
             (async () => {
-                console.log("inside focus")
                 const userData = await getProfile();
-                console.log("this is user data", userData)
                 setUserProfile(userData)
             })()
         });
     }, [navigation]);
 
-    const toast = useToast();
-
     const handleEditUser = async () => {
         try {
             const {phoneNumber, ...partial} = state
-            const phoneIso = "+55" + onlyNumbers(phoneNumber);
+            const phoneIso = "" + onlyNumbers(phoneNumber);
 
             await editProfile({
                 phoneNumber: phoneIso,
@@ -41,13 +37,8 @@ export const EditProfile = ({navigation}) => {
             })
             navigation.goBack();
         } catch (e) {
-            toast.show({
-                placement: "top",
-                render: ({id}) => {
-                    const toastId = "toast-" + id;
-                    return <ErrorAlert message={error} id={toastId}/>
-                }
-            })
+            console.error(JSON.stringify(e))
+            showToast("Erro ao editar usuário", "error")
         }
     };
 
